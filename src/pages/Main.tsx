@@ -25,7 +25,6 @@ const Main = (): JSX.Element => {
   };
   return (
     <Container>
-      <SearchPage>왼쪽 검색창</SearchPage>
       <MobilePage>
         <h2>만원의 행복</h2>
         <p>단돈 만원대로 이용 가능한 갓성비 착한가게</p>
@@ -52,31 +51,27 @@ const Main = (): JSX.Element => {
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  max-width: 1024px;
+  max-width: 26.5rem;
   height: 100%;
-  margin: 50px auto; // 위아래 50px, 좌우는 중앙정렬
+  margin: auto; // 위아래 50px, 좌우는 중앙정렬
 `;
 
-const SearchPage = styled.div`
-  width: 400px;
 
-  @media (max-width: 1024px) {
-    display: none;
-  }
-`;
 
 const MobilePage = styled.div`
-  width: 425px;
-  @media (max-width: 1024px) {
-    width: 100%;
-  }
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const CategoryWrapper = styled.div`
-  gap: 0.2rem;
-  width: 417px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
   button {
-    width: 200px;
+    width: 13rem;
     &.selected {
       background-color: #ccc;
     }
