@@ -16,15 +16,10 @@ const Nav = () => {
 const Navbar = styled.div`
   position: fixed;
   bottom: 0;
-  width: 417px;
+  width: 26rem;
   display: flex;
   justify-content: space-around;
-  padding: 10px;
-  margin-left: 56%;
-
-  @media (max-width: 1024px) {
-    margin-left: 0px;
-  }
+  padding: 1rem 4px;
 `;
 
 const NavLink = styled(Link)`

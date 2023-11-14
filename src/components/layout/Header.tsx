@@ -16,19 +16,17 @@ const Header = (): JSX.Element => {
   );
 };
 
-const HeaderContainer = styled.div`
-  margin-left: 56%;
-  position: fixed;
-  top: 0;
-
-  @media (max-width: 1024px) {
-    margin-left: 0px;
-  }
+const HeaderContainer = styled.header`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  min-height: 4rem;
 `;
 
 const InputWrapper = styled.div`
   display: flex;
-  width: 417px;
+  width: 26rem;
   input {
     width: calc(100% - 60px);
   }
