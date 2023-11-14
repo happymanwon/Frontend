@@ -11,7 +11,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@pages/*": ["src/pages/*"],
-      "@components/*": ["components/*"]
+      "@components/*": ["src/components/*"]
     },
 
     /* Bundler mode */
