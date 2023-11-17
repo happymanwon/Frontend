@@ -11,8 +11,8 @@ const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_REST_API;
 const Geolocation = () => {
   // 초기값은 서울시청 위도 경도
   const [location, setLocation] = useState<Location | null>({
-    latitude: 37.541,
-    longitude: 126.986,
+    latitude: 37.5666612,
+    longitude: 126.9783785,
   });
   const [regionName, setRegionName] = useState("종로구");
 
