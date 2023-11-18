@@ -1,38 +1,40 @@
-import styled from "styled-components";
-import Geolocation from "@/components/Geolocation";
+import React from 'react';
+import { useLocation } from "react-router-dom";
 
-const Header = (): JSX.Element => {
+import MainHeader from './HeaderList/MainHeader';
+import CategoryHeader from './HeaderList/CategoryHeader';
+import MapHeader from './HeaderList/MapHeader';
+import MypageHeader from './HeaderList/MypageHeader';
+
+import styled from "styled-components";
+
+const Header: React.FC = () => {
+  const location = useLocation().pathname;
+
+  let component = null;
+  if (location === '/') {
+    component = <MainHeader />;
+  } 
+  if (location.includes('/category')) {
+    component = <CategoryHeader />;
+  } 
+  if (location.includes('/map')) {
+    component = <MapHeader />;
+  }
+  if (location.includes('/mypage')) {
+    component = <MypageHeader />;
+  } 
+
   return (
     <HeaderContainer>
-      <Geolocation />
-      <InputWrapper>
-        <input
-          type="text"
-          placeholder="단돈 만원대로 이용 가능한 갓성비 착한가게를 검색해보세요."
-        />
-        <button type="submit">검색</button>
-      </InputWrapper>
+      {component}
     </HeaderContainer>
   );
 };
 
 const HeaderContainer = styled.header`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-  min-height: 4rem;
-`;
-
-const InputWrapper = styled.div`
-  display: flex;
-  width: 26rem;
-  input {
-    width: calc(100% - 60px);
-  }
-  button {
-    width: 60px;
-  }
-`;
+  height: 81px;
+  width: 100%;
+`
 
 export default Header;
