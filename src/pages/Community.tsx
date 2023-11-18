@@ -1,9 +1,9 @@
 import Nav from "@/components/layout/Nav";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { dummyData } from "@/components/fakedata";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 interface Post {
   id: number;
@@ -27,7 +27,22 @@ const tagName: string[] = [
 ];
 
 const Community = () => {
-  const [posts, setPosts] = useState<Post[]>(dummyData);
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // const response = await axios.get(`/api/stores/${categoryId}`);     // 백엔드랑 통신할 때
+        const response = await axios.get<Post[]>(`/data/fakedata.json`);  // json 파일 사용
+        setPosts(response.data);
+      } catch (error) {
+        console.error("Error fetching category data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <LayoutPage>
       <LayoutContainer>

@@ -15,7 +15,9 @@ const CategoryPage = (): JSX.Element => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/store?category=${categoryId}`);
+        // const response = await axios.get(`/api/stores/${categoryId}`);     // 백엔드랑 통신할 때
+        const response = await axios.get(`/data/stores/${categoryId}.json`);  // json 파일 사용
+        console.log(response.data);
         setCategoryData(response.data);
       } catch (error) {
         console.error("Error fetching category data:", error);
