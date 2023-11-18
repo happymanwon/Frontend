@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Nav from '@/components/layout/Nav';
 import styled from 'styled-components';
@@ -8,10 +9,12 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const location = useLocation();
+
   return (
     <LayoutPage>
       <LayoutContainer>
-        <Header />
+        {location.pathname === '/login' || location.pathname === '/post' ? null : <Header />}
         {children}
         <Nav />
       </LayoutContainer>
