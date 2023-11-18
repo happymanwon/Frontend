@@ -3,5 +3,8 @@
 
 ## 🌐 Web 서버 구동
 ```
-npm run dev
+1. git clone [깃허브 주소] .
+2. npm install
+3. .env 파일 추가
+4. npm run dev
 ```
