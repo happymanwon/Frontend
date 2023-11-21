@@ -1,19 +1,32 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Background = () => {
   return (
-    <BackgroundStyle></BackgroundStyle>
+    <BackgroundStyle>
+      <HeaderLogo>
+        <img src="/logo.svg" />
+      </HeaderLogo>
+    </BackgroundStyle>
   );
 };
 
 const BackgroundStyle = styled.div`
-  background-image: url(https://cdn.pet-friends.co.kr/resources/pc/img/background.png);
-  background-repeat: no-repeat;
+  background-color: #fcfdff;
   background-size: cover;
   background-position: 50% 50%;
   height: 100%;
   position: fixed;
   width: 100vw;
-`
+`;
+
+const HeaderLogo = styled.div`
+  display: none;
+
+  @media (min-width: 1024px) {
+    margin-top: 10px;
+    margin-left: 10px;
+    display: block;
+  }
+`;
 
 export default Background;
