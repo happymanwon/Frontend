@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Geolocation from "@/components/Geolocation";
 import styled from "styled-components";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +9,10 @@ const MainHeader = () => {
     <MainHeaderContainer>
       <Geolocation />
       <InputContainer>
-        <input type="text" placeholder="단돈 만원대로 이용 가능한 갓성비 착한 가게를 검색해 보세요!" />
+        <input
+          type="text"
+          placeholder="단돈 만원대로 이용 가능한 착한 가게를 검색해 보세요!"
+        />
         <IconContainer>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </IconContainer>
@@ -19,8 +22,10 @@ const MainHeader = () => {
 };
 
 const MainHeaderContainer = styled.div`
-  padding: 5px 30px 14px 32px;
-`
+  background: #aab2b5;
+  padding: 13px 0 17px 30px;
+  height: 68px;
+`;
 
 const InputContainer = styled.div`
   position: relative;
@@ -28,13 +33,14 @@ const InputContainer = styled.div`
   height: 44px;
   border-radius: 6px;
   background: #fff;
-  border: 1px solid;
+  border: none;
+  margin-top: 7px;
 
   & input {
     position: absolute;
     width: 314px;
     height: 28px;
-    font-size: 12px;
+    font-size: 14px;
     padding: 8px 38px 8px 8px;
     caret-color: #000;
     background: transparent;
@@ -52,6 +58,6 @@ const IconContainer = styled.div`
   align-items: center;
   font-size: 1.2rem;
   cursor: pointer;
-`
+`;
 
 export default MainHeader;
