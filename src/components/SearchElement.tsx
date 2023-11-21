@@ -3,14 +3,16 @@ import styled from "styled-components";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Category from "@/components/Category";
+import bigLogoImg from "@/assets/images/big-logo.svg";
+import subtitleImg from "@/assets/images/subtitle.svg";
 
 const SearchElement = () => {
   return (
     <SearchPage>
       <SearchMain>
         <LogoWrapper>
-          <img className="biglogo" src="src/assets/images/biglogo.svg" />
-          <img className="subtitle" src="src/assets/images/subtitle.svg" />
+          <img className="biglogo" src={bigLogoImg} alt="큰 로고이미지" />
+          <img className="subtitle" src={subtitleImg} alt="소개문구" />
         </LogoWrapper>
         <InputContainer>
           <input type="text" />

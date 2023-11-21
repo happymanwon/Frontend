@@ -1,10 +1,11 @@
 import styled from "styled-components";
+import sejongImg from "@/assets/images/sejong-img.png";
 
 const Background = () => {
   return (
     <BackgroundStyle>
       <HeaderLogo>
-        <img src="/logo.svg" />
+        <img src={sejongImg} alt="세종 로고" width={77} height={77} />
       </HeaderLogo>
     </BackgroundStyle>
   );
