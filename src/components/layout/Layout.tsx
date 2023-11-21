@@ -1,8 +1,8 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import Header from '@/components/layout/Header';
-import Nav from '@/components/layout/Nav';
-import styled from 'styled-components';
+import React from "react";
+import { useLocation } from "react-router-dom";
+import Header from "@/components/layout/Header";
+import Nav from "@/components/layout/Nav";
+import styled from "styled-components";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,9 +14,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <LayoutPage>
       <LayoutContainer>
-        {location.pathname === '/login' || location.pathname === '/post' ? null : <Header />}
+        {location.pathname === "/login" ||
+        location.pathname === "/post" ? null : (
+          <Header />
+        )}
         {children}
-        <Nav />
+        {location.pathname === "/login" ||
+        location.pathname === "/post" ||
+        location.pathname.includes("/category") ? null : (
+          <Nav />
+        )}
       </LayoutContainer>
     </LayoutPage>
   );
