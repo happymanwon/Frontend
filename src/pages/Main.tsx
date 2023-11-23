@@ -80,18 +80,16 @@ const CategoryWrapper = styled.div`
     color: #fff;
 
   }
-    .category-button-5,
-    .category-button-6,
-    .category-button-7,
-    .category-button-8 {
-      background-color: #f3f4f6;
-      border: none;
-      border-radius: 10px;
-      width: 5rem;
-      height: 5rem;
-      font-size: 18px;
-    }
-    
+  .category-button-5,
+  .category-button-6,
+  .category-button-7,
+  .category-button-8 {
+    background-color: #f3f4f6;
+    border: none;
+    border-radius: 10px;
+    width: 5rem;
+    height: 5rem;
+    font-size: 18px;
   }
 `;
 
