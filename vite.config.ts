@@ -1,15 +1,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import svgr from 'vite-plugin-svgr';
 import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), svgr()],
   server: {
     port: 3000,
     proxy: {
       '/api': {
-        target: '127.0.0.1:8080',
+        target: 'http://127.0.0.1:8080',
         changeOrigin: true,
         secure: false,
       }
