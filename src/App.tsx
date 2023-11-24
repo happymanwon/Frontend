@@ -1,6 +1,6 @@
-import { Reset } from "styled-reset";
+import reset from "styled-reset";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import theme from "./style/theme";
 
 import Main from "@pages/Main";
@@ -19,11 +19,15 @@ import SearchElement from "@/components/SearchElement";
 import Layout from "@/components/layout/Layout";
 import Background from "@/components/layout/Background";
 
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+`;
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <>
-        <Reset />
+        <GlobalStyle />
         <Router>
           <Background />
           <SearchElement />
