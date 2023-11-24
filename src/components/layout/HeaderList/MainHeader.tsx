@@ -7,7 +7,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const MainHeader = () => {
   return (
     <MainHeaderContainer>
-      <Geolocation />
+      <DistrictWrapper>
+        <Geolocation />
+      </DistrictWrapper>
       <InputContainer>
         <input
           type="text"
@@ -25,6 +27,13 @@ const MainHeaderContainer = styled.div`
   background: #aab2b5;
   padding: 13px 0 17px 30px;
   height: 68px;
+`;
+
+const DistrictWrapper = styled.div`
+  select {
+    color: ${({ theme }) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.grey};
+  }
 `;
 
 const InputContainer = styled.div`
