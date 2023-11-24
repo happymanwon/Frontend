@@ -2,23 +2,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import styled from "styled-components";
-import Category from "@/components/Category";
 import { useNavigate } from "react-router-dom";
 
-const CategoryHeader = () => {
+const StoreDetailHeader = () => {
   const navigate = useNavigate();
 
   return (
     <CategoryHeaderContainer>
       <CategoryHeaderWrapper>
-        <div className="left" onClick={() => navigate("/")}>
+        <div className="left" onClick={() => navigate(-1)}>
           <FontAwesomeIcon icon={faArrowLeft} />
         </div>
-        <h2>만원의 행복</h2>
+        <div>상점사진 sh_photo</div>
+        <h2>상점이름sh_name</h2>
       </CategoryHeaderWrapper>
-      <CategoryWrapper>
-        <Category />
-      </CategoryWrapper>
+      <header>
+        <div>지역|주메뉴 또는 주력상품</div>
+      </header>
     </CategoryHeaderContainer>
   );
 };
@@ -53,22 +53,4 @@ const CategoryHeaderWrapper = styled.div`
   }
 `;
 
-const CategoryWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding-top: 20px;
-
-  .selected {
-    border-bottom: 3px solid ${({ theme }) => theme.colors.lightGreen};
-  }
-
-  button {
-    border: none;
-    background-color: ${({ theme }) => theme.colors.white};
-    font-weight: 700;
-    font-size: 14px;
-    padding: 15px 8px 0 8px;
-  }
-`;
-
-export default CategoryHeader;
+export default StoreDetailHeader;

@@ -61,7 +61,7 @@ const CategoryWrapper = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-    
+
     &.selected {
       background-color: #ccc;
     }
@@ -78,7 +78,6 @@ const CategoryWrapper = styled.div`
     height: 10.625rem;
     font-size: 26px;
     color: #fff;
-
   }
   .category-button-5,
   .category-button-6,
@@ -87,8 +86,8 @@ const CategoryWrapper = styled.div`
     background-color: #f3f4f6;
     border: none;
     border-radius: 10px;
-    width: 5rem;
-    height: 5rem;
+    width: 4.5rem;
+    height: 4.5rem;
     font-size: 18px;
   }
 `;
