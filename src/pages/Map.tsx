@@ -1,26 +1,60 @@
 import { useEffect } from "react";
+import Card from "@/components/map/Card";
+import { useMapToggleStore } from "@stores/mapToggle";
+import { styled } from "styled-components";
+import useRegionStore from "@/stores/location";
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     kakao: any;
   }
 }
 
 const Map = () => {
+  const { isMap } = useMapToggleStore();
+  const { districtId } = useRegionStore();
+
+  console.log(districtId);
+
   useEffect(() => {
-    const mapContainer = document.getElementById("map");
-    const mapOptions = {
-      center: new window.kakao.maps.LatLng(37.5666612, 126.9783785),
-      level: 3,
-    };
-    const map = new window.kakao.maps.Map(mapContainer, mapOptions);
-    // 마커 필요시 코드 추가 필요
-  }, []);
+    if (isMap) {
+      const mapContainer = document.getElementById("map");
+      const mapOptions = {
+        center: new window.kakao.maps.LatLng(37.4996992, 126.5565696),
+        level: 4,
+      };
+      new window.kakao.maps.Map(mapContainer, mapOptions);
+      // 마커 필요시 코드 추가 필요
+    }
+  }, [isMap]);
+
   return (
     <>
-      <div id="map" style={{ width: "100%", height: "80vh" }}></div>
+      {isMap ? (
+        <MapContainer id="map"></MapContainer>
+      ) : (
+        <CardContainer>
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+        </CardContainer>
+      )}
     </>
   );
 };
+
+const MapContainer = styled.main`
+  width: 100%;
+  height: calc(100vh - 6.125rem - 4.5rem);
+`;
+
+const CardContainer = styled.main`
+  height: calc(100vh - 6.125rem - 4.5rem);
+  padding: 0 1.75rem;
+  overflow: auto;
+`;
 
 export default Map;
