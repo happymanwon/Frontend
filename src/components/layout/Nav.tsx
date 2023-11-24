@@ -1,41 +1,44 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import chatImg from "@/assets/images/chat-img.svg";
-import coinImg from "@/assets/images/coin-img.svg";
-import mapImg from "@/assets/images/map-img.svg";
+import ChatImg from "@/assets/images/chat-img.svg?react";
+import CoinImg from "@/assets/images/coin-img.svg?react";
+import MapImg from "@/assets/images/map-img.svg?react";
 import sejongImg from "@/assets/images/sejong-img.png";
-import userImg from "@/assets/images/user-img.svg";
+import UserImg from "@/assets/images/user-img.svg?react";
+import styled from "styled-components";
 
 const Nav = () => {
   // 로그인 여부 (전역 상태 관리 시 지울 예정)
   const [isLogin, setIsLogin] = useState(false);
+  const location = useLocation();
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <Navbar>
-      <NavLink to="/map">
-        <img src={mapImg} alt="맵 이미지" />
+      <NavLink to="/map" className={isActive('/map') ? 'active' : ''}>
+        <MapImg />
         <p>짠지도</p>
       </NavLink>
-      <NavLink to="/shop">
-        <img src={coinImg} alt="코인 이미지" />
+      <NavLink to="/shop" className={isActive('/shop') ? 'active' : ''}>
+        <CoinImg />
         <p>짠처리</p>
       </NavLink>
       <NavLink to="/">
         <img src={sejongImg} alt="세종 이미지" width={49} height={49} />
       </NavLink>
-      <NavLink to="/community">
-        <img src={chatImg} alt="채팅 이미지" />
+      <NavLink to="/community" className={isActive('/community') ? 'active' : ''}>
+        <ChatImg />
         <p>단짠단짠</p>
       </NavLink>
       {isLogin ? (
-        <NavLink to="/mypage">
-          <img src={userImg} alt="유저 이미지" />
+        <NavLink to="/mypage" className={isActive('/mypage') ? 'active' : ''}>
+          <UserImg />
           <p>마이페이지</p>
         </NavLink>
       ) : (
-        <NavLink to="/login">
-          <img src={userImg} alt="유저 이미지" />
+        <NavLink to="/login" className={isActive('/login') ? 'active' : ''}>
+          <UserImg />
           <p>로그인</p>
         </NavLink>
       )}
@@ -67,6 +70,17 @@ const NavLink = styled(Link)`
     font-size: 0.4375rem;
     font-weight: 400;
     margin-top: 0.375rem;
+  }
+
+  & svg {
+    fill: #000;
+  }
+
+  &.active {
+    color: #2AB673;
+    svg {
+      fill: #2AB673;
+    }
   }
 `;
 
