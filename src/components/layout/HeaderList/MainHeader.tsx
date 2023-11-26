@@ -1,4 +1,3 @@
-import React from "react";
 import Geolocation from "@/components/Geolocation";
 import styled from "styled-components";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -24,7 +23,7 @@ const MainHeader = () => {
 };
 
 const MainHeaderContainer = styled.div`
-  background: #aab2b5;
+  background: ${({ theme }) => theme.colors.greyLine};
   padding: 13px 0 17px 30px;
   height: 68px;
 `;
@@ -32,7 +31,7 @@ const MainHeaderContainer = styled.div`
 const DistrictWrapper = styled.div`
   select {
     color: ${({ theme }) => theme.colors.white};
-    background: ${({ theme }) => theme.colors.grey};
+    background: ${({ theme }) => theme.colors.greyLine};
   }
 `;
 
