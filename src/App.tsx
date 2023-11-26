@@ -3,17 +3,17 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import theme from "./style/theme";
 
-import Main from "@pages/Main";
+import Main from "@/pages/MainPage";
 import CategoryPage from "@pages/CategoryPage";
-import StoreDetail from "@/pages/StoreDetail";
-import PostDetail from "@/pages/PostDetail";
-import Kakao from "@/pages/Kakao";
-import Map from "@/pages/Map";
-import Shop from "@/pages/Shop";
-import Community from "@/pages/Community";
+import StoreDetail from "@/pages/StoreDetailPage";
+import PostDetail from "@/pages/PostDetailPage";
+import Kakao from "@/pages/KakaoLoginPage";
+import Map from "@/pages/MapPage";
+import Shop from "@/pages/ShopPage";
+import Community from "@/pages/CommunityPage";
 import LoginPage from "@/pages/LoginPage";
 import Mypage from "@/pages/Mypage";
-import NotFound from "@pages/NotFound";
+import NotFound from "@/pages/NotFoundPage";
 
 import SearchElement from "@/components/SearchElement";
 import Layout from "@/components/layout/Layout";
@@ -44,14 +44,7 @@ function App() {
                 </Layout>
               }
             />
-            <Route
-              path="/category/:categoryId/:storeId"
-              element={
-                <Layout>
-                  <StoreDetail />
-                </Layout>
-              }
-            />
+            <Route path="/store/:storeId" element={<StoreDetail />} />
             <Route
               path="/auth"
               element={
