@@ -16,28 +16,31 @@ const Nav = () => {
 
   return (
     <Navbar>
-      <NavLink to="/map" className={isActive('/map') ? 'active' : ''}>
+      <NavLink to="/map" className={isActive("/map") ? "active" : ""}>
         <MapImg />
         <p>짠지도</p>
       </NavLink>
-      <NavLink to="/shop" className={isActive('/shop') ? 'active' : ''}>
+      <NavLink to="/shop" className={isActive("/shop") ? "active" : ""}>
         <CoinImg />
         <p>짠처리</p>
       </NavLink>
       <NavLink to="/">
         <img src={sejongImg} alt="세종 이미지" width={49} height={49} />
       </NavLink>
-      <NavLink to="/community" className={isActive('/community') ? 'active' : ''}>
+      <NavLink
+        to="/community"
+        className={isActive("/community") ? "active" : ""}
+      >
         <ChatImg />
         <p>단짠단짠</p>
       </NavLink>
       {isLogin ? (
-        <NavLink to="/mypage" className={isActive('/mypage') ? 'active' : ''}>
+        <NavLink to="/mypage" className={isActive("/mypage") ? "active" : ""}>
           <UserImg />
           <p>마이페이지</p>
         </NavLink>
       ) : (
-        <NavLink to="/login" className={isActive('/login') ? 'active' : ''}>
+        <NavLink to="/login" className={isActive("/login") ? "active" : ""}>
           <UserImg />
           <p>로그인</p>
         </NavLink>
@@ -57,6 +60,7 @@ const Navbar = styled.nav`
   align-items: center;
   padding: 0.75rem 2rem;
   box-shadow: 0px -2px 6px 0px rgba(0, 0, 0, 0.05);
+  font-family: NotoSansWOFF, sans-serif, Arial;
 `;
 
 const NavLink = styled(Link)`
@@ -77,9 +81,9 @@ const NavLink = styled(Link)`
   }
 
   &.active {
-    color: #2AB673;
+    color: #2ab673;
     svg {
-      fill: #2AB673;
+      fill: #2ab673;
     }
   }
 `;

@@ -188,6 +188,8 @@ const LayoutPage = styled.div`
   margin: auto;
   width: 100%;
   overflow: scroll;
+  font-family: NotoSansWOFF, sans-serif, Arial;
+
   @media (min-width: 1024px) {
     left: 50vw;
     margin: 0;

@@ -66,6 +66,7 @@ const CategoryContainer = styled.div`
   width: 100%;
   height: calc(100vh - 6.125rem);
   overflow: scroll;
+  font-family: NotoSansWOFF, sans-serif, Arial;
 `;
 
 const CategoryDesc = styled.div`

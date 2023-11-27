@@ -27,6 +27,7 @@ const MainContainer = styled.div`
   height: calc(100vh - 6.125rem - 4.5rem);
   margin: auto;
   overflow: scroll;
+  font-family: NotoSansWOFF, sans-serif, Arial;
 `;
 
 const MainPage = styled.div`
