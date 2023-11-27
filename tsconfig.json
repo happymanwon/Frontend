@@ -12,7 +12,8 @@
       "@/*": ["src/*"],
       "@pages/*": ["src/pages/*"],
       "@components/*": ["src/components/*"],
-      "@stores/*": ["src/stores/*"]
+      "@stores/*": ["src/stores/*"],
+      "@styles/*": ["src/styles/*"]
     },
 
     /* Bundler mode */

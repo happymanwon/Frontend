@@ -26,14 +26,14 @@ const tagName: string[] = [
   "건강",
 ];
 
-const Community = () => {
+const CommunityPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // const response = await axios.get(`/api/stores/${categoryId}`);     // 백엔드랑 통신할 때
-        const response = await axios.get<Post[]>(`/data/fakedata.json`);  // json 파일 사용
+        const response = await axios.get<Post[]>(`/data/fakedata.json`); // json 파일 사용
         setPosts(response.data);
       } catch (error) {
         console.error("Error fetching category data:", error);
@@ -116,4 +116,4 @@ const LayoutContainer = styled.div`
   align-items: center;
 `;
 
-export default Community;
+export default CommunityPage;

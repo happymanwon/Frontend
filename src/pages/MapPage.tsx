@@ -11,12 +11,7 @@ declare global {
   }
 }
 
-const Map = () => {
-  const { isMap } = useMapToggleStore();
-  const { districtId } = useRegionStore();
-
-  console.log(districtId);
-
+const MapPage = () => {
   useEffect(() => {
     if (isMap) {
       const mapContainer = document.getElementById("map");
@@ -57,4 +52,4 @@ const CardContainer = styled.main`
   overflow: auto;
 `;
 
-export default Map;
+export default MapPage;
