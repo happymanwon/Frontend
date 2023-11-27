@@ -42,10 +42,13 @@ const Geolocation = () => {
             .get(apiUrl, { headers })
             .then((response) => {
               // 응답에서 원하는 데이터 추출
-              const region2Depth = response.data.documents[0].address.region_2depth_name;
+              const region2Depth =
+                response.data.documents[0].address.region_2depth_name;
 
               // 카카오 지도에서 찾은 지역구 이름과 district 안에 키값과 같은 것 찾기 - 적용
-              const matchingRegion = Object.entries(district).find(([value]) => value === region2Depth);
+              const matchingRegion = Object.entries(district).find(
+                ([value]) => value === region2Depth
+              );
 
               if (matchingRegion) {
                 // 찾은 값을 선택된 지역으로 설정
@@ -90,6 +93,7 @@ const DistrictContainer = styled.div`
     border: none;
     border-radius: 0;
     font-size: 16px;
+    font-family: NotoSansWOFF, sans-serif, Arial;
   }
 `;
 

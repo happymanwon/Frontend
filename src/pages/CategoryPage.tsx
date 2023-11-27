@@ -4,16 +4,9 @@ import axios from "axios";
 import styled from "styled-components";
 
 import Geolocation from "@/components/Geolocation";
-import useRegionStore from "@stores/location";
-import useCategoryStore from "@stores/categories";
-
-interface CategoryData {
-  // 카테고리데이터의 모양
-  sh_id: string;
-  sh_name: string;
-  sh_photo: string;
-  sh_addr: string;
-}
+import { StoreData } from "store-datas";
+import useRegionStore from "../stores/location";
+import useCategoryStore from "../stores/categories";
 
 const CategoryPage = (): JSX.Element => {
   const { districtId, district } = useRegionStore();
@@ -22,14 +15,16 @@ const CategoryPage = (): JSX.Element => {
   const { categories, categoryId } = useCategoryStore();
   const categoryName = categories[categoryId];
 
-  const [categoryData, setCategoryData] = useState<CategoryData[] | null>(null);
+  const [categoryData, setCategoryData] = useState<StoreData[] | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // const response = await axios.get(`/api/stores/${categoryId}`);     // 백엔드랑 통신할 때
         const response = await axios.get(`/data/stores/${categoryId}.json`); // json 파일 사용
-        const filterDataByDistrict = response.data.filter((data) => data.sh_addr.includes(districtName));
+        const filterDataByDistrict = response.data.filter((data) =>
+          data.sh_addr.includes(districtName)
+        );
         setCategoryData(filterDataByDistrict);
         console.log(filterDataByDistrict);
       } catch (error) {
@@ -51,10 +46,13 @@ const CategoryPage = (): JSX.Element => {
       ) : (
         <ListWrapper>
           {categoryData.map((data, index) => (
-            <ListLink key={index} to={`/category/${Number(categoryId)}/store?id=${Number(data.sh_id)}`}>
+            <ListLink key={index} to={`/store/${Number(data.sh_id)}`}>
               {/* 사진 데이터 있을 때 
               <img src={`${data.sh_photo}`} alt={`이미지 ${index}`} /> */}
-              <img src="https://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=20220718174745.jpg" alt={`이미지 ${index}`} />
+              <img
+                src="https://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=20220718174745.jpg"
+                alt={`이미지 ${index}`}
+              />
               <h1>{data.sh_name}</h1>
             </ListLink>
           ))}
@@ -68,6 +66,7 @@ const CategoryContainer = styled.div`
   width: 100%;
   height: calc(100vh - 6.125rem);
   overflow: scroll;
+  font-family: NotoSansWOFF, sans-serif, Arial;
 `;
 
 const CategoryDesc = styled.div`
