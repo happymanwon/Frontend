@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-const Map = () => {
+const MapPage = () => {
   useEffect(() => {
     const mapContainer = document.getElementById("map");
     const mapOptions = {
@@ -23,4 +23,4 @@ const Map = () => {
   );
 };
 
-export default Map;
+export default MapPage;

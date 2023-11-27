@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 
-const Kakao = () => {
+const KakaoLoginPage = () => {
   const code = new URL(window.location.href).searchParams.get("code");
   // 코드가 잘 불려오는 지 확인
   useEffect(() => {
@@ -291,4 +291,4 @@ const SpinnerSVG = styled.svg`
   }
 `;
 
-export default Kakao;
+export default KakaoLoginPage;

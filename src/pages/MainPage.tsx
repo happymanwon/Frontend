@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import Category from "@/components/Category";
 
-const Main = (): JSX.Element => {
+const MainPage = (): JSX.Element => {
   return (
     <MainContainer>
-      <MainPage>
+      <MainView>
         <TitleWrapper>
           <h2>만원의 행복</h2>
           <div>
@@ -15,7 +15,7 @@ const Main = (): JSX.Element => {
         <CategoryWrapper>
           <Category />
         </CategoryWrapper>
-      </MainPage>
+      </MainView>
     </MainContainer>
   );
 };
@@ -30,7 +30,7 @@ const MainContainer = styled.div`
   font-family: NotoSansWOFF, sans-serif, Arial;
 `;
 
-const MainPage = styled.div`
+const MainView = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -93,4 +93,4 @@ const CategoryWrapper = styled.div`
   }
 `;
 
-export default Main;
+export default MainPage;

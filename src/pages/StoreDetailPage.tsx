@@ -22,7 +22,7 @@ declare global {
   }
 }
 
-const StoreDetail = () => {
+const StoreDetailPage = () => {
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const { categoryId } = useCategoryStore();
@@ -302,4 +302,4 @@ const MapInfo = styled.div`
     margin-top: 10px;
   }
 `;
-export default StoreDetail;
+export default StoreDetailPage;

@@ -15,7 +15,7 @@ interface Post {
   comments: number;
 }
 
-const PostDetail = () => {
+const PostDetailPage = () => {
   const { postId } = useParams<{ postId?: string }>(); // 파라미터가 없을 수 있으므로 postId를 옵셔널로 지정
   const [post, setPost] = useState<Post | null>(null);
 
@@ -23,10 +23,12 @@ const PostDetail = () => {
     const fetchData = async () => {
       try {
         // const response = await axios.get(`/api/stores/${categoryId}`);     // 백엔드랑 통신할 때
-        const response = await axios.get<Post[]>(`/data/fakedata.json`);  // json 파일 사용
+        const response = await axios.get<Post[]>(`/data/fakedata.json`); // json 파일 사용
 
         if (postId) {
-          const postData = response.data.filter(item => item.id === parseInt(postId, 10))[0];
+          const postData = response.data.filter(
+            (item) => item.id === parseInt(postId, 10)
+          )[0];
           postData ? setPost(postData) : setPost(null);
         }
       } catch (error) {
@@ -81,4 +83,4 @@ const LayoutContainer = styled.div`
   align-items: center;
 `;
 
-export default PostDetail;
+export default PostDetailPage;

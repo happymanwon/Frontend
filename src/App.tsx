@@ -1,29 +1,30 @@
-import { Reset } from "styled-reset";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "styled-components";
-import theme from "./style/theme";
 
-import Main from "@/pages/MainPage";
+import MainPage from "@/pages/MainPage";
 import CategoryPage from "@pages/CategoryPage";
-import StoreDetail from "@/pages/StoreDetailPage";
-import PostDetail from "@/pages/PostDetailPage";
-import Kakao from "@/pages/KakaoLoginPage";
-import Map from "@/pages/MapPage";
-import Shop from "@/pages/ShopPage";
-import Community from "@/pages/CommunityPage";
+import StoreDetailPage from "@/pages/StoreDetailPage";
+import PostDetailPage from "@/pages/PostDetailPage";
+import KakaoLoginPage from "@/pages/KakaoLoginPage";
+import MapPage from "@/pages/MapPage";
+import ShopPage from "@/pages/ShopPage";
+import CommunityPage from "@/pages/CommunityPage";
 import LoginPage from "@/pages/LoginPage";
 import Mypage from "@/pages/Mypage";
-import NotFound from "@/pages/NotFoundPage";
+import NotFoundPage from "@/pages/NotFoundPage";
 
 import SearchElement from "@/components/SearchElement";
 import Layout from "@/components/layout/Layout";
 import Background from "@/components/layout/Background";
 
+import { ThemeProvider } from "styled-components";
+import theme from "@/styles/theme";
+import { GlobalStyle } from "@/styles/global";
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <>
-        <Reset />
+        <GlobalStyle />
         <Router>
           <Background />
           <SearchElement />
@@ -32,7 +33,7 @@ function App() {
               path="/"
               element={
                 <Layout>
-                  <Main />
+                  <MainPage />
                 </Layout>
               }
             />
@@ -44,12 +45,12 @@ function App() {
                 </Layout>
               }
             />
-            <Route path="/store/:storeId" element={<StoreDetail />} />
+            <Route path="/store/:storeId" element={<StoreDetailPage />} />
             <Route
               path="/auth"
               element={
                 <Layout>
-                  <Kakao />
+                  <KakaoLoginPage />
                 </Layout>
               }
             />
@@ -57,7 +58,7 @@ function App() {
               path="/map"
               element={
                 <Layout>
-                  <Map />
+                  <MapPage />
                 </Layout>
               }
             />
@@ -65,12 +66,12 @@ function App() {
               path="/shop"
               element={
                 <Layout>
-                  <Shop />
+                  <ShopPage />
                 </Layout>
               }
             />
-            <Route path="/community" element={<Community />} />
-            <Route path="/post/:postId" element={<PostDetail />} />
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/post/:postId" element={<PostDetailPage />} />
             <Route
               path="/mypage"
               element={
@@ -87,7 +88,7 @@ function App() {
                 </Layout>
               }
             />
-            <Route path="/*" element={<NotFound />} />
+            <Route path="/*" element={<NotFoundPage />} />
           </Routes>
         </Router>
       </>
