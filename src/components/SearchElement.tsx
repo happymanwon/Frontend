@@ -1,5 +1,7 @@
-import React from "react";
 import styled from "styled-components";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Category from "@/components/Category";
@@ -7,6 +9,23 @@ import bigLogoImg from "@/assets/images/big-logo.svg";
 import subtitleImg from "@/assets/images/subtitle.svg";
 
 const SearchElement = () => {
+  const navigate = useNavigate();
+
+  const [search, setSearch] = useState("");
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+  const handleSearch = () => {
+    navigate(`/search?keyword=${encodeURIComponent(search)}`);
+  };
+
   return (
     <SearchPage>
       <SearchMain>
@@ -15,8 +34,14 @@ const SearchElement = () => {
           <img className="subtitle" src={subtitleImg} alt="소개문구" />
         </LogoWrapper>
         <InputContainer>
-          <input type="text" />
-          <IconContainer>
+          <input
+            type="text"
+            placeholder="검색"
+            value={search}
+            onChange={handleInputChange}
+            onKeyUp={handleKeyPress}
+          />
+          <IconContainer onClick={handleSearch}>
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </IconContainer>
         </InputContainer>
@@ -34,6 +59,7 @@ const SearchPage = styled.div`
   width: 32rem;
   left: calc(50vw - 32rem);
   display: none;
+  font-family: NotoSansWOFF, sans-serif, Arial;
 
   @media (min-width: 1024px) {
     margin-left: 2rem;
@@ -106,8 +132,10 @@ const IconContainer = styled.div`
 `;
 
 const CategoryWrapper = styled.div`
-  /* display: flex;
-  justify-content: center; */ //가운데정렬이 안되는 중...
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 370px;
   button {
     height: 28px;
     padding: 0 20px;

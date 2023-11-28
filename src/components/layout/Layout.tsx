@@ -21,6 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {children}
         {location.pathname === "/login" ||
         location.pathname === "/post" ||
+        location.pathname === "/search" ||
         location.pathname.includes("/category") ? null : (
           <Nav />
         )}

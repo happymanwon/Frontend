@@ -1,9 +1,29 @@
 import Geolocation from "@/components/Geolocation";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const MainHeader = () => {
+  const navigate = useNavigate();
+
+  const [search, setSearch] = useState(""); //한글자씩 반영되는 부분을 보완하는 상태값
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+  const handleSearch = () => {
+    navigate(`/search?keyword=${encodeURIComponent(search)}`);
+  };
+
   return (
     <MainHeaderContainer>
       <DistrictWrapper>
@@ -13,8 +33,11 @@ const MainHeader = () => {
         <input
           type="text"
           placeholder="단돈 만원대로 이용 가능한 착한 가게를 검색해 보세요!"
+          value={search}
+          onChange={handleInputChange}
+          onKeyUp={handleKeyPress}
         />
-        <IconContainer>
+        <IconContainer onClick={handleSearch}>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </IconContainer>
       </InputContainer>
