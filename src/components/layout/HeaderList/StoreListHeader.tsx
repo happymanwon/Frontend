@@ -9,7 +9,7 @@ const StoreListHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isCategoryPage = location.pathname === "/category";
+  const isCategoryPage = location.pathname.includes("/category");
 
   return (
     <StoreListHeaderContainer>
