@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 
 import MainHeader from "./HeaderList/MainHeader";
-import CategoryHeader from "./HeaderList/CategoryHeader";
+import StoreListHeader from "./HeaderList/StoreListHeader";
 import MapHeader from "./HeaderList/MapHeader";
 import MypageHeader from "./HeaderList/MypageHeader";
 
@@ -16,8 +16,8 @@ const Header: React.FC = () => {
   if (location === "/") {
     component = <MainHeader />;
   }
-  if (location.includes("/category")) {
-    component = <CategoryHeader />;
+  if (location.includes("/category") || location.includes("/search")) {
+    component = <StoreListHeader />;
   }
   if (location.includes("/map")) {
     component = <MapHeader />;
