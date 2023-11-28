@@ -3,27 +3,32 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import styled from "styled-components";
 import Category from "@/components/Category";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const CategoryHeader = () => {
+const StoreListHeader = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isCategoryPage = location.pathname === "/category";
 
   return (
-    <CategoryHeaderContainer>
-      <CategoryHeaderWrapper>
+    <StoreListHeaderContainer>
+      <StoreListHeaderWrapper>
         <div className="left" onClick={() => navigate("/")}>
           <FontAwesomeIcon icon={faArrowLeft} />
         </div>
         <h2>만원의 행복</h2>
-      </CategoryHeaderWrapper>
-      <CategoryWrapper>
-        <Category />
-      </CategoryWrapper>
-    </CategoryHeaderContainer>
+      </StoreListHeaderWrapper>
+      {isCategoryPage && (
+        <CategoryWrapper>
+          <Category />
+        </CategoryWrapper>
+      )}
+    </StoreListHeaderContainer>
   );
 };
 
-const CategoryHeaderContainer = styled.div`
+const StoreListHeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -37,7 +42,7 @@ const CategoryHeaderContainer = styled.div`
   }
 `;
 
-const CategoryHeaderWrapper = styled.div`
+const StoreListHeaderWrapper = styled.div`
   margin-top: 20px;
   display: flex;
 
@@ -71,4 +76,4 @@ const CategoryWrapper = styled.div`
   }
 `;
 
-export default CategoryHeader;
+export default StoreListHeader;
