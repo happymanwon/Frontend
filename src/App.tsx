@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import MainPage from "@/pages/MainPage";
 import CategoryPage from "@pages/CategoryPage";
+import SearchPage from "@/pages/SearchPage";
 import StoreDetailPage from "@/pages/StoreDetailPage";
 import PostDetailPage from "@/pages/PostDetailPage";
 import KakaoLoginPage from "@/pages/KakaoLoginPage";
@@ -42,6 +43,14 @@ function App() {
               element={
                 <Layout>
                   <CategoryPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <Layout>
+                  <SearchPage />
                 </Layout>
               }
             />
