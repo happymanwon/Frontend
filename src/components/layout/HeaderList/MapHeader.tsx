@@ -20,7 +20,10 @@ const MapHeader: React.FC = () => {
 
   // 외부 클릭을 감지하여 드롭다운을 닫는 함수
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setIsActive(false);
     }
   };
@@ -47,24 +50,41 @@ const MapHeader: React.FC = () => {
         <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate("/")} />
         <H2>{isMap ? "짠지도" : "짠목록"}</H2>
         <ToggleDiv>
-          <ToggleSpan onClick={handleToggleClick} selected={isMap} position="left">
+          <ToggleSpan
+            onClick={handleToggleClick}
+            selected={isMap}
+            position="left"
+          >
             지도
           </ToggleSpan>
-          <ToggleSpan onClick={handleToggleClick} selected={!isMap} position="right">
+          <ToggleSpan
+            onClick={handleToggleClick}
+            selected={!isMap}
+            position="right"
+          >
             목록
           </ToggleSpan>
         </ToggleDiv>
       </MapHeaderSection>
-      <MapHeaderSortSection ref={dropdownRef} style={{ visibility: isMap ? "hidden" : "visible" }}>
+      <MapHeaderSortSection
+        ref={dropdownRef}
+        style={{ visibility: isMap ? "hidden" : "visible" }}
+      >
         <FilterButton>가게 전체</FilterButton>
         <FilterSpan onClick={handleSortDropButton}>{sortState}</FilterSpan>
         {isActive && (
           <ListUl>
-            <ListLi isActive={sortState === "좋아요순"} onClick={() => setSortState("좋아요순")}>
+            <ListLi
+              isActive={sortState === "좋아요순"}
+              onClick={() => setSortState("좋아요순")}
+            >
               {sortState === "좋아요순" ? <ActiveCircle></ActiveCircle> : null}
               <span>좋아요순</span>
             </ListLi>
-            <ListLi isActive={sortState === "평점순"} onClick={() => setSortState("평점순")}>
+            <ListLi
+              isActive={sortState === "평점순"}
+              onClick={() => setSortState("평점순")}
+            >
               {sortState === "평점순" ? <ActiveCircle></ActiveCircle> : null}
               <span>평점순</span>
             </ListLi>
@@ -131,7 +151,12 @@ const ToggleSpan = styled.span<ToggleSpanProps>`
   font-size: 12px;
   background-color: ${(props) => (props.selected ? "#DADADA" : "transparent")};
   color: ${(props) => (props.selected ? "#4E5867" : "#DADADA")};
-  border-radius: ${(props) => (props.selected && props.position === "left" ? "6px 0 0 6px" : props.selected && props.position === "right" ? "0 6px 6px 0" : "0")};
+  border-radius: ${(props) =>
+    props.selected && props.position === "left"
+      ? "6px 0 0 6px"
+      : props.selected && props.position === "right"
+      ? "0 6px 6px 0"
+      : "0"};
   cursor: pointer;
 `;
 
