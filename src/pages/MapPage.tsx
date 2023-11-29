@@ -1,43 +1,52 @@
-import { useEffect } from "react";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+
 import Card from "@/components/map/Card";
+import Map from "@/components/map/Map";
+
 import { useMapToggleStore } from "@stores/mapToggle";
-import { styled } from "styled-components";
 import useRegionStore from "@/stores/location";
 
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    kakao: any;
-  }
-}
+import { StoreDataType } from "@/types/map/storeDataType";
+
+import { styled } from "styled-components";
 
 const MapPage = () => {
-  useEffect(() => {
-    if (isMap) {
-      const mapContainer = document.getElementById("map");
-      const mapOptions = {
-        center: new window.kakao.maps.LatLng(37.4996992, 126.5565696),
-        level: 4,
-      };
-      new window.kakao.maps.Map(mapContainer, mapOptions);
-      // 마커 필요시 코드 추가 필요
-    }
-  }, [isMap]);
+  const { isMap } = useMapToggleStore();
+  const { districtId, district } = useRegionStore();
+
+  const getStoreAPI = async () => {
+    const { data } = await axios(`/api/shops`);
+    const filterData = data.filter((store: StoreDataType) => {
+      if (store.address.includes(district[districtId])) {
+        return store;
+      }
+    });
+    return filterData;
+  };
+
+  const {
+    isLoading,
+    error,
+    data: storeData,
+  } = useQuery({
+    queryKey: ["storeData", districtId],
+    queryFn: () => getStoreAPI(),
+  });
+
+  if (isLoading) return null;
+  if (error) return <div>{error.message}</div>;
 
   return (
-    <>
+    <MapContainer>
       {isMap ? (
-        <MapContainer id="map"></MapContainer>
+        <Map isMap={isMap} storeData={storeData} />
       ) : (
         <CardContainer>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          <Card storeData={storeData} />
         </CardContainer>
       )}
-    </>
+    </MapContainer>
   );
 };
 
@@ -46,7 +55,7 @@ const MapContainer = styled.main`
   height: calc(100vh - 6.125rem - 4.5rem);
 `;
 
-const CardContainer = styled.main`
+const CardContainer = styled.div`
   height: calc(100vh - 6.125rem - 4.5rem);
   padding: 0 1.75rem;
   overflow: auto;
