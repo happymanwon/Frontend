@@ -1,15 +1,26 @@
 import React from "react";
+import { StoreDataType } from "@/types/map/storeDataType";
 import { styled } from "styled-components";
 
-const Card: React.FC = () => {
+interface CardPropsType {
+  storeData: StoreDataType[];
+}
+
+const Card: React.FC<CardPropsType> = ({ storeData }) => {
   return (
-    <CardContainer>
-      <img src="https://goodprice.go.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000033506&fileSn=1" alt="" />
-      <CardInfo>
-        <h3>엄마네감자탕</h3>
-        <p>좋아요 25개</p>
-      </CardInfo>
-    </CardContainer>
+    <>
+      {storeData?.map((store: StoreDataType) => {
+        return (
+          <CardContainer>
+            <img src={store.imageUrl} alt={store.name} loading="lazy" />
+            <CardInfo>
+              <h3>{store.name}</h3>
+              <p>좋아요 25개</p>
+            </CardInfo>
+          </CardContainer>
+        );
+      })}
+    </>
   );
 };
 
@@ -17,7 +28,7 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  width: 23.125rem;
+  width: 23rem;
   height: 14.375rem;
   border-radius: 0.75rem;
   background: #fff;
