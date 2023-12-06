@@ -7,7 +7,7 @@ import StoreDetailPage from "@/pages/StoreDetailPage";
 import PostDetailPage from "@/pages/PostDetailPage";
 import KakaoLoginPage from "@/pages/KakaoLoginPage";
 import MapPage from "@/pages/MapPage";
-import ShopPage from "@/pages/ShopPage";
+import ZzanPage from "@/pages/ZzanPage";
 import CommunityPage from "@/pages/CommunityPage";
 import LoginPage from "@/pages/LoginPage";
 import Mypage from "@/pages/Mypage";
@@ -72,15 +72,29 @@ function App() {
               }
             />
             <Route
-              path="/shop"
+              path="/zzan"
               element={
                 <Layout>
-                  <ShopPage />
+                  <ZzanPage />
                 </Layout>
               }
             />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/post/:postId" element={<PostDetailPage />} />
+            <Route
+              path="/community"
+              element={
+                <Layout>
+                  <CommunityPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/post/:postId"
+              element={
+                <Layout>
+                  <PostDetailPage />
+                </Layout>
+              }
+            />
             <Route
               path="/mypage"
               element={
