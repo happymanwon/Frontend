@@ -8,12 +8,19 @@ import { StoreData } from "store-datas";
 import useRegionStore from "../stores/location";
 import useCategoryStore from "../stores/categories";
 
+import korImg from "@/assets/images/h-kor.svg";
+import cnImg from "@/assets/images/h-cn.svg";
+import jpImg from "@/assets/images/h-jp.svg";
+import etcfoodImg from "@/assets/images/h-etcfood.svg";
+import hairImg from "@/assets/images/h-hair.svg";
+import laundryImg from "@/assets/images/h-laundry.svg";
+import etcImg from "@/assets/images/h-etc.svg";
+
 const CategoryPage = (): JSX.Element => {
   const { districtId, district } = useRegionStore();
   const districtName = district[districtId];
 
-  const { categories, categoryId } = useCategoryStore();
-  const categoryName = categories[categoryId];
+  const { categoryId } = useCategoryStore();
 
   const [categoryData, setCategoryData] = useState<StoreData[] | null>(null);
 
@@ -37,7 +44,7 @@ const CategoryPage = (): JSX.Element => {
 
   return (
     <CategoryContainer>
-      <CategoryDesc>{categoryName}</CategoryDesc>
+      <CategoryDesc categoryId={categoryId} />
       <DistrictWrapper>
         <Geolocation />
       </DistrictWrapper>
@@ -64,14 +71,18 @@ const CategoryPage = (): JSX.Element => {
 
 const CategoryContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 6.125rem);
+  height: calc(100vh - 6.125rem - 4.5rem);
   overflow: scroll;
   font-family: NotoSansWOFF, sans-serif, Arial;
+  p {
+    margin: 20px 0 0 20px;
+    font-weight: 400;
+    font-size: 14px;
+  }
 `;
 
 const CategoryDesc = styled.div`
   margin-top: 20px;
-  background-color: ${({ theme }) => theme.colors.lightGrey};
   width: 100%;
   height: 7rem;
   display: flex;
@@ -79,10 +90,30 @@ const CategoryDesc = styled.div`
   align-items: center;
   font-size: 24px;
   font-weight: 700;
+  background-image: ${(props) => {
+    switch (props.categoryId) {
+      case 1:
+        return `url(${korImg})`;
+      case 2:
+        return `url(${cnImg})`;
+      case 3:
+        return `url(${jpImg})`;
+      case 4:
+        return `url(${etcfoodImg})`;
+      case 5:
+        return `url(${hairImg})`;
+      case 6:
+        return `url(${laundryImg})`;
+      case 7:
+        return `url(${etcImg})`;
+      default:
+        return "none";
+    }
+  }};
 `;
 
 const DistrictWrapper = styled.div`
-  margin: 10px 0px;
+  margin: 10px 0 10px 20px;
 `;
 
 const ListWrapper = styled.div`
@@ -98,13 +129,14 @@ const ListLink = styled(Link)`
   width: 11.3rem;
   height: 13rem;
   img {
-    width: 11.3rem;
-    height: 11.3rem;
+    width: 11.3125rem;
+    height: 11.3125rem;
     border-radius: 10px;
   }
   h1 {
     margin-top: 5px;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 500;
   }
 `;
 

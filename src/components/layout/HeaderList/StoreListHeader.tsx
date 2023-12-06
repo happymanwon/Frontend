@@ -43,17 +43,18 @@ const StoreListHeaderContainer = styled.div`
 `;
 
 const StoreListHeaderWrapper = styled.div`
-  margin-top: 20px;
+  margin-top: 35px;
   display: flex;
 
   .left {
     position: absolute;
     left: 0;
+    margin-left: 15px;
   }
 
   h2 {
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
   }
 `;
@@ -61,18 +62,20 @@ const StoreListHeaderWrapper = styled.div`
 const CategoryWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-top: 20px;
+  padding-top: 4px;
 
   .selected {
-    border-bottom: 3px solid ${({ theme }) => theme.colors.lightGreen};
+    border-bottom: 3px solid ${({ theme }) => theme.colors.mainColor2};
+    font-weight: 700;
   }
 
   button {
     border: none;
     background-color: ${({ theme }) => theme.colors.white};
-    font-weight: 700;
-    font-size: 14px;
-    padding: 15px 8px 0 8px;
+    font-size: 12px;
+    margin: 19px 7px 0 7px;
+    padding-bottom: 5px;
+    cursor: pointer;
   }
 `;
 

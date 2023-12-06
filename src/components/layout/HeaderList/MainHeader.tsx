@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const MainHeader = () => {
   const navigate = useNavigate();
 
-  const [search, setSearch] = useState(""); //한글자씩 반영되는 부분을 보완하는 상태값
+  const [search, setSearch] = useState("");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -46,7 +46,7 @@ const MainHeader = () => {
 };
 
 const MainHeaderContainer = styled.div`
-  background: ${({ theme }) => theme.colors.greyLine};
+  background: ${({ theme }) => theme.colors.mainColor2};
   padding: 13px 0 17px 30px;
   height: 68px;
 `;
@@ -54,18 +54,18 @@ const MainHeaderContainer = styled.div`
 const DistrictWrapper = styled.div`
   select {
     color: ${({ theme }) => theme.colors.white};
-    background: ${({ theme }) => theme.colors.greyLine};
+    background: ${({ theme }) => theme.colors.mainColor2};
   }
 `;
 
 const InputContainer = styled.div`
   position: relative;
-  width: 360px;
-  height: 44px;
+  width: 22.5rem;
+  height: 2.75rem;
   border-radius: 6px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   border: none;
-  margin-top: 7px;
+  margin-top: 2px;
 
   & input {
     position: absolute;
@@ -73,7 +73,7 @@ const InputContainer = styled.div`
     height: 28px;
     font-size: 14px;
     padding: 8px 38px 8px 8px;
-    caret-color: #000;
+    caret-color: ${({ theme }) => theme.colors.black};
     background: transparent;
     border: none;
   }
@@ -89,6 +89,7 @@ const IconContainer = styled.div`
   align-items: center;
   font-size: 1.2rem;
   cursor: pointer;
+  color: ${({ theme }) => theme.colors.mainColor};
 `;
 
 export default MainHeader;
