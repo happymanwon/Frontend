@@ -19,12 +19,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Header />
         )}
         {children}
-        {location.pathname === "/login" ||
-        location.pathname === "/post" ||
-        location.pathname === "/search" ||
-        location.pathname.includes("/category") ? null : (
-          <Nav />
-        )}
+        {location.pathname === "/login" ? null : <Nav />}
       </LayoutContainer>
     </LayoutPage>
   );
