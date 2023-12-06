@@ -14,9 +14,8 @@ const useCategoryStore = create<CategoryState>((set) => ({
     3: "일식",
     4: "기타 외식업",
     5: "미용",
-    6: "기타",
-    7: "세탁",
-    8: "숙박",
+    6: "세탁",
+    7: "기타",
   },
   setCategories: (updatedCategory: { [key: number]: string }) =>
     set((state) => ({
