@@ -57,7 +57,7 @@ const SearchPage = (): JSX.Element => {
 
 const SearchContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 6.125rem);
+  height: calc(100vh - 6.125rem - 4.5rem);
   overflow: scroll;
   font-family: NotoSansWOFF, sans-serif, Arial;
 `;
