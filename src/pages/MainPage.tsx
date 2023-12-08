@@ -38,8 +38,11 @@ const MainContainer = styled.div`
   max-width: 26.5rem;
   height: calc(100vh - 6.125rem - 4.5rem);
   margin: auto;
-  overflow: scroll;
-  font-family: NotoSansWOFF, sans-serif, Arial;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  font-family: NotoSansRegularWOFF, sans-serif, Arial;
 `;
 
 const MainView = styled.div`

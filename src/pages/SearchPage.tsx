@@ -58,8 +58,11 @@ const SearchPage = (): JSX.Element => {
 const SearchContainer = styled.div`
   width: 100%;
   height: calc(100vh - 6.125rem - 4.5rem);
-  overflow: scroll;
-  font-family: NotoSansWOFF, sans-serif, Arial;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  font-family: NotoSansRegularWOFF, sans-serif, Arial;
 `;
 
 const KeywordDesc = styled.div`

@@ -72,8 +72,11 @@ const CategoryPage = (): JSX.Element => {
 const CategoryContainer = styled.div`
   width: 100%;
   height: calc(100vh - 6.125rem - 4.5rem);
-  overflow: scroll;
-  font-family: NotoSansWOFF, sans-serif, Arial;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  font-family: NotoSansRegularWOFF, sans-serif, Arial;
   p {
     margin: 20px 0 0 20px;
     font-weight: 400;
