@@ -8,9 +8,10 @@ declare global {
 
 interface LocationInfoProps {
   address: string;
+  way: string;
 }
 
-const LocationInfo: React.FC<LocationInfoProps> = ({ address }) => {
+const LocationInfo: React.FC<LocationInfoProps> = ({ address, way }) => {
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -59,7 +60,7 @@ const LocationInfo: React.FC<LocationInfoProps> = ({ address }) => {
     <div>
       <h3>위치정보</h3>
       <p>{address}</p>
-      <p>sh_way(찾아가는길) sh_addr</p>
+      <p>{way}</p>
       <div
         ref={mapRef}
         id="map"
