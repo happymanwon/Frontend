@@ -7,6 +7,7 @@ import StoreDetailPage from "@/pages/StoreDetailPage";
 import PostDetailPage from "@/pages/PostDetailPage";
 import KakaoLoginPage from "@/pages/KakaoLoginPage";
 import MapPage from "@/pages/MapPage";
+import MapDetailPage from "@/pages/MapDetailPage";
 import ShopPage from "@/pages/ShopPage";
 import CommunityPage from "@/pages/CommunityPage";
 import LoginPage from "@/pages/LoginPage";
@@ -68,6 +69,14 @@ function App() {
               element={
                 <Layout>
                   <MapPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/map/detail"
+              element={
+                <Layout>
+                  <MapDetailPage />
                 </Layout>
               }
             />
