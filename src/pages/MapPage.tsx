@@ -1,17 +1,13 @@
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-import Card from "@/components/map/Card";
 import Map from "@/components/map/Map";
-import DraggableCardComponent from "@/components/map/DraggableCardComponent";
-
-import { useMapToggleStore } from "@stores/mapToggle";
 import useRegionStore from "@/stores/location";
-
-import { ResultDataType } from "@/types/map/storeDataType";
+import filterStoresByDistance from "@/utils/filterStoresByDistance";
+import { ResultDataType, StoreDataType } from "@/types/map/storeDataType";
 
 import { styled } from "styled-components";
-import { useEffect, useState } from "react";
 
 interface PositionError {
   message: string;
@@ -22,23 +18,17 @@ interface CurrentLocation {
   lng: number;
 }
 
-const MapPage = () => {
-  const { isMap } = useMapToggleStore();
-  const { districtId, district } = useRegionStore();
-  const [currentLocation, setCurrentLocation] =
-    useState<CurrentLocation | null>(null);
-  const [locationError, setLocationError] = useState<PositionError | null>(
-    null
-  );
+const MapPage: React.FC = () => {
+  const { districtId } = useRegionStore();
+  const [currentLocation, setCurrentLocation] = useState<CurrentLocation | null>(null);
+  const [currentViewLocation, setCurrentViewLocation] = useState<CurrentLocation | null>(null);
+  const [locationError, setLocationError] = useState<PositionError | null>(null);
+  const [filteredStores, setFilteredStores] = useState<StoreDataType[] | null>(null);
 
+  // api 요청 함수
   const getStoreAPI = async () => {
-    const { data } = await axios.get<ResultDataType>(
-      `/api/shops?localCode=${districtId}`
-    );
-    const filteredData = data.data.filter((shop) =>
-      shop.roadAddress.includes(district[districtId])
-    );
-    return filteredData;
+    const { data } = await axios.get<ResultDataType>(`/api/shops`);
+    return data;
   };
 
   // api 요청
@@ -49,6 +39,7 @@ const MapPage = () => {
   } = useQuery({
     queryKey: ["storeData", districtId],
     queryFn: getStoreAPI,
+    select: (data) => data.data,
   });
 
   // 현재 위치 찾기
@@ -56,7 +47,18 @@ const MapPage = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
+        /**
+         *lat: 37.5666612,
+          lng: 126.9783785,
+         */
+
+        // 현재 위치 저장
         setCurrentLocation({
+          lat: latitude,
+          lng: longitude,
+        });
+        // 현재 보고 있는 위치
+        setCurrentViewLocation({
           lat: latitude,
           lng: longitude,
         });
@@ -71,44 +73,39 @@ const MapPage = () => {
     findCurrentLocation();
   }, []);
 
-  if (isStoreDataLoading || currentLocation === null) return null;
+  useEffect(() => {
+    if (currentViewLocation && storeData) {
+      const radius = 2000; // 원하는 반경(m)
+      const filteredList = filterStoresByDistance(storeData, currentViewLocation, radius);
+      setFilteredStores(filteredList);
+    }
+  }, [currentViewLocation, storeData]);
+
+  if (isStoreDataLoading || currentLocation === null || filteredStores === null || currentViewLocation === null)
+    return null;
   if (storeDataError || locationError) {
     let errorMessage = "";
 
-    if (storeDataError && "message" in storeDataError)
-      errorMessage = storeDataError.message;
-    if (locationError && "message" in locationError)
-      errorMessage = locationError.message;
+    if (storeDataError && "message" in storeDataError) errorMessage = storeDataError.message;
+    if (locationError && "message" in locationError) errorMessage = locationError.message;
 
     return <div>{errorMessage}</div>;
   }
+
+  if (currentLocation === null || currentViewLocation === null) return null;
+
   return (
-    <MapContainer>
-      {isMap ? (
-        <>
-          <Map
-            isMap={isMap}
-            storeData={storeData!}
-            currentLocation={currentLocation}
-            setCurrentLocation={setCurrentLocation}
-          />
-          <DraggableCardComponent storeData={storeData!} />
-        </>
-      ) : (
-        <CardMain>
-          <Card storeData={storeData!} />
-        </CardMain>
-      )}
+    <MapContainer id="map-bottom-sheet-container">
+      <Map
+        storeData={filteredStores!}
+        // storeData={storeData!}
+        currentLocation={currentLocation}
+        setCurrentLocation={setCurrentLocation}
+        currentViewLocation={currentViewLocation}
+        setCurrentViewLocation={setCurrentViewLocation}
+        isDetail={false}
+      />
     </MapContainer>
-    // <MapContainer>
-    //   <Map
-    //     isMap={isMap}
-    //     storeData={storeData!}
-    //     currentLocation={currentLocation}
-    //     setCurrentLocation={setCurrentLocation}
-    //   />
-    //   <DraggableContainer />
-    // </MapContainer>
   );
 };
 
@@ -117,18 +114,6 @@ const MapContainer = styled.main`
   height: calc(100vh - 6.125rem - 4.5rem);
   position: relative;
   overflow: hidden;
-`;
-
-const CardMain = styled.div`
-  height: calc(100vh - 6.125rem - 4.5rem);
-  padding: 0 1.75rem;
-  overflow: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 export default MapPage;
