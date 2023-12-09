@@ -11,7 +11,7 @@ const Card: React.FC<CardPropsType> = ({ storeData }) => {
     <>
       {storeData?.map((store: StoreDataType) => {
         return (
-          <CardContainer>
+          <CardContainer key={store.id}>
             <img src={store.imageUrl} alt={store.name} loading="lazy" />
             <CardInfo>
               <h3>{store.name}</h3>
