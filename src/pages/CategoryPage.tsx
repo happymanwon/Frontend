@@ -4,7 +4,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 import Geolocation from "@/components/Geolocation";
-import { StoreData } from "store-datas";
+import { StoreData } from "@/types/category/storeData";
 import useRegionStore from "../stores/location";
 import useCategoryStore from "../stores/categories";
 
@@ -15,6 +15,7 @@ import etcfoodImg from "@/assets/images/h-etcfood.svg";
 import hairImg from "@/assets/images/h-hair.svg";
 import laundryImg from "@/assets/images/h-laundry.svg";
 import etcImg from "@/assets/images/h-etc.svg";
+import defaultImg from "@/assets/images/default-store-img.svg";
 
 const CategoryPage = (): JSX.Element => {
   const { districtId, district } = useRegionStore();
@@ -27,10 +28,9 @@ const CategoryPage = (): JSX.Element => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get(`/api/stores/${categoryId}`);     // 백엔드랑 통신할 때
-        const response = await axios.get(`/data/stores/${categoryId}.json`); // json 파일 사용
-        const filterDataByDistrict = response.data.filter((data) =>
-          data.sh_addr.includes(districtName)
+        const response = await axios.get(`/api/shops?categoryId=${categoryId}`); // json 파일 사용
+        const filterDataByDistrict = response.data.data.filter((data) =>
+          data.address.includes(districtName)
         );
         setCategoryData(filterDataByDistrict);
         console.log(filterDataByDistrict);
@@ -53,14 +53,14 @@ const CategoryPage = (): JSX.Element => {
       ) : (
         <ListWrapper>
           {categoryData.map((data, index) => (
-            <ListLink key={index} to={`/store/${Number(data.sh_id)}`}>
-              {/* 사진 데이터 있을 때 
-              <img src={`${data.sh_photo}`} alt={`이미지 ${index}`} /> */}
-              <img
-                src="https://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=20220718174745.jpg"
-                alt={`이미지 ${index}`}
-              />
-              <h1>{data.sh_name}</h1>
+            <ListLink key={index} to={`/store/${data.id}`}>
+              {data.imageUrl ===
+              "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
+                <img src={defaultImg} alt={`이미지 ${index}`} />
+              ) : (
+                <img src={data.imageUrl} alt={`이미지 ${index}`} />
+              )}
+              <h1>{data.name}</h1>
             </ListLink>
           ))}
         </ListWrapper>
@@ -84,7 +84,7 @@ const CategoryContainer = styled.div`
   }
 `;
 
-const CategoryDesc = styled.div`
+const CategoryDesc = styled.div<{ categoryId: number }>`
   margin-top: 20px;
   width: 100%;
   height: 7rem;

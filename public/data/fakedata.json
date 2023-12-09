@@ -1,72 +1,121 @@
 [
   {
     "id": 0,
-    "tag": "기술",
+    "tag": ["기술", "개념"],
     "title": "머신러닝 기초",
+    "store": "파스타앤피자",
     "content": "머신러닝의 기본 개념과 원리에 대한 소개입니다.",
+    "profilepic": "/src/assets/images/profile-sejong.png",
+    "writer": "janny",
     "date": "2023-11-17",
     "views": 1200,
     "likes": 350,
-    "comments": 28
+    "comments": [
+      {
+        "profilepic": "/src/assets/images/profile-shin.png",
+        "comment": "가"
+      },
+      {
+        "profilepic": "/src/assets/images/profile-shin.png",
+        "comment": "나"
+      }
+    ],
+    "image": ["https://via.placeholder.com/500/FF5733/FFFFFF/?text=Image+1"]
   },
   {
     "id": 1,
-    "tag": "여행",
+    "tag": ["여행"],
     "title": "유럽 여행 팁",
+    "store": "파스타앤피자",
     "content": "유럽 여행을 준비하는 데 도움이 되는 팁을 공유합니다.",
+    "profilepic": "https://via.placeholder.com/150/FFC300/FFFFFF/?text=Profile+2",
+    "writer": "jason",
     "date": "2023-11-16",
     "views": 980,
     "likes": 240,
-    "comments": 42
+    "comments": [
+      {
+        "profilepic": "/src/assets/images/profile-shin.png",
+        "comment": "가"
+      },
+      {
+        "profilepic": "/src/assets/images/profile-shin.png",
+        "comment": "나"
+      }
+    ],
+    "image": ["https://via.placeholder.com/500/FFC300/FFFFFF/?text=Image+2"]
   },
   {
     "id": 2,
-    "tag": "요리",
+    "tag": ["요리"],
     "title": "이탈리아 파스타 레시피",
+    "store": "파스타앤피자",
     "content": "맛있는 이탈리아 파스타를 만드는 법을 알려드립니다.",
+    "profilepic": "https://via.placeholder.com/150/36D1DC/FFFFFF/?text=Profile+3",
+    "writer": "janny1",
     "date": "2023-11-15",
     "views": 1500,
     "likes": 420,
-    "comments": 63
+    "comments": ["가", "나", "다"],
+    "image": [
+      "https://via.placeholder.com/500/36D1DC/FFFFFF/?text=Image+3",
+      "https://via.placeholder.com/500/33FF57/FFFFFF/?text=Image+4"
+    ]
   },
   {
     "id": 3,
-    "tag": "패션",
+    "tag": ["패션"],
     "title": "가을 패션 트렌드",
+    "store": "파스타앤피자",
     "content": "올해 가을에 대세인 패션 아이템과 스타일링 팁을 소개합니다.",
+    "profilepic": "https://via.placeholder.com/150/33FF57/FFFFFF/?text=Profile+4",
+    "writer": "janny3",
     "date": "2023-11-14",
     "views": 800,
     "likes": 180,
-    "comments": 20
+    "comments": ["가", "나", "다라", "마바"],
+    "image": ["https://via.placeholder.com/500/33B5FF/FFFFFF/?text=Image+6"]
   },
   {
     "id": 4,
-    "tag": "운동",
+    "tag": ["운동"],
     "title": "홈 트레이닝 루틴",
+    "store": "파스타앤피자",
     "content": "집에서 할 수 있는 효과적인 운동 루틴을 소개합니다.",
+    "profilepic": "https://via.placeholder.com/150/5733FF/FFFFFF/?text=Profile+5",
+    "writer": "1janny",
     "date": "2023-11-13",
     "views": 1250,
     "likes": 300,
-    "comments": 50
+    "comments": ["가", "나"],
+    "image": ["https://via.placeholder.com/500/5733FF/FFFFFF/?text=Image+5"]
   },
   {
     "id": 5,
-    "tag": "영화",
+    "tag": ["영화"],
     "title": "오스카 작품 추천",
+    "store": "파스타앤피자",
     "content": "오스카 수상작과 높은 평점을 받은 영화 목록을 소개합니다.",
+    "profilepic": "https://via.placeholder.com/150/33B5FF/FFFFFF/?text=Profile+6",
+    "writer": "2janny",
     "date": "2023-11-12",
     "views": 1050,
     "likes": 280,
-    "comments": 35
+    "comments": ["가", "나"],
+    "image": ["https://via.placeholder.com/500/33B5FF/FFFFFF/?text=Image+6"]
   },
   {
     "id": 6,
-    "tag": "건강",
+    "tag": ["건강"],
     "title": "스트레스 관리 팁",
+    "store": "파스타앤피자",
     "content": "스트레스를 관리하고 마음의 평화를 찾는 방법에 대해 알려드립니다.",
+    "profilepic": "https://via.placeholder.com/150/FF33E9/FFFFFF/?text=Profile+7",
+    "writer": "jan4ny",
     "date": "2023-11-11",
     "views": 900,
     "likes": 200,
-    "comments": 25
+    "comments": ["가", "나"],
+    "image": ["https://via.placeholder.com/500/FF33E9/FFFFFF/?text=Image+7"]
   }
 ]

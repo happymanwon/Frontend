@@ -3,7 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
-import { StoreData } from "store-datas";
+import { StoreData } from "@/types/category/storeData";
+import defaultImg from "@/assets/images/default-store-img.svg";
 
 const SearchPage = (): JSX.Element => {
   const location = useLocation();
@@ -19,9 +20,9 @@ const SearchPage = (): JSX.Element => {
           return;
         }
         // const response = await axios.get(`/api/stores`);     // 백엔드랑 통신할 때
-        const response = await axios.get(`/data/stores.json`); // json 파일 사용
-        const filterDataByKeyword = response.data.filter((data) =>
-          data.sh_name.includes(searchKeyword)
+        const response = await axios.get("/api/shops"); // json 파일 사용
+        const filterDataByKeyword = response.data.data.filter((data) =>
+          data.name.includes(searchKeyword)
         );
         setSearchResult(filterDataByKeyword);
       } catch (error) {
@@ -40,12 +41,14 @@ const SearchPage = (): JSX.Element => {
         ) : (
           <ListWrapper>
             {searchResult.map((data, index) => (
-              <ListLink key={index} to={`/store/${Number(data.sh_id)}`}>
-                <img
-                  src="https://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=20220718174745.jpg"
-                  alt={`이미지 ${index}`}
-                />
-                <h1>{data.sh_name}</h1>
+              <ListLink key={index} to={`/store/${data.id}`}>
+                {data.imageUrl ===
+                "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
+                  <img src={defaultImg} alt={`이미지 ${index}`} />
+                ) : (
+                  <img src={data.imageUrl} alt={`이미지 ${index}`} />
+                )}
+                <h1>{data.name}</h1>
               </ListLink>
             ))}
           </ListWrapper>

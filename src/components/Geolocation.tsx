@@ -92,8 +92,7 @@ const DistrictContainer = styled.div`
   select {
     border: none;
     border-radius: 0;
-    font-size: 16px;
-    font-family: NotoSansRegularWOFF, sans-serif, Arial;
+    font-family: NotoSansLightWOFF, sans-serif, Arial;
   }
 `;
 
