@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 import MainHeader from "./HeaderList/MainHeader";
 import StoreListHeader from "./HeaderList/StoreListHeader";
@@ -10,6 +10,8 @@ import styled from "styled-components";
 
 const Header: React.FC = () => {
   const location = useLocation().pathname;
+  const [param] = useSearchParams();
+  const pageName = param.get("page") || null;
 
   let component = null;
 
@@ -22,7 +24,7 @@ const Header: React.FC = () => {
   if (location.includes("/map")) {
     component = <MapHeader />;
   }
-  if (location.includes("/mypage")) {
+  if (pageName !== "profile" && location.includes("/mypage")) {
     component = <MypageHeader />;
   }
 

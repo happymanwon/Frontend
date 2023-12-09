@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Nav from "@/components/layout/Nav";
 import styled from "styled-components";
@@ -10,14 +10,13 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
+  const [param] = useSearchParams();
+  const pageName = param.get("page") || null;
 
   return (
     <LayoutPage>
       <LayoutContainer>
-        {location.pathname === "/login" ||
-        location.pathname === "/post" ? null : (
-          <Header />
-        )}
+        {location.pathname === "/login" || location.pathname === "/post" || pageName === "profile" ? null : <Header />}
         {children}
         {location.pathname === "/login" ? null : <Nav />}
       </LayoutContainer>
