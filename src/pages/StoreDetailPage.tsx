@@ -2,36 +2,51 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
   faArrowUpFromBracket,
+  faX,
   faHeart as faHeartSolid,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import linkImg from "@/assets/images/link-share.svg";
+import kakaoImg from "@/assets/images/kakao-share.svg";
+import defaultImg from "@/assets/images/default-store.png";
 
-import { StoreData } from "store-datas";
-import useCategoryStore from "../stores/categories";
+import { Store } from "@/types/category/store";
 import useRegionStore from "../stores/location";
 import useLikeStore from "../stores/likes";
+import { ShareKakao } from "@/components/ShareKakao";
+import LocationInfo from "@/components/LocationInfo";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
-
 const StoreDetailPage = () => {
   const navigate = useNavigate();
-  const mapRef = useRef(null);
-  const { categoryId } = useCategoryStore();
   const { districtId, district } = useRegionStore();
   const districtName = district[districtId];
   const { liked, toggleLike } = useLikeStore();
 
   const { storeId } = useParams<{ storeId: string }>();
-  const [storeData, setStoreData] = useState<StoreData>(null);
+  const [storeData, setStoreData] = useState<Store>();
+  const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/api/shops/${Number(storeId)}`);
+        setStoreData(response.data.data[0]);
+        console.log(response.data.data[0]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [storeId]);
+
+  const handleShareClick = () => {
+    setBottomSheetVisible(true);
+  };
 
   const handleLike = () => {
     toggleLike();
@@ -59,66 +74,32 @@ const StoreDetailPage = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const response = await axios.get(`/api/stores/${categoryId}`);     // 백엔드랑 통신할 때
-        const response = await axios.get(`/data/stores/${categoryId}.json`); // json 파일 사용
-        const filterDataById = response.data.filter(
-          (data) => data.sh_id === storeId
-        );
-        setStoreData(filterDataById);
-        console.log(filterDataById);
-      } catch (error) {
-        console.error("Error fetching category data:", error);
-      }
-    };
-    fetchData();
+  function createDivsFromString(text) {
+    const lines = (text || "").split(/\r?\n/); // \r\n 또는 \n으로 문자열을 나눔
+    const divs = lines.map((line, index) => <div key={index}>{line}</div>); // 각 줄을 <div>로 변환
 
-    const searchAddress = (address: string) => {
-      const mapContainer = mapRef.current; // 지도를 표시할 div
+    return divs;
+  }
 
-      const mapOption = {
-        center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3, // 지도의 확대 레벨
-      };
-
-      // 지도를 생성합니다
-      const map = new window.kakao.maps.Map(mapContainer, mapOption);
-
-      // 주소-좌표 변환 객체를 생성합니다
-      const geocoder = new window.kakao.maps.services.Geocoder();
-
-      // 주소로 좌표를 검색합니다
-      geocoder.addressSearch(address, function (result, status) {
-        // 정상적으로 검색이 완료됐으면
-        if (status === window.kakao.maps.services.Status.OK) {
-          const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-
-          // 결과값으로 받은 위치를 마커로 표시합니다
-          const marker = new window.kakao.maps.Marker({
-            map: map,
-            position: coords,
-          });
-
-          // 인포윈도우로 장소에 대한 설명을 표시합니다
-          const infowindow = new window.kakao.maps.InfoWindow({
-            content:
-              '<div style="width:150px;text-align:center;padding:6px 0;">상점</div>',
-          });
-          infowindow.open(map, marker);
-
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          map.setCenter(coords);
-        }
-      });
-    };
-    searchAddress("서울특별시 중구 세종대로 110 서울특별시청"); // storeData.sh_addr 로 추후에 변경
-  }, [storeId, categoryId]);
-
-  // if (!storeData) {
-  //   return <p>Loading...</p>;
-  // }
+  const renderMenuInfo = () => {
+    if (storeData && storeData.menuList && storeData.menuList.length > 0) {
+      return storeData.menuList.map((menu, index) => (
+        <p key={index}>
+          <div className="price">
+            <div className="price-item">{menu.menuName}</div>
+            <div>{menu.menuPrice.toLocaleString()}원</div>
+          </div>
+        </p>
+      ));
+    } else {
+      return (
+        <div>
+          <p>현재 제공된 가격 정보가 없습니다.</p>
+          <p>자세한 내용은 업체로 전화 문의부탁드립니다.</p>
+        </div>
+      );
+    }
+  };
 
   return (
     <LayoutPage>
@@ -128,19 +109,19 @@ const StoreDetailPage = () => {
             <FontAwesomeIcon className="arrow" icon={faArrowLeft} />
           </div>
           <ImageWrapper>
-            {/* 사진 데이터 있을 때 
-              <img src={`${data.sh_photo}`} alt={`이미지 ${index}`} /> */}
-            <img
-              src="https://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=20220718174745.jpg"
-              alt="이미지"
-            />
+            {storeData?.imageUrl ===
+            "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
+              <img src={defaultImg} alt="상점사진" />
+            ) : (
+              <img src={storeData?.imageUrl} alt="상점사진" />
+            )}
           </ImageWrapper>
           <NameLikeWrapper>
-            <h2>상점이름sh_name</h2>
+            <h2>{storeData?.name}</h2>
             <div className="total-like">좋아요00개</div>
           </NameLikeWrapper>
           <div className="district-pride">
-            {districtName} | 주메뉴 또는 주력상품 sh_pride
+            {districtName} | {storeData?.menuList[0]?.menuName}
           </div>
         </StoreHeaderWrapper>
         <LikeShare>
@@ -151,44 +132,71 @@ const StoreDetailPage = () => {
             />
             {liked ? "좋아요 취소" : "좋아요"}
           </button>
-          <button className="share" onClick={handleShare}>
+          <button className="share" onClick={handleShareClick}>
             <FontAwesomeIcon icon={faArrowUpFromBracket} />
-            공유하기
+            공유
           </button>
         </LikeShare>
         <InfoWrapper>
           <StoreInfo>
             <h3>상점소개</h3>
-            <p>sh_info 영업시간, 휴무일, sh_phone전화번호</p>
+            <div className="infoContainer">
+              {createDivsFromString(storeData?.info)}
+            </div>
           </StoreInfo>
           <MenuInfo>
             <h3>메뉴소개</h3>
+            {renderMenuInfo()}
           </MenuInfo>
           <MapInfo>
-            <h3>위치정보</h3>
-            <p>sh_way(찾아가는길) sh_addr</p>
-            <div
-              ref={mapRef}
-              id="map"
-              style={{ width: "100%", height: "200px" }}
-            ></div>
+            <LocationInfo
+              address={`${storeData?.address})`}
+              way={`${storeData?.way}`}
+            />
           </MapInfo>
         </InfoWrapper>
       </LayoutContainer>
+      {bottomSheetVisible && (
+        <>
+          <Overlay />
+          <BottomSheet>
+            <div className="sheet-header">
+              <span>가게 공유</span>
+              <button onClick={() => setBottomSheetVisible(false)}>
+                <FontAwesomeIcon className="cancel" icon={faX} />
+              </button>
+            </div>
+            <div className="share-buttons">
+              <button onClick={handleShare}>
+                <img src={linkImg} />
+                <span>링크 복사하기</span>
+              </button>
+              <div className="underline"></div>
+              <button onClick={ShareKakao}>
+                <img src={kakaoImg} />
+                <span>카카오톡 공유하기</span>
+              </button>
+            </div>
+          </BottomSheet>
+        </>
+      )}
     </LayoutPage>
   );
 };
 
 const LayoutPage = styled.div`
   display: block;
-  background-color: ${({ theme }) => theme.colors.lightGrey};
+  background-color: ${({ theme }) => theme.colors.greyBackground};
   height: 100vh;
   position: relative;
   max-width: 26.5rem;
   margin: auto;
+  font-family: NotoSansRegularWOFF, sans-serif, Arial;
   width: 100%;
-  overflow: scroll;
-  font-family: NotoSansWOFF, sans-serif, Arial;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @media (min-width: 1024px) {
     left: 50vw;
@@ -206,9 +214,11 @@ const LayoutContainer = styled.div`
 const StoreHeaderWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   padding-bottom: 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.greyLine};
+  border-bottom: 0.5px solid ${({ theme }) => theme.colors.grey};
+  width: 100%;
   .left {
-    margin-left: 10px;
+    margin-top: 35px;
+    margin-left: 15px;
     position: absolute;
     left: 0;
     color: ${({ theme }) => theme.colors.white};
@@ -224,25 +234,26 @@ const StoreHeaderWrapper = styled.div`
 const ImageWrapper = styled.div`
   height: 15rem;
   img {
-    width: 26rem;
+    width: 100%;
     height: 100%;
     object-fit: cover;
   }
 `;
 
 const NameLikeWrapper = styled.div`
+  padding: 20px 0 0 12px;
   display: flex;
-  margin-top: 20px;
-  gap: 10rem;
+  align-items: center;
+  justify-content: space-between;
   h2 {
+    font-family: NotoSansMediumWOFF, sans-serif, Arial;
     font-size: 20px;
     font-weight: 700;
-    padding-left: 15px;
+    margin-bottom: 10px;
   }
-
   .total-like {
+    margin-right: 10px;
     font-size: 12px;
-    font-weight: 700;
   }
 `;
 
@@ -250,13 +261,14 @@ const LikeShare = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 8px 0;
   width: 100%;
   height: 3.125rem;
   background-color: ${({ theme }) => theme.colors.white};
   .like {
     border-right: 1px solid ${({ theme }) => theme.colors.greyLine};
     #liked {
-      color: ${({ theme }) => theme.colors.mediumGreen};
+      color: ${({ theme }) => theme.colors.mainColor};
     }
   }
   button {
@@ -272,34 +284,112 @@ const LikeShare = styled.div`
 
 const InfoWrapper = styled.div`
   width: 100%;
+  font-size: 12px;
+
   h3 {
-    font-size: 16px;
+    margin-bottom: 10px;
+    font-size: 15px;
     font-weight: 700;
+    font-family: NotoSansMediumWOFF, sans-serif, Arial;
   }
 `;
 
 const StoreInfo = styled.div`
   margin: 20px 0;
-  height: 8.75rem;
+  padding: 20px 0 20px 12px;
   background-color: ${({ theme }) => theme.colors.white};
-  padding: 10px 0 10px 10px;
 `;
 
 const MenuInfo = styled.div`
   margin: 20px 0;
   background-color: ${({ theme }) => theme.colors.white};
-  padding: 10px 0 10px 10px;
+  padding: 20px 0 20px 12px;
+  .price {
+    display: flex;
+  }
+  .price-item {
+    min-width: 50px;
+    font-weight: 700;
+    font-family: NotoSansMediumWOFF, sans-serif, Arial;
+  }
 `;
 
 const MapInfo = styled.div`
   margin: 20px 0;
   background-color: ${({ theme }) => theme.colors.white};
-  p,
+  p {
+    padding-left: 10px;
+    font-size: 12px;
+  }
   h3 {
-    padding: 10px 0 0 10px;
+    padding: 20px 0 0 12px;
+    font-size: 14px;
+    font-weight: 700;
   }
   #map {
     margin-top: 10px;
   }
 `;
+
+const slideUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const BottomSheet = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 26.5rem;
+  height: 14.25rem;
+  background-color: #fff;
+  animation: ${slideUp} 0.3s ease-out; /* 애니메이션 효과 적용 */
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px 10px 0 0;
+  z-index: 7;
+  font-weight: 500;
+  .sheet-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 1.25rem 1rem 2rem 11rem;
+    .cancel {
+      height: 17px;
+    }
+  }
+
+  button {
+    border: none;
+    background-color: ${({ theme }) => theme.colors.white};
+  }
+  .underline {
+    border-bottom: 0.5px solid ${({ theme }) => theme.colors.greyUnderLine};
+  }
+  .share-buttons {
+    margin: 0 28px 20px 28px;
+    img {
+      margin-right: 10px;
+    }
+    button {
+      height: 70px;
+      font-size: 15px;
+    }
+  }
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  width: 26.5rem;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 6;
+  pointer-events: auto;
+`;
+
 export default StoreDetailPage;

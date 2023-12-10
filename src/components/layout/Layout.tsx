@@ -15,14 +15,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <LayoutPage>
       <LayoutContainer>
         {location.pathname === "/login" ||
-        location.pathname === "/post" ? null : (
+        location.pathname.includes("/zzan-items") ? null : (
           <Header />
         )}
         {children}
         {location.pathname === "/login" ||
-        location.pathname === "/post" ||
-        location.pathname === "/search" ||
-        location.pathname.includes("/category") ? null : (
+        location.pathname === "/newpost" ||
+        location.pathname.includes("/zzan-items") ? null : (
           <Nav />
         )}
       </LayoutContainer>

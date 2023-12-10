@@ -9,7 +9,10 @@ import KakaoLoginPage from "@/pages/KakaoLoginPage";
 import MapPage from "@/pages/MapPage";
 import MapDetailPage from "@/pages/MapDetailPage";
 import ShopPage from "@/pages/ShopPage";
+import ZzanPage from "@/pages/ZzanPage";
+import ZzanDetailPage from "@/pages/ZzanDetailPage";
 import CommunityPage from "@/pages/CommunityPage";
+import NewPostPage from "@/pages/NewPostPage";
 import LoginPage from "@/pages/LoginPage";
 import Mypage from "@/pages/Mypage";
 import NotFoundPage from "@/pages/NotFoundPage";
@@ -81,15 +84,45 @@ function App() {
               }
             />
             <Route
-              path="/shop"
+              path="/zzan"
               element={
                 <Layout>
-                  <ShopPage />
+                  <ZzanPage />
                 </Layout>
               }
             />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/post/:postId" element={<PostDetailPage />} />
+            <Route
+              path="/zzan-items/:zzanId"
+              element={
+                <Layout>
+                  <ZzanDetailPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/community"
+              element={
+                <Layout>
+                  <CommunityPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/post/:postId"
+              element={
+                <Layout>
+                  <PostDetailPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/newpost"
+              element={
+                <Layout>
+                  <NewPostPage />
+                </Layout>
+              }
+            />
             <Route
               path="/mypage"
               element={
