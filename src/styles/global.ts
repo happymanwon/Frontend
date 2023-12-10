@@ -26,5 +26,7 @@ ${reset}
         src: url(${NotoSansLightWOFF}) format('woff');
 }
 
-
+input, button, span, div, p, h1, h2, h3, h4, h5, h6, a, li, ul, ol, textarea, select, option, label, img, table, tr, td, th, form, fieldset, legend, article, aside, footer, header, nav, section, time, canvas, figure, figcaption, audio, video, embed, object, iframe, details, summary, menu, mark, hr, code, pre, samp, sub, sup, b, i, u, s, small, strong, strike, tt, big, nobr, var, address, cite, dfn, em, font, img, ins, kbd, q, ruby, rp, rt, tt, var, wbr, abbr, acronym, bdo, button, del, fieldset, iframe, input, ins, kbd, label, legend, select, textarea, th, button, input, select, textarea, optgroup, option, fieldset {
+  font-family: 'NotoSansRegularWOFF';
+}
 `;
