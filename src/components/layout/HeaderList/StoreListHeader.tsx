@@ -35,7 +35,7 @@ const StoreListHeaderContainer = styled.div`
   align-items: center;
   border-bottom: 1px solid ${({ theme }) => theme.colors.darkGrey};
   height: inherit;
-  padding: 0 23px;
+  /* padding: 0 23px; */
   &::after {
     content: "";
     width: 10px;
@@ -61,12 +61,14 @@ const StoreListHeaderWrapper = styled.div`
 
 const CategoryWrapper = styled.div`
   display: flex;
+  width: 100%;
   justify-content: space-between;
   padding-top: 4px;
 
   .category-buttons {
     display: flex;
-    width: max-content;
+    justify-content: space-around;
+    width: 100%;
   }
 
   .selected {
@@ -79,7 +81,7 @@ const CategoryWrapper = styled.div`
     background-color: ${({ theme }) => theme.colors.white};
     font-size: 12px;
     margin: 19px 7px 0 7px;
-    padding-bottom: 3px;
+    padding-bottom: 2px;
     cursor: pointer;
   }
 `;
