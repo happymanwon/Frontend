@@ -76,8 +76,10 @@ const SearchMain = styled.div`
   align-items: center;
   flex-direction: column;
   flex-wrap: nowrap;
+  justify-content: center;
   max-width: 25rem;
   width: 100%;
+  height: 100vh;
   padding: 1rem 0rem 2rem;
 `;
 
@@ -116,7 +118,7 @@ const LogoWrapper = styled.div`
 
 const InputContainer = styled.div`
   position: relative;
-  width: 26.5625rem;
+  width: 27rem;
   height: 3.4375rem;
   margin-top: 10px;
 
@@ -124,8 +126,8 @@ const InputContainer = styled.div`
     position: absolute;
     width: 23rem;
     height: 3.125rem;
-    font-size: 16px;
-    padding: 0px 40px 0px 15px;
+    font-size: 14px;
+    padding: 0px 40px 0px 19px;
     caret-color: ${({ theme }) => theme.colors.black};
     background: ${({ theme }) => theme.colors.white};
     border-radius: 42px;
@@ -140,7 +142,7 @@ const InputContainer = styled.div`
 
 const IconContainer = styled.div`
   position: absolute;
-  right: 0;
+  right: -2px;
   width: 3.125rem;
   height: 3.4375rem;
   display: flex;
@@ -149,6 +151,10 @@ const IconContainer = styled.div`
   font-size: 1.2rem;
   cursor: pointer;
   z-index: 6;
+
+  svg {
+    color: #59d37d;
+  }
 `;
 
 const CategoryWrapper = styled.div`
