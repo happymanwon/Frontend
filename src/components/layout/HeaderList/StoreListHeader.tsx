@@ -64,6 +64,11 @@ const CategoryWrapper = styled.div`
   justify-content: space-between;
   padding-top: 4px;
 
+  .category-buttons {
+    display: flex;
+    width: max-content;
+  }
+
   .selected {
     border-bottom: 3px solid ${({ theme }) => theme.colors.mainColor2};
     font-weight: 700;
@@ -74,7 +79,7 @@ const CategoryWrapper = styled.div`
     background-color: ${({ theme }) => theme.colors.white};
     font-size: 12px;
     margin: 19px 7px 0 7px;
-    padding-bottom: 5px;
+    padding-bottom: 3px;
     cursor: pointer;
   }
 `;
