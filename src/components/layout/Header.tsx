@@ -5,6 +5,8 @@ import MainHeader from "./HeaderList/MainHeader";
 import StoreListHeader from "./HeaderList/StoreListHeader";
 import MapHeader from "./HeaderList/MapHeader";
 import MypageHeader from "./HeaderList/MypageHeader";
+import CommunityHeader from "./HeaderList/CommunityHeader";
+import ZzanHeader from "./HeaderList/ZzanHeader";
 
 import styled from "styled-components";
 
@@ -22,8 +24,18 @@ const Header: React.FC = () => {
   if (location.includes("/map")) {
     component = <MapHeader />;
   }
+  if (location === "/zzan") {
+    component = <ZzanHeader />;
+  }
   if (location.includes("/mypage")) {
     component = <MypageHeader />;
+  }
+  if (
+    location.includes("/community") ||
+    location.includes("/post") ||
+    location.includes("/newpost")
+  ) {
+    component = <CommunityHeader />;
   }
 
   return <HeaderContainer>{component}</HeaderContainer>;

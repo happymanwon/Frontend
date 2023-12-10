@@ -8,7 +8,9 @@ import PostDetailPage from "@/pages/PostDetailPage";
 import KakaoLoginPage from "@/pages/KakaoLoginPage";
 import MapPage from "@/pages/MapPage";
 import ZzanPage from "@/pages/ZzanPage";
+import ZzanDetailPage from "@/pages/ZzanDetailPage";
 import CommunityPage from "@/pages/CommunityPage";
+import NewPostPage from "@/pages/NewPostPage";
 import LoginPage from "@/pages/LoginPage";
 import Mypage from "@/pages/Mypage";
 import NotFoundPage from "@/pages/NotFoundPage";
@@ -80,6 +82,14 @@ function App() {
               }
             />
             <Route
+              path="/zzan-items/:zzanId"
+              element={
+                <Layout>
+                  <ZzanDetailPage />
+                </Layout>
+              }
+            />
+            <Route
               path="/community"
               element={
                 <Layout>
@@ -92,6 +102,14 @@ function App() {
               element={
                 <Layout>
                   <PostDetailPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/newpost"
+              element={
+                <Layout>
+                  <NewPostPage />
                 </Layout>
               }
             />
