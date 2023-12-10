@@ -94,7 +94,6 @@ const LayoutPage = styled.div`
   }
 
   @media (min-width: 1024px) {
-    left: 50vw;
     margin: 0;
   }
 `;
