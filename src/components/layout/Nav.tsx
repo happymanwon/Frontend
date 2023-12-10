@@ -3,13 +3,13 @@ import { useState } from "react";
 import ChatImg from "@/assets/images/chat-img.svg?react";
 import CoinImg from "@/assets/images/coin-img.svg?react";
 import MapImg from "@/assets/images/map-img.svg?react";
-import sejongImg from "@/assets/images/sejong-img.png";
+import sejongImg from "@/assets/images/sejong-img.svg";
 import UserImg from "@/assets/images/user-img.svg?react";
 import styled from "styled-components";
 
 const Nav = () => {
   // 로그인 여부 (전역 상태 관리 시 지울 예정)
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin] = useState(false);
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -78,14 +78,17 @@ const NavLink = styled(Link)`
     font-size: 0.4375rem;
     font-weight: 400;
     margin-top: 0.375rem;
+    color: #888;
   }
 
   & svg {
-    fill: #000;
+    fill: #888;
   }
 
   &.active {
-    color: #2ab673;
+    p {
+      color: #2ab673;
+    }
     svg {
       fill: #2ab673;
     }
