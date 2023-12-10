@@ -1,10 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeft,
-  faArrowUpFromBracket,
-  faX,
-  faHeart as faHeartSolid,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowUpFromBracket, faX, faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import styled, { keyframes } from "styled-components";
 import linkImg from "@/assets/images/link-share.svg";
@@ -109,11 +104,10 @@ const StoreDetailPage = () => {
             <FontAwesomeIcon className="arrow" icon={faArrowLeft} />
           </div>
           <ImageWrapper>
-            {storeData?.imageUrl ===
-            "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
-              <img src={defaultImg} alt="상점사진" />
+            {storeData?.imageUrl === "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
+              <img src={defaultImg} alt="상점사진" loading="lazy" />
             ) : (
-              <img src={storeData?.imageUrl} alt="상점사진" />
+              <img src={storeData?.imageUrl} alt="상점사진" loading="lazy" />
             )}
           </ImageWrapper>
           <NameLikeWrapper>
@@ -126,10 +120,7 @@ const StoreDetailPage = () => {
         </StoreHeaderWrapper>
         <LikeShare>
           <button className="like" onClick={handleLike}>
-            <FontAwesomeIcon
-              icon={liked ? faHeartSolid : faHeartRegular}
-              id={liked ? "liked" : ""}
-            />
+            <FontAwesomeIcon icon={liked ? faHeartSolid : faHeartRegular} id={liked ? "liked" : ""} />
             {liked ? "좋아요 취소" : "좋아요"}
           </button>
           <button className="share" onClick={handleShareClick}>
@@ -140,19 +131,14 @@ const StoreDetailPage = () => {
         <InfoWrapper>
           <StoreInfo>
             <h3>상점소개</h3>
-            <div className="infoContainer">
-              {createDivsFromString(storeData?.info)}
-            </div>
+            <div className="infoContainer">{createDivsFromString(storeData?.info)}</div>
           </StoreInfo>
           <MenuInfo>
             <h3>메뉴소개</h3>
             {renderMenuInfo()}
           </MenuInfo>
           <MapInfo>
-            <LocationInfo
-              address={`${storeData?.address})`}
-              way={`${storeData?.way}`}
-            />
+            <LocationInfo address={`${storeData?.address})`} way={`${storeData?.way}`} />
           </MapInfo>
         </InfoWrapper>
       </LayoutContainer>
@@ -168,12 +154,12 @@ const StoreDetailPage = () => {
             </div>
             <div className="share-buttons">
               <button onClick={handleShare}>
-                <img src={linkImg} />
+                <img src={linkImg} loading="lazy" />
                 <span>링크 복사하기</span>
               </button>
               <div className="underline"></div>
               <button onClick={ShareKakao}>
-                <img src={kakaoImg} />
+                <img src={kakaoImg} loading="lazy" />
                 <span>카카오톡 공유하기</span>
               </button>
             </div>

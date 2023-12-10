@@ -11,7 +11,7 @@ const ImageUpload = ({ setShowImages, showImages }) => {
       <PreviewWrapper>
         {showImages.map((image, id) => (
           <ImageContainer key={id}>
-            <img src={image} alt={`${image}-${id}`} />
+            <img src={image} alt={`${image}-${id}`} loading="lazy" />
             <button onClick={() => handleDeleteImage(id)}>X</button>
           </ImageContainer>
         ))}

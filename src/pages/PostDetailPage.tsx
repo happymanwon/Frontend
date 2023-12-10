@@ -17,9 +17,7 @@ const PostDetailPage = () => {
         const response = await axios.get<PostDataType[]>(`/data/fakedata.json`); // json 파일 사용
 
         if (postId) {
-          const postData = response.data.filter(
-            (item) => item.id === parseInt(postId, 10)
-          )[0];
+          const postData = response.data.filter((item) => item.id === parseInt(postId, 10))[0];
           postData ? setPost(postData) : setPost(null);
         }
       } catch (error) {
@@ -39,7 +37,7 @@ const PostDetailPage = () => {
       <PostContainer>
         <PostHeader>
           <span>
-            <img src={post.profilepic} className="profile" />
+            <img src={post.profilepic} className="profile" loading="lazy" />
           </span>
           <span className="writer">{post.writer}</span>
           <span className="date">{post.date}</span>
@@ -49,22 +47,19 @@ const PostDetailPage = () => {
           <div className="img">
             {post.image.map((imgSrc: string, index: number) => (
               <div key={index}>
-                <img src={imgSrc} className="images" />
+                <img src={imgSrc} className="images" loading="lazy" />
               </div>
             ))}
           </div>
         </PostWrapper>
       </PostContainer>
       <MapContainer>
-        <LocationInfo
-          address={"서울특별시 중구 세종대로 110 서울특별시청"}
-          way={"가는길"}
-        />
+        <LocationInfo address={"서울특별시 중구 세종대로 110 서울특별시청"} way={"가는길"} />
       </MapContainer>
       <CommentContainer>
         {post.comments.map((commentData: any, index: number) => (
           <div className="comment" key={index}>
-            <img src={commentData.profilepic} alt="Profile" />
+            <img src={commentData.profilepic} alt="Profile" loading="lazy" />
             <p>{commentData.comment}</p>
           </div>
         ))}

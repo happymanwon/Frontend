@@ -1,8 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeft,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import tagImg from "@/assets/images/tag.svg";
 
 import styled from "styled-components";
@@ -29,9 +26,7 @@ const CommunityHeader = () => {
         const response = await axios.get<PostDataType[]>(`/data/fakedata.json`); // json 파일 사용
 
         if (postId) {
-          const postData = response.data.filter(
-            (item) => item.id === parseInt(postId, 10)
-          )[0];
+          const postData = response.data.filter((item) => item.id === parseInt(postId, 10))[0];
           postData ? setPost(postData) : setPost(null);
         }
       } catch (error) {
@@ -74,13 +69,7 @@ const CommunityHeader = () => {
       </CommunityHeaderWrapper>
       {!isPostPage && !isNewPostPage ? (
         <InputContainer>
-          <input
-            type="text"
-            placeholder="관심사를 검색해 보세요!"
-            value={search}
-            onChange={handleInputChange}
-            onKeyUp={handleKeyPress}
-          />
+          <input type="text" placeholder="관심사를 검색해 보세요!" value={search} onChange={handleInputChange} onKeyUp={handleKeyPress} />
           <IconContainer onClick={handleSearch}>
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </IconContainer>
@@ -97,7 +86,7 @@ const CommunityHeader = () => {
       )}
       {isNewPostPage && (
         <TagInput>
-          <img src={tagImg} />
+          <img src={tagImg} loading="lazy" />
           <input type="text" placeholder="나만의 해시태그를 입력해 보세요" />
         </TagInput>
       )}

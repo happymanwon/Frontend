@@ -13,9 +13,9 @@ const PostList = ({ post }: { post: PostDataType }) => {
           <p className="content">{post.content}</p>
         </div>
         <div className="img">
-          {post.image.map((imgSrc: string, index: number) => (
-            <div key={index}>
-              <img src={imgSrc} className="images" />
+          {post.image.map((imgSrc: string) => (
+            <div key={imgSrc}>
+              <img src={imgSrc} alt="이미지" className="images" loading="lazy" />
             </div>
           ))}
         </div>
@@ -25,13 +25,13 @@ const PostList = ({ post }: { post: PostDataType }) => {
         <div className="post-end">
           <div className="write-info">
             <span>
-              <img src={post.profilepic} className="profile" />
+              <img src={post.profilepic} alt="이미지" className="profile" loading="lazy" />
             </span>
             <span className="writer">{post.writer}</span>
             <span className="write-time">{post.date}</span>
           </div>
           <div className="comment">
-            <img src={commentImg} />
+            <img src={commentImg} alt="이미지" loading="lazy" />
             <span>{post.comments.length}개</span>
           </div>
         </div>

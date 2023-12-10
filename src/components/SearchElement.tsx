@@ -30,14 +30,12 @@ const SearchElement = () => {
     <SearchPage>
       <SearchMain>
         <LogoWrapper>
-          <img className="biglogo" src={bigLogoImg} alt="큰 로고이미지" />
+          <img className="biglogo" src={bigLogoImg} alt="큰 로고이미지" loading="lazy" />
           <div>
-            <span className="normal-font">
-              한 푼이라도 아쉬운 사람들을 위한
-            </span>
+            <span className="normal-font">한 푼이라도 아쉬운 사람들을 위한</span>
             <span className="bold-font">만원의 행복 서비스</span>
           </div>
-          <img className="title" src={titleImg} alt="만원의행복" />
+          <img className="title" src={titleImg} alt="만원의행복" loading="lazy" />
         </LogoWrapper>
         <InputContainer>
           <input
@@ -124,10 +122,10 @@ const InputContainer = styled.div`
 
   & input {
     position: absolute;
-    width: 25rem;
+    width: 23rem;
     height: 3.125rem;
     font-size: 16px;
-    padding: 0px 5px 0px 15px;
+    padding: 0px 40px 0px 15px;
     caret-color: ${({ theme }) => theme.colors.black};
     background: ${({ theme }) => theme.colors.white};
     border-radius: 42px;
@@ -157,8 +155,13 @@ const CategoryWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 23.125rem;
+  width: 100%;
   margin-top: 10px;
+  .category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
   button {
     height: 28px;
     padding: 0 20px;
@@ -169,9 +172,6 @@ const CategoryWrapper = styled.div`
     color: #ffffff;
     font-size: 16px;
     cursor: pointer;
-  }
-  #category-button-5 {
-    margin-left: 4.375rem;
   }
   #category-button-7 {
     background: ${({ theme }) => theme.colors.grey};

@@ -30,9 +30,7 @@ const NewPostPage = () => {
       try {
         const response = await axios.get("/api/shops");
 
-        const filterDataByName = response.data.data.filter((data) =>
-          data.name.includes(searchName)
-        );
+        const filterDataByName = response.data.data.filter((data) => data.name.includes(searchName));
         setStoreData(filterDataByName);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -73,11 +71,7 @@ const NewPostPage = () => {
               <p>검색결과가 없습니다.</p>
             ) : (
               storeData?.map((data: any, index: number) => (
-                <button
-                  onClick={handleNameClick}
-                  value={`${data.roadAddress}`}
-                  key={index}
-                >
+                <button onClick={handleNameClick} value={`${data.roadAddress}`} key={index}>
                   {data.name}
                 </button>
               ))
@@ -139,10 +133,7 @@ const NewPostPage = () => {
       )}
       {isImageAdded && (
         <ImageContainer>
-          <ImageUpload
-            showImages={showImages}
-            setShowImages={handleImageConfirmation}
-          />
+          <ImageUpload showImages={showImages} setShowImages={handleImageConfirmation} />
         </ImageContainer>
       )}
       <BottomButtonWrapper>
@@ -153,6 +144,7 @@ const NewPostPage = () => {
             onClick={() => {
               setImageModal(!imageModal);
             }}
+            loading="lazy"
           />
         </button>
         <button
@@ -161,7 +153,7 @@ const NewPostPage = () => {
             setMapModal(!mapModal);
           }}
         >
-          <img src={pinImg} alt="지도추가버튼" />
+          <img src={pinImg} alt="지도추가버튼" loading="lazy" />
         </button>
       </BottomButtonWrapper>
       {mapModal ? <MapModal /> : null}

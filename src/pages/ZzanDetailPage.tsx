@@ -38,24 +38,19 @@ const ZzanDetailPage = () => {
             <FontAwesomeIcon className="arrow" icon={faArrowLeft} />
           </div>
           <ImageWrapper>
-            {zzanData?.shopInfo.imageUrl ===
-            "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
-              <img src={defaultImg} alt="상점사진" />
+            {zzanData?.shopInfo.imageUrl === "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
+              <img src={defaultImg} alt="상점사진" loading="lazy" />
             ) : (
-              <img src={zzanData?.shopInfo.imageUrl} alt="상점사진" />
+              <img src={zzanData?.shopInfo.imageUrl} alt="상점사진" loading="lazy" />
             )}
           </ImageWrapper>
           <NamePriceWrapper>
             <h2>{zzanData?.shopName}</h2>
             <span className="item-name">{zzanData?.itemName}</span>
             <div className="discount-info">
-              <div className="original-price">
-                ₩{zzanData?.originalPrice.toLocaleString()}
-              </div>
+              <div className="original-price">₩{zzanData?.originalPrice.toLocaleString()}</div>
               <span className="discount-rate">{zzanData?.discountRate}%</span>
-              <span className="sale-price">
-                ₩{zzanData?.salePrice.toLocaleString()}
-              </span>
+              <span className="sale-price">₩{zzanData?.salePrice.toLocaleString()}</span>
             </div>
           </NamePriceWrapper>
         </StoreHeaderWrapper>
@@ -72,10 +67,7 @@ const ZzanDetailPage = () => {
             </div>
           </MenuInfo>
           <MapInfo>
-            <LocationInfo
-              address={`${zzanData?.shopInfo.roadAddress}`}
-              way={`${zzanData?.shopInfo.way}`}
-            />
+            <LocationInfo address={`${zzanData?.shopInfo.roadAddress}`} way={`${zzanData?.shopInfo.way}`} />
           </MapInfo>
         </InfoWrapper>
         <BuyButtonWrapper>

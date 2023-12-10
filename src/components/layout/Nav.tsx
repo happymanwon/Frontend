@@ -9,17 +9,14 @@ import styled from "styled-components";
 
 const Nav = () => {
   // 로그인 여부 (전역 상태 관리 시 지울 예정)
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <Navbar style={{ zIndex: "10", backgroundColor: "#fff" }}>
-      <NavLink
-        to="/map"
-        className={isActive("/map") || isActive("/map/detail") ? "active" : ""}
-      >
+      <NavLink to="/map" className={isActive("/map") || isActive("/map/detail") ? "active" : ""}>
         <MapImg />
         <p>짠지도</p>
       </NavLink>
@@ -28,12 +25,9 @@ const Nav = () => {
         <p>짠처리</p>
       </NavLink>
       <NavLink to="/">
-        <img src={sejongImg} alt="세종 이미지" width={49} height={49} />
+        <img src={sejongImg} alt="세종 이미지" width={49} height={49} loading="lazy" />
       </NavLink>
-      <NavLink
-        to="/community"
-        className={isActive("/community") ? "active" : ""}
-      >
+      <NavLink to="/community" className={isActive("/community") ? "active" : ""}>
         <ChatImg />
         <p>단짠단짠</p>
       </NavLink>

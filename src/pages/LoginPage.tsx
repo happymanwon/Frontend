@@ -19,18 +19,14 @@ const LoginPage: React.FC = () => {
 
   return (
     <JoinContainer>
-      <img src={logoImg} />
+      <img src={logoImg} loading="lazy" />
       <div className="title-container">
         <span className="normal-font">한 푼이라도 아쉬운</span>
         <span className="bold-font">사람들을 위한</span>
       </div>
-      <img src={titleImg} className="title" />
+      <img src={titleImg} className="title" loading="lazy" />
       <KakaoButton onClick={handleLogin}>
-        <FontAwesomeIcon
-          icon={faComment}
-          size="2x"
-          style={{ color: "#2b1417" }}
-        />
+        <FontAwesomeIcon icon={faComment} size="2x" style={{ color: "#2b1417" }} />
       </KakaoButton>
       <BottomWrapper>
         <div>

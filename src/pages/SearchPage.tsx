@@ -21,9 +21,7 @@ const SearchPage = (): JSX.Element => {
         }
         // const response = await axios.get(`/api/stores`);     // 백엔드랑 통신할 때
         const response = await axios.get("/api/shops"); // json 파일 사용
-        const filterDataByKeyword = response.data.data.filter((data) =>
-          data.name.includes(searchKeyword)
-        );
+        const filterDataByKeyword = response.data.data.filter((data) => data.name.includes(searchKeyword));
         setSearchResult(filterDataByKeyword);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -42,11 +40,10 @@ const SearchPage = (): JSX.Element => {
           <ListWrapper>
             {searchResult.map((data, index) => (
               <ListLink key={index} to={`/store/${data.id}`}>
-                {data.imageUrl ===
-                "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
-                  <img src={defaultImg} alt={`이미지 ${index}`} />
+                {data.imageUrl === "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
+                  <img src={defaultImg} alt={`이미지 ${index}`} loading="lazy" />
                 ) : (
-                  <img src={data.imageUrl} alt={`이미지 ${index}`} />
+                  <img src={data.imageUrl} alt={`이미지 ${index}`} loading="lazy" />
                 )}
                 <h1>{data.name}</h1>
               </ListLink>

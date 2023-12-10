@@ -30,11 +30,10 @@ const ZzanPage = () => {
         <ListWrapper>
           {zzanData.map((data, index) => (
             <ListLink key={index} to={`/zzan-items/${data.zzanItemId}`}>
-              {data.imageUrl ===
-              "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
-                <img src={defaultImg} alt={`이미지 ${index}`} />
+              {data.imageUrl === "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
+                <img src={defaultImg} alt={`이미지 ${index}`} loading="lazy" />
               ) : (
-                <img src={data.imageUrl} alt={`이미지 ${index}`} />
+                <img src={data.imageUrl} alt={`이미지 ${index}`} loading="lazy" />
               )}
               <h1>{data.shopName}</h1>
               <span>{data.itemName}</span>

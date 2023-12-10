@@ -29,9 +29,7 @@ const CategoryPage = (): JSX.Element => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/api/shops?categoryId=${categoryId}`); // json 파일 사용
-        const filterDataByDistrict = response.data.data.filter((data) =>
-          data.address.includes(districtName)
-        );
+        const filterDataByDistrict = response.data.data.filter((data: StoreData) => data.address.includes(districtName));
         setCategoryData(filterDataByDistrict);
         console.log(filterDataByDistrict);
       } catch (error) {
@@ -54,11 +52,10 @@ const CategoryPage = (): JSX.Element => {
         <ListWrapper>
           {categoryData.map((data, index) => (
             <ListLink key={index} to={`/store/${data.id}`}>
-              {data.imageUrl ===
-              "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
-                <img src={defaultImg} alt={`이미지 ${index}`} />
+              {data.imageUrl === "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
+                <img src={defaultImg} alt={`이미지 ${index}`} loading="lazy" />
               ) : (
-                <img src={data.imageUrl} alt={`이미지 ${index}`} />
+                <img src={data.imageUrl} alt={`이미지 ${index}`} loading="lazy" />
               )}
               <h1>{data.name}</h1>
             </ListLink>
@@ -125,18 +122,25 @@ const ListWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 11.3125rem;
+  }
 `;
 const ListLink = styled(Link)`
   text-decoration: none;
   color: #333;
   width: 11.3rem;
   height: 13rem;
-  img {
+
+  & > img {
     width: 11.3125rem;
     height: 11.3125rem;
     border-radius: 10px;
   }
-  h1 {
+  & > h1 {
     margin-top: 5px;
     font-size: 14px;
     font-weight: 500;
