@@ -1,32 +1,28 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import tagImg from "@/assets/images/tag.svg";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 import styled from "styled-components";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { PostDataType } from "@/types/community/postDataType";
 import axios from "axios";
 
 const CommunityHeader = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [search, setSearch] = useState("");
   const { postId } = useParams<{ postId?: string }>(); // 파라미터가 없을 수 있으므로 postId를 옵셔널로 지정
   const [post, setPost] = useState<PostDataType | null>(null);
 
-  const isPostPage = location.pathname.includes("/post");
-  const isNewPostPage = location.pathname === "/newpost";
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get("/api/posts"); // 백엔드랑 통신할 때
         const response = await axios.get<PostDataType[]>(`/data/fakedata.json`); // json 파일 사용
 
         if (postId) {
-          const postData = response.data.filter((item) => item.id === parseInt(postId, 10))[0];
+          const postData = response.data.filter(
+            (item) => item.id === parseInt(postId, 10)
+          )[0];
           postData ? setPost(postData) : setPost(null);
         }
       } catch (error) {
@@ -53,43 +49,20 @@ const CommunityHeader = () => {
   return (
     <CommunityHeaderContainer>
       <CommunityHeaderWrapper>
-        {isPostPage || isNewPostPage ? (
-          <div className="left" onClick={() => navigate(-1)}>
-            <FontAwesomeIcon icon={faArrowLeft} />
-          </div>
-        ) : null}
-        {isNewPostPage ? (
-          <div className="new-post-header">
-            <h2>단짠단짠 글쓰기</h2>
-            <button>완료</button>
-          </div>
-        ) : (
-          <h2>단짠단짠</h2>
-        )}
+        <h2>단짠단짠</h2>
       </CommunityHeaderWrapper>
-      {!isPostPage && !isNewPostPage ? (
-        <InputContainer>
-          <input type="text" placeholder="관심사를 검색해 보세요!" value={search} onChange={handleInputChange} onKeyUp={handleKeyPress} />
-          <IconContainer onClick={handleSearch}>
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </IconContainer>
-        </InputContainer>
-      ) : null}
-      {isPostPage && (
-        <TagContainer>
-          {post?.tag.map((tag: string, index: number) => (
-            <div className="tag" key={index}>
-              {tag}
-            </div>
-          ))}
-        </TagContainer>
-      )}
-      {isNewPostPage && (
-        <TagInput>
-          <img src={tagImg} loading="lazy" />
-          <input type="text" placeholder="나만의 해시태그를 입력해 보세요" />
-        </TagInput>
-      )}
+      <InputContainer>
+        <input
+          type="text"
+          placeholder="관심사를 검색해 보세요!"
+          value={search}
+          onChange={handleInputChange}
+          onKeyUp={handleKeyPress}
+        />
+        <IconContainer onClick={handleSearch}>
+          <FontAwesomeIcon icon={faMagnifyingGlass} />
+        </IconContainer>
+      </InputContainer>
     </CommunityHeaderContainer>
   );
 };
@@ -127,16 +100,6 @@ const CommunityHeaderWrapper = styled.div`
     font-size: 16px;
     font-weight: 700;
   }
-  .new-post-header {
-    display: flex;
-    button {
-      border: none;
-      background: none;
-      position: absolute;
-      right: 0;
-      margin-right: 20px;
-    }
-  }
 `;
 
 const InputContainer = styled.div`
@@ -170,30 +133,5 @@ const IconContainer = styled.div`
   font-size: 1.2rem;
   cursor: pointer;
 `;
-const TagContainer = styled.div`
-  display: flex;
-  margin-right: auto;
-  gap: 3px;
-  .tag {
-    width: 4.5rem;
-    height: 1.6875rem;
-    border: none;
-    border-radius: 20px;
-    background-color: ${({ theme }) => theme.colors.greyBackground};
-    font-size: 11px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`;
-const TagInput = styled.div`
-  display: flex;
-  margin-right: auto;
-  input {
-    border: none;
-    width: 12.5rem;
-    outline: none;
-  }
-`;
+
 export default CommunityHeader;

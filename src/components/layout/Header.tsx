@@ -30,11 +30,7 @@ const Header: React.FC = () => {
   if (location.includes("/mypage")) {
     component = <MypageHeader />;
   }
-  if (
-    location.includes("/community") ||
-    location.includes("/post") ||
-    location.includes("/newpost")
-  ) {
+  if (location.includes("/community")) {
     component = <CommunityHeader />;
   }
 

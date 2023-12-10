@@ -1,13 +1,13 @@
+import { CommentDataType } from "./commentDataType";
 export interface PostDataType {
-  id: number;
-  tag: string[];
-  title: string;
-  content: string;
+  boardId: number;
+  memberId: number;
   profilepic: string;
-  date: string;
-  writer: string;
-  likes: number;
-  comments: string[];
-  store: string;
-  image: string[];
+  boardTitle: string;
+  content: string;
+  tag: string[];
+  createdAt: string;
+  updatedAt: string;
+  nickname: string;
+  comments: CommentDataType;
 }

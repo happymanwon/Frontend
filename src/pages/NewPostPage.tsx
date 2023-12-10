@@ -4,13 +4,19 @@ import LocationInfo from "@/components/LocationInfo";
 import ImageUpload from "@/components/ImageUpload";
 import { StoreData } from "@/types/category/storeData";
 
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import cameraImg from "@/assets/images/camera.svg";
 import pinImg from "@/assets/images/map-pin.svg";
+import tagImg from "@/assets/images/tag.svg";
+
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const NewPostPage = () => {
   const [mapModal, setMapModal] = useState(false);
@@ -22,6 +28,10 @@ const NewPostPage = () => {
   const [storeAddr, setStoreAddr] = useState("");
   const [showImages, setShowImages] = useState([]);
 
+  const navigate = useNavigate();
+
+  const suggestions = ["apple", "banana"];
+
   // 지도 모달창 부분
   function MapModal() {
     const [searchName, setSearchName] = useState("");
@@ -30,7 +40,9 @@ const NewPostPage = () => {
       try {
         const response = await axios.get("/api/shops");
 
-        const filterDataByName = response.data.data.filter((data) => data.name.includes(searchName));
+        const filterDataByName = response.data.data.filter((data) =>
+          data.name.includes(searchName)
+        );
         setStoreData(filterDataByName);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -71,7 +83,11 @@ const NewPostPage = () => {
               <p>검색결과가 없습니다.</p>
             ) : (
               storeData?.map((data: any, index: number) => (
-                <button onClick={handleNameClick} value={`${data.roadAddress}`} key={index}>
+                <button
+                  onClick={handleNameClick}
+                  value={`${data.roadAddress}`}
+                  key={index}
+                >
                   {data.name}
                 </button>
               ))
@@ -121,30 +137,65 @@ const NewPostPage = () => {
     setShowImages(images);
   };
 
+  const submitPost = async (e) => {
+    e.preventDefault();
+    // try {
+    //   const response = await axios.post("/api/boards");
+    //   console.log("Post submitted successfully!", response.data);
+    // } catch (error) {
+    //   console.error("Error submitting post:", error);
+    // }
+  };
+
   return (
     <LayoutContainer>
-      <PostContainer>
-        <PostWrapper placeholder="자유롭게 이야기를 적어보세요! (글자 수는 최소 10자 이상 500자 미만)"></PostWrapper>
-      </PostContainer>
-      {isMapAdded && (
-        <MapContainer>
-          <LocationInfo address={storeAddr} way={"가는길"} />
-        </MapContainer>
-      )}
-      {isImageAdded && (
-        <ImageContainer>
-          <ImageUpload showImages={showImages} setShowImages={handleImageConfirmation} />
-        </ImageContainer>
-      )}
+      <Header>
+        <div className="left" onClick={() => navigate("/community")}>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </div>
+        <div className="new-post-header">
+          <h2>단짠단짠 글쓰기</h2>
+          <button type="submit" form="post-content">
+            완료
+          </button>
+        </div>
+        <TagInput>
+          <img src={tagImg} />
+          <input type="text" placeholder="나만의 해시태그를 입력해 보세요" />
+        </TagInput>
+      </Header>
+      <ContentWrapper>
+        <form id="post-content" onSubmit={submitPost}>
+          <PostContainer>
+            <PostWrapper
+              name="content"
+              placeholder="자유롭게 이야기를 적어보세요! (글자 수는 최소 10자 이상 500자 미만)"
+            ></PostWrapper>
+          </PostContainer>
+        </form>
+        {isMapAdded && (
+          <MapContainer>
+            <LocationInfo address={storeAddr} way={"가는길"} />
+          </MapContainer>
+        )}
+        {isImageAdded && (
+          <ImageContainer>
+            <ImageUpload
+              showImages={showImages}
+              setShowImages={handleImageConfirmation}
+            />
+          </ImageContainer>
+        )}
+      </ContentWrapper>
       <BottomButtonWrapper>
         <button>
           <img
             src={cameraImg}
             alt="사진추가버튼"
+            loading="lazy"
             onClick={() => {
               setImageModal(!imageModal);
             }}
-            loading="lazy"
           />
         </button>
         <button
@@ -264,13 +315,57 @@ const IconContainer = styled.div`
 //페이지 스타일링
 const LayoutContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 6.125rem - 4.5rem);
+  font-family: NotoSansRegularWOFF, sans-serif, Arial;
+  background-color: ${({ theme }) => theme.colors.white};
+`;
+
+const Header = styled.div`
+  width: 26rem;
+  height: 3.9375rem;
+  padding-top: 35px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.greyUnderLine};
+
+  .left {
+    position: absolute;
+    left: 0;
+    margin-left: 15px;
+  }
+  .new-post-header {
+    display: flex;
+    justify-content: space-around;
+  }
+  h2 {
+    text-align: center;
+    font-size: 16px;
+    font-family: NotoSansMediumWOFF, sans-serif, Arial;
+    font-weight: 700;
+  }
+  button {
+    border: none;
+    background: none;
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
+  }
+`;
+
+const TagInput = styled.div`
+  margin: 10px 0 0 23px;
+  display: flex;
+  input {
+    border: none;
+    width: 12.5rem;
+    outline: none;
+    font-size: 11px;
+  }
+`;
+
+const ContentWrapper = styled.div`
+  height: calc(100vh - 6.125rem - 3rem);
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: NotoSansRegularWOFF, sans-serif, Arial;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-top: 1px solid ${({ theme }) => theme.colors.greyUnderLine};
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
@@ -338,16 +433,17 @@ const MapContainer = styled.div`
   }
 `;
 
-const ImageContainer = styled.div``;
+const ImageContainer = styled.div`
+  padding-bottom: 15px;
+`;
 
 const BottomButtonWrapper = styled.nav`
-  position: fixed;
-  bottom: 0;
   width: 26rem;
   height: 3rem;
   display: flex;
   padding-left: 10px;
   align-items: center;
+  background-color: ${({ theme }) => theme.colors.white};
   border-top: 1px solid ${({ theme }) => theme.colors.greyUnderLine};
   button {
     border: none;

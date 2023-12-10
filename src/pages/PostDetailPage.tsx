@@ -1,12 +1,18 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { PostDataType } from "@/types/community/postDataType";
 import LocationInfo from "@/components/LocationInfo";
+import {
+  faArrowLeft,
+  faEllipsisVertical,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PostDetailPage = () => {
+  const navigate = useNavigate();
   const { postId } = useParams<{ postId?: string }>(); // 파라미터가 없을 수 있으므로 postId를 옵셔널로 지정
   const [post, setPost] = useState<PostDataType | null>(null);
 
@@ -17,7 +23,9 @@ const PostDetailPage = () => {
         const response = await axios.get<PostDataType[]>(`/data/fakedata.json`); // json 파일 사용
 
         if (postId) {
-          const postData = response.data.filter((item) => item.id === parseInt(postId, 10))[0];
+          const postData = response.data.filter(
+            (item) => item.id === parseInt(postId, 10)
+          )[0];
           postData ? setPost(postData) : setPost(null);
         }
       } catch (error) {
@@ -34,53 +42,122 @@ const PostDetailPage = () => {
 
   return (
     <LayoutContainer>
-      <PostContainer>
-        <PostHeader>
-          <span>
-            <img src={post.profilepic} className="profile" loading="lazy" />
-          </span>
-          <span className="writer">{post.writer}</span>
-          <span className="date">{post.date}</span>
-        </PostHeader>
-        <PostWrapper>
-          <p className="content">{post.content}</p>
-          <div className="img">
-            {post.image.map((imgSrc: string, index: number) => (
-              <div key={index}>
-                <img src={imgSrc} className="images" loading="lazy" />
-              </div>
-            ))}
-          </div>
-        </PostWrapper>
-      </PostContainer>
-      <MapContainer>
-        <LocationInfo address={"서울특별시 중구 세종대로 110 서울특별시청"} way={"가는길"} />
-      </MapContainer>
-      <CommentContainer>
-        {post.comments.map((commentData: any, index: number) => (
-          <div className="comment" key={index}>
-            <img src={commentData.profilepic} alt="Profile" loading="lazy" />
-            <p>{commentData.comment}</p>
-          </div>
-        ))}
-      </CommentContainer>
+      <Header>
+        <div className="left" onClick={() => navigate(-1)}>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </div>
+        <h2>단짠단짠</h2>
+        <div className="right">
+          <FontAwesomeIcon icon={faEllipsisVertical} />
+        </div>
+        <TagContainer>
+          {post?.tag.map((tag: string, index: number) => (
+            <div className="tag" key={index}>
+              {tag}
+            </div>
+          ))}
+        </TagContainer>
+      </Header>
+      <BodyContainer>
+        <PostContainer>
+          <PostHeader>
+            <span>
+              <img src={post.profilepic} className="profile" loading="lazy" />
+            </span>
+            <span className="writer">{post.writer}</span>
+            <span className="date">{post.date}</span>
+          </PostHeader>
+          <PostWrapper>
+            <p className="content">{post.content}</p>
+            <div className="img">
+              {post.image.map((imgSrc: string, index: number) => (
+                <div key={index}>
+                  <img src={imgSrc} className="images" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          </PostWrapper>
+        </PostContainer>
+        <MapContainer>
+          <LocationInfo
+            address={"서울특별시 중구 세종대로 110 서울특별시청"}
+            way={"가는길"}
+          />
+        </MapContainer>
+        <CommentContainer>
+          {post.comments.map((commentData: any, index: number) => (
+            <div className="comment" key={index}>
+              <img src={commentData.profilepic} alt="Profile" loading="lazy" />
+              <p>{commentData.comment}</p>
+            </div>
+          ))}
+        </CommentContainer>
+      </BodyContainer>
     </LayoutContainer>
   );
 };
 
 const LayoutContainer = styled.div`
   width: 100%;
+  font-family: NotoSansRegularWOFF, sans-serif, Arial;
+  background-color: ${({ theme }) => theme.colors.white};
+`;
+
+const Header = styled.div`
+  width: 100%;
+  height: 3.9375rem;
+  padding-top: 35px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.greyUnderLine};
+
+  .left {
+    position: absolute;
+    left: 0;
+    margin-left: 15px;
+  }
+  .right {
+    position: absolute;
+    right: 0;
+    margin-right: 15px;
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 16px;
+    font-family: NotoSansMediumWOFF, sans-serif, Arial;
+    font-weight: 700;
+  }
+`;
+
+const TagContainer = styled.div`
+  display: flex;
+  margin-top: 10px;
+  margin-left: 15px;
+  margin-right: auto;
+  gap: 3px;
+  .tag {
+    width: 4.5rem;
+    height: 1.6875rem;
+    border: none;
+    border-radius: 20px;
+    background-color: ${({ theme }) => theme.colors.greyBackground};
+    font-size: 11px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const BodyContainer = styled.div`
+  width: 100%;
   height: calc(100vh - 6.125rem - 4.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
   }
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: NotoSansRegularWOFF, sans-serif, Arial;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-top: 1px solid ${({ theme }) => theme.colors.greyUnderLine};
 `;
 
 const PostContainer = styled.div`
@@ -157,6 +234,7 @@ const MapContainer = styled.div`
   }
   #map {
     margin-top: 12px;
+    b
   }
 `;
 
