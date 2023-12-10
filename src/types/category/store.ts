@@ -9,5 +9,10 @@ export interface Store {
   latitude: string;
   longitude: string;
   info: string;
-  menuList: string[];
+  menuList: MenuList[];
+}
+
+interface MenuList {
+  menuName: string;
+  menuPrice: number;
 }
