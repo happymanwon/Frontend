@@ -4,13 +4,14 @@ import axios from "axios";
 import styled from "styled-components";
 
 import { StoreData } from "@/types/category/storeData";
-import defaultImg from "@/assets/images/default-store-img.svg";
+import DefaultImg from "@/assets/images/default-store-img.svg?react";
 
 const SearchPage = (): JSX.Element => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchKeyword = searchParams.get("keyword") || "";
   const [searchResult, setSearchResult] = useState<StoreData[] | null>(null);
+  const [imageError, setImageError] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +22,7 @@ const SearchPage = (): JSX.Element => {
         }
         // const response = await axios.get(`/api/stores`);     // 백엔드랑 통신할 때
         const response = await axios.get("/api/shops"); // json 파일 사용
-        const filterDataByKeyword = response.data.data.filter((data) => data.name.includes(searchKeyword));
+        const filterDataByKeyword = response.data.data.filter((data: StoreData) => data.name.includes(searchKeyword));
         setSearchResult(filterDataByKeyword);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -29,6 +30,11 @@ const SearchPage = (): JSX.Element => {
     };
     fetchData();
   }, [searchKeyword]);
+
+  // 이미지 로드 실패시 대체 이미지로 설정하는 함수
+  const handleImageError = (id: string) => () => {
+    setImageError((prev) => ({ ...prev, [id]: true }));
+  };
 
   return (
     <SearchContainer>
@@ -38,16 +44,19 @@ const SearchPage = (): JSX.Element => {
           <p>데이터가 없습니다😅</p>
         ) : (
           <ListWrapper>
-            {searchResult.map((data, index) => (
-              <ListLink key={index} to={`/store/${data.id}`}>
-                {data.imageUrl === "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
-                  <img src={defaultImg} alt={`이미지 ${index}`} loading="lazy" />
-                ) : (
-                  <img src={data.imageUrl} alt={`이미지 ${index}`} loading="lazy" />
-                )}
-                <h1>{data.name}</h1>
-              </ListLink>
-            ))}
+            {searchResult.map((data, index) => {
+              const isError = imageError[data.id];
+              return (
+                <ListLink key={index} to={`/store/${data.id}`}>
+                  {isError ? (
+                    <DefaultImg />
+                  ) : (
+                    <img src={data.imageUrl} alt={`이미지 ${index}`} onError={handleImageError(String(data.id))} loading="lazy" />
+                  )}
+                  <h1>{data.name}</h1>
+                </ListLink>
+              );
+            })}
           </ListWrapper>
         )}
       </SearchWrapper>

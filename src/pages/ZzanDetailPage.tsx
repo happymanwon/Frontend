@@ -30,6 +30,11 @@ const ZzanDetailPage = () => {
     fetchData();
   }, [zzanId]);
 
+  // 이미지 로드 실패시 대체 이미지로 설정하는 함수
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = defaultImg;
+  };
+
   return (
     <LayoutPage>
       <LayoutContainer>
@@ -38,11 +43,7 @@ const ZzanDetailPage = () => {
             <FontAwesomeIcon className="arrow" icon={faArrowLeft} />
           </div>
           <ImageWrapper>
-            {zzanData?.shopInfo.imageUrl === "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
-              <img src={defaultImg} alt="상점사진" loading="lazy" />
-            ) : (
-              <img src={zzanData?.shopInfo.imageUrl} alt="상점사진" loading="lazy" />
-            )}
+            <img src={zzanData?.shopInfo.imageUrl} alt="상점사진" onError={handleImageError} loading="lazy" />
           </ImageWrapper>
           <NamePriceWrapper>
             <h2>{zzanData?.shopName}</h2>

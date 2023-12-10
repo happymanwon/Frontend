@@ -96,6 +96,11 @@ const StoreDetailPage = () => {
     }
   };
 
+  // 이미지 로드 실패시 대체 이미지로 설정하는 함수
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = defaultImg;
+  };
+
   return (
     <LayoutPage>
       <LayoutContainer>
@@ -104,11 +109,7 @@ const StoreDetailPage = () => {
             <FontAwesomeIcon className="arrow" icon={faArrowLeft} />
           </div>
           <ImageWrapper>
-            {storeData?.imageUrl === "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
-              <img src={defaultImg} alt="상점사진" loading="lazy" />
-            ) : (
-              <img src={storeData?.imageUrl} alt="상점사진" loading="lazy" />
-            )}
+            <img src={storeData?.imageUrl} alt="상점사진" onError={handleImageError} loading="lazy" />
           </ImageWrapper>
           <NameLikeWrapper>
             <h2>{storeData?.name}</h2>

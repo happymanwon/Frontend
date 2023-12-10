@@ -5,6 +5,8 @@ import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationCrosshairs, faRotateRight } from "@fortawesome/free-solid-svg-icons";
 
+import defaultImg from "@/assets/images/default-store.png";
+
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,14 +23,7 @@ interface MapPropsType {
   isDetail: boolean;
 }
 
-const Map: React.FC<MapPropsType> = ({
-  storeData,
-  currentLocation,
-  setCurrentLocation,
-  currentViewLocation,
-  setCurrentViewLocation,
-  isDetail,
-}) => {
+const Map: React.FC<MapPropsType> = ({ storeData, currentLocation, setCurrentLocation, currentViewLocation, setCurrentViewLocation, isDetail }) => {
   const [storeInfo, setStoreInfo] = useState<StoreDataType | null>(null);
   const [isMarkerClicked, setIsMarkerClicked] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -108,6 +103,11 @@ const Map: React.FC<MapPropsType> = ({
     }
   };
 
+  // 이미지 로드 실패시 대체 이미지로 설정하는 함수
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = defaultImg;
+  };
+
   return (
     <>
       {!isDetail && (
@@ -126,7 +126,7 @@ const Map: React.FC<MapPropsType> = ({
           }}
         >
           <CardContainer>
-            <img src={storeInfo?.imageUrl} alt={storeInfo?.name} loading="lazy" />
+            <img src={storeInfo?.imageUrl} alt={storeInfo?.name} onError={handleImageError} loading="lazy" />
             <CardInfo>
               <h3>{storeInfo?.name}</h3>
               <p>{storeInfo?.id}</p>

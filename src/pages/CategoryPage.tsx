@@ -15,15 +15,17 @@ import etcfoodImg from "@/assets/images/h-etcfood.svg";
 import hairImg from "@/assets/images/h-hair.svg";
 import laundryImg from "@/assets/images/h-laundry.svg";
 import etcImg from "@/assets/images/h-etc.svg";
-import defaultImg from "@/assets/images/default-store-img.svg";
+import DefaultImg from "@/assets/images/default-store-img.svg?react";
 
-const CategoryPage = (): JSX.Element => {
+const CategoryPage = () => {
   const { districtId, district } = useRegionStore();
   const districtName = district[districtId];
 
   const { categoryId } = useCategoryStore();
 
   const [categoryData, setCategoryData] = useState<StoreData[] | null>(null);
+
+  const [imageError, setImageError] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +42,11 @@ const CategoryPage = (): JSX.Element => {
     fetchData();
   }, [categoryId, districtName]);
 
+  // 이미지 로드 실패시 대체 이미지로 설정하는 함수
+  const handleImageError = (id: string) => () => {
+    setImageError((prev) => ({ ...prev, [id]: true }));
+  };
+
   return (
     <CategoryContainer>
       <CategoryDesc categoryId={categoryId} />
@@ -50,16 +57,19 @@ const CategoryPage = (): JSX.Element => {
         <p>데이터가 없습니다😅</p>
       ) : (
         <ListWrapper>
-          {categoryData.map((data, index) => (
-            <ListLink key={index} to={`/store/${data.id}`}>
-              {data.imageUrl === "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
-                <img src={defaultImg} alt={`이미지 ${index}`} loading="lazy" />
-              ) : (
-                <img src={data.imageUrl} alt={`이미지 ${index}`} loading="lazy" />
-              )}
-              <h1>{data.name}</h1>
-            </ListLink>
-          ))}
+          {categoryData.map((data, index) => {
+            const isError = imageError[data.id];
+            return (
+              <ListLink key={index} to={`/store/${data.id}`}>
+                {isError ? (
+                  <DefaultImg /> // 로드 실패 시 SVG 컴포넌트 렌더링
+                ) : (
+                  <img src={data.imageUrl} alt={data.name} onError={handleImageError(String(data.id))} loading="lazy" />
+                )}
+                <h1>{data.name}</h1>
+              </ListLink>
+            );
+          })}
         </ListWrapper>
       )}
     </CategoryContainer>

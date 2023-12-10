@@ -1,5 +1,5 @@
 import { ZzanItemType } from "@/types/zzan/zzanItemType";
-import defaultImg from "@/assets/images/default-store-image.svg";
+import DefaultImg from "@/assets/images/default-store-img.svg?react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 const ZzanPage = () => {
   const [zzanData, setZzanData] = useState<ZzanItemType[] | null>(null);
+  const [imageError, setImageError] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,23 +23,31 @@ const ZzanPage = () => {
     fetchData();
   }, []);
 
+  // 이미지 로드 실패시 대체 이미지로 설정하는 함수
+  const handleImageError = (id: string) => () => {
+    setImageError((prev) => ({ ...prev, [id]: true }));
+  };
+
   return (
     <ZzanContainer>
       {!zzanData || zzanData.length === 0 ? (
         <p>데이터가 없습니다😅</p>
       ) : (
         <ListWrapper>
-          {zzanData.map((data, index) => (
-            <ListLink key={index} to={`/zzan-items/${data.zzanItemId}`}>
-              {data.imageUrl === "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
-                <img src={defaultImg} alt={`이미지 ${index}`} loading="lazy" />
-              ) : (
-                <img src={data.imageUrl} alt={`이미지 ${index}`} loading="lazy" />
-              )}
-              <h1>{data.shopName}</h1>
-              <span>{data.itemName}</span>
-            </ListLink>
-          ))}
+          {zzanData.map((data, index) => {
+            const isError = imageError[data.zzanItemId];
+            return (
+              <ListLink key={index} to={`/zzan-items/${data.zzanItemId}`}>
+                {isError ? (
+                  <DefaultImg />
+                ) : (
+                  <img src={data.imageUrl} alt={`이미지 ${index}`} onError={handleImageError(String(data.zzanItemId))} loading="lazy" />
+                )}
+                <h1>{data.shopName}</h1>
+                <span>{data.itemName}</span>
+              </ListLink>
+            );
+          })}
         </ListWrapper>
       )}
     </ZzanContainer>

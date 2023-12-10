@@ -1,18 +1,24 @@
 import React from "react";
 import { StoreDataType } from "@/types/map/storeDataType";
 import { styled } from "styled-components";
+import defaultImg from "@/assets/images/default-store.png";
 
 interface CardPropsType {
   storeData: StoreDataType[];
 }
 
 const Card: React.FC<CardPropsType> = ({ storeData }) => {
+  // 이미지 로드 실패시 대체 이미지로 설정하는 함수
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = defaultImg;
+  };
+
   return (
     <>
       {storeData?.map((store: StoreDataType) => {
         return (
           <CardContainer key={store.id}>
-            <img src={store.imageUrl} alt={store.name} loading="lazy" />
+            <img src={store.imageUrl} alt={store.name} onError={handleImageError} loading="lazy" />
             <CardInfo>
               <h3>{store.name}</h3>
               <p>좋아요 25개</p>
