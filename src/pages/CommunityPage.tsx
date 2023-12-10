@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 import { PostDataType } from "@/types/community/postDataType";
@@ -12,11 +12,12 @@ import { useNavigate } from "react-router-dom";
 const CommunityPage = () => {
   const [posts, setPosts] = useState<PostDataType[]>([]);
   const [showMyPosts, setShowMyPosts] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const MoveToTop = () => {
     console.log("MoveToTop function called");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    ref.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleNewPost = () => {
@@ -37,16 +38,14 @@ const CommunityPage = () => {
     fetchData();
   }, []);
 
-  const filteredPosts = showMyPosts
-    ? posts.filter((post) => post.writer === "janny")
-    : posts;
+  const filteredPosts = showMyPosts ? posts.filter((post) => post.writer === "janny") : posts;
 
   const handleMyPost = (checked: boolean) => {
     setShowMyPosts(checked);
   };
 
   return (
-    <LayoutContainer>
+    <LayoutContainer ref={ref}>
       <Checkbox>
         <label htmlFor="check-box">
           <input
@@ -61,22 +60,15 @@ const CommunityPage = () => {
       </Checkbox>
       <PostContainer>
         {showMyPosts
-          ? filteredPosts.map(
-              (post: PostDataType) =>
-                post.writer === "janny" && (
-                  <PostList key={post.id} post={post} />
-                )
-            )
-          : posts.map((post: PostDataType) => (
-              <PostList key={post.id} post={post} />
-            ))}
+          ? filteredPosts.map((post: PostDataType) => post.writer === "janny" && <PostList key={post.id} post={post} />)
+          : posts.map((post: PostDataType) => <PostList key={post.id} post={post} />)}
       </PostContainer>
       <ButtonContainer>
         <button onClick={handleNewPost}>
-          <img src={newPostImg} alt="새 글 쓰기" />
+          <img src={newPostImg} alt="새 글 쓰기" loading="lazy" />
         </button>
         <button onClick={MoveToTop}>
-          <img src={scrollUpImg} alt="상단으로 이동" />
+          <img src={scrollUpImg} alt="상단으로 이동" loading="lazy" />
         </button>
       </ButtonContainer>
     </LayoutContainer>
