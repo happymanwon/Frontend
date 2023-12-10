@@ -13,7 +13,10 @@
       "@pages/*": ["src/pages/*"],
       "@components/*": ["src/components/*"],
       "@stores/*": ["src/stores/*"],
-      "@styles/*": ["src/styles/*"]
+      "@styles/*": ["src/styles/*"],
+      "@types/*": ["src/types/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@utils/*": ["src/utils/*"]
     },
 
     /* Bundler mode */

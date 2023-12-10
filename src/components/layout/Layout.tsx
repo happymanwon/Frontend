@@ -16,9 +16,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <LayoutPage>
       <LayoutContainer>
-        {location.pathname === "/login" || location.pathname === "/post" || pageName === "profile" ? null : <Header />}
+        {location.pathname === "/login" || location.pathname.includes("/zzan-items") || pageName === "profile" ? null : <Header />}
         {children}
-        {location.pathname === "/login" ? null : <Nav />}
+        {location.pathname === "/login" || location.pathname === "/newpost" || location.pathname.includes("/zzan-items") ? null : <Nav />}
       </LayoutContainer>
     </LayoutPage>
   );

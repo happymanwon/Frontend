@@ -15,12 +15,15 @@ const Nav = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <Navbar>
-      <NavLink to="/map" className={isActive("/map") ? "active" : ""}>
+    <Navbar style={{ zIndex: "10", backgroundColor: "#fff" }}>
+      <NavLink
+        to="/map"
+        className={isActive("/map") || isActive("/map/detail") ? "active" : ""}
+      >
         <MapImg />
         <p>짠지도</p>
       </NavLink>
-      <NavLink to="/shop" className={isActive("/shop") ? "active" : ""}>
+      <NavLink to="/zzan" className={isActive("/zzan") ? "active" : ""}>
         <CoinImg />
         <p>짠처리</p>
       </NavLink>
@@ -60,7 +63,14 @@ const Navbar = styled.nav`
   align-items: center;
   padding: 0.75rem 2rem;
   box-shadow: 0px -2px 6px 0px rgba(0, 0, 0, 0.05);
-  font-family: NotoSansWOFF, sans-serif, Arial;
+
+  @media (max-width: 425px) {
+    & {
+      max-width: 100%;
+      width: calc(100% - 2rem);
+    }
+  }
+  font-family: NotoSansRegularWOFF, sans-serif, Arial;
 `;
 
 const NavLink = styled(Link)`

@@ -10,7 +10,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:8080",
+        target: "http://118.67.134.91:8080",
         changeOrigin: true,
         secure: false,
       },
@@ -26,6 +26,9 @@ export default defineConfig({
       },
       { find: "@stores", replacement: path.resolve(__dirname, "src/stores") },
       { find: "@styles", replacement: path.resolve(__dirname, "src/styles") },
+      { find: "@types", replacement: path.resolve(__dirname, "src/types") },
+      { find: "@hooks", replacement: path.resolve(__dirname, "src/hooks") },
+      { find: "@utils", replacement: path.resolve(__dirname, "src/utils") },
     ],
   },
 });

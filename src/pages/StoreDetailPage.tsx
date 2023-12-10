@@ -9,12 +9,12 @@ import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import styled, { keyframes } from "styled-components";
 import linkImg from "@/assets/images/link-share.svg";
 import kakaoImg from "@/assets/images/kakao-share.svg";
+import defaultImg from "@/assets/images/default-store.png";
 
-import { StoreData } from "store-datas";
-import useCategoryStore from "../stores/categories";
+import { Store } from "@/types/category/store";
 import useRegionStore from "../stores/location";
 import useLikeStore from "../stores/likes";
-import { shareKakao } from "@/utils/shareKakao";
+import { ShareKakao } from "@/components/ShareKakao";
 import LocationInfo from "@/components/LocationInfo";
 
 import { useEffect, useState } from "react";
@@ -23,14 +23,26 @@ import axios from "axios";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
-  const { categoryId } = useCategoryStore();
   const { districtId, district } = useRegionStore();
   const districtName = district[districtId];
   const { liked, toggleLike } = useLikeStore();
 
   const { storeId } = useParams<{ storeId: string }>();
-  const [storeData, setStoreData] = useState<StoreData>(null);
+  const [storeData, setStoreData] = useState<Store>();
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/api/shops/${Number(storeId)}`);
+        setStoreData(response.data.data[0]);
+        console.log(response.data.data[0]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [storeId]);
 
   const handleShareClick = () => {
     setBottomSheetVisible(true);
@@ -62,25 +74,32 @@ const StoreDetailPage = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const response = await axios.get(`/api/stores/${categoryId}`);     // 백엔드랑 통신할 때
-        const response = await axios.get(`/data/stores/${categoryId}.json`); // json 파일 사용
-        const filterDataById = response.data.filter(
-          (data) => data.sh_id === storeId
-        );
-        setStoreData(filterDataById);
-      } catch (error) {
-        console.error("Error fetching category data:", error);
-      }
-    };
-    fetchData();
-  }, [storeId, categoryId]);
+  function createDivsFromString(text) {
+    const lines = (text || "").split(/\r?\n/); // \r\n 또는 \n으로 문자열을 나눔
+    const divs = lines.map((line, index) => <div key={index}>{line}</div>); // 각 줄을 <div>로 변환
 
-  // if (!storeData) {
-  //   return <p>Loading...</p>;
-  // }
+    return divs;
+  }
+
+  const renderMenuInfo = () => {
+    if (storeData && storeData.menuList && storeData.menuList.length > 0) {
+      return storeData.menuList.map((menu, index) => (
+        <p key={index}>
+          <div className="price">
+            <div className="price-item">{menu.menuName}</div>
+            <div>{menu.menuPrice.toLocaleString()}원</div>
+          </div>
+        </p>
+      ));
+    } else {
+      return (
+        <div>
+          <p>현재 제공된 가격 정보가 없습니다.</p>
+          <p>자세한 내용은 업체로 전화 문의부탁드립니다.</p>
+        </div>
+      );
+    }
+  };
 
   return (
     <LayoutPage>
@@ -90,19 +109,19 @@ const StoreDetailPage = () => {
             <FontAwesomeIcon className="arrow" icon={faArrowLeft} />
           </div>
           <ImageWrapper>
-            {/* 사진 데이터 있을 때 
-              <img src={`${data.sh_photo}`} alt={`이미지 ${index}`} /> */}
-            <img
-              src="https://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=20220718174745.jpg"
-              alt="이미지"
-            />
+            {storeData?.imageUrl ===
+            "http://sftc.seoul.go.kr/mulga/inc/img_view.jsp?filename=" ? (
+              <img src={defaultImg} alt="상점사진" />
+            ) : (
+              <img src={storeData?.imageUrl} alt="상점사진" />
+            )}
           </ImageWrapper>
           <NameLikeWrapper>
-            <h2>상점이름sh_name</h2>
+            <h2>{storeData?.name}</h2>
             <div className="total-like">좋아요00개</div>
           </NameLikeWrapper>
           <div className="district-pride">
-            {districtName} | 주메뉴 또는 주력상품 sh_pride
+            {districtName} | {storeData?.menuList[0]?.menuName}
           </div>
         </StoreHeaderWrapper>
         <LikeShare>
@@ -121,14 +140,18 @@ const StoreDetailPage = () => {
         <InfoWrapper>
           <StoreInfo>
             <h3>상점소개</h3>
-            <p>sh_info 영업시간, 휴무일, sh_phone전화번호</p>
+            <div className="infoContainer">
+              {createDivsFromString(storeData?.info)}
+            </div>
           </StoreInfo>
           <MenuInfo>
             <h3>메뉴소개</h3>
+            {renderMenuInfo()}
           </MenuInfo>
           <MapInfo>
             <LocationInfo
-              address={"서울특별시 중구 세종대로 110 서울특별시청"}
+              address={`${storeData?.address})`}
+              way={`${storeData?.way}`}
             />
           </MapInfo>
         </InfoWrapper>
@@ -149,7 +172,7 @@ const StoreDetailPage = () => {
                 <span>링크 복사하기</span>
               </button>
               <div className="underline"></div>
-              <button onClick={shareKakao}>
+              <button onClick={ShareKakao}>
                 <img src={kakaoImg} />
                 <span>카카오톡 공유하기</span>
               </button>
@@ -163,14 +186,17 @@ const StoreDetailPage = () => {
 
 const LayoutPage = styled.div`
   display: block;
-  background-color: ${({ theme }) => theme.colors.lightGrey};
+  background-color: ${({ theme }) => theme.colors.greyBackground};
   height: 100vh;
   position: relative;
   max-width: 26.5rem;
   margin: auto;
+  font-family: NotoSansRegularWOFF, sans-serif, Arial;
   width: 100%;
-  overflow: scroll;
-  font-family: NotoSansWOFF, sans-serif, Arial;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @media (min-width: 1024px) {
     left: 50vw;
@@ -188,7 +214,8 @@ const LayoutContainer = styled.div`
 const StoreHeaderWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   padding-bottom: 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.greyLine};
+  border-bottom: 0.5px solid ${({ theme }) => theme.colors.grey};
+  width: 100%;
   .left {
     margin-top: 35px;
     margin-left: 15px;
@@ -207,25 +234,26 @@ const StoreHeaderWrapper = styled.div`
 const ImageWrapper = styled.div`
   height: 15rem;
   img {
-    width: 26rem;
+    width: 100%;
     height: 100%;
     object-fit: cover;
   }
 `;
 
 const NameLikeWrapper = styled.div`
+  padding: 20px 0 0 12px;
   display: flex;
-  margin-top: 20px;
-  gap: 10rem;
+  align-items: center;
+  justify-content: space-between;
   h2 {
+    font-family: NotoSansMediumWOFF, sans-serif, Arial;
     font-size: 20px;
-    font-weight: 500;
-    padding-left: 15px;
-  }
-
-  .total-like {
-    font-size: 12px;
     font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .total-like {
+    margin-right: 10px;
+    font-size: 12px;
   }
 `;
 
@@ -233,6 +261,7 @@ const LikeShare = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 8px 0;
   width: 100%;
   height: 3.125rem;
   background-color: ${({ theme }) => theme.colors.white};
@@ -255,23 +284,34 @@ const LikeShare = styled.div`
 
 const InfoWrapper = styled.div`
   width: 100%;
+  font-size: 12px;
+
   h3 {
-    font-size: 16px;
+    margin-bottom: 10px;
+    font-size: 15px;
     font-weight: 700;
+    font-family: NotoSansMediumWOFF, sans-serif, Arial;
   }
 `;
 
 const StoreInfo = styled.div`
   margin: 20px 0;
-  height: 8.75rem;
+  padding: 20px 0 20px 12px;
   background-color: ${({ theme }) => theme.colors.white};
-  padding: 10px 0 10px 10px;
 `;
 
 const MenuInfo = styled.div`
   margin: 20px 0;
   background-color: ${({ theme }) => theme.colors.white};
-  padding: 10px 0 10px 10px;
+  padding: 20px 0 20px 12px;
+  .price {
+    display: flex;
+  }
+  .price-item {
+    min-width: 50px;
+    font-weight: 700;
+    font-family: NotoSansMediumWOFF, sans-serif, Arial;
+  }
 `;
 
 const MapInfo = styled.div`
@@ -282,7 +322,7 @@ const MapInfo = styled.div`
     font-size: 12px;
   }
   h3 {
-    padding: 10px 0 0 10px;
+    padding: 20px 0 0 12px;
     font-size: 14px;
     font-weight: 700;
   }
