@@ -31,7 +31,9 @@ const ZzanDetailPage = () => {
   }, [zzanId]);
 
   // 이미지 로드 실패시 대체 이미지로 설정하는 함수
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
     e.currentTarget.src = defaultImg;
   };
 
@@ -43,15 +45,24 @@ const ZzanDetailPage = () => {
             <FontAwesomeIcon className="arrow" icon={faArrowLeft} />
           </div>
           <ImageWrapper>
-            <img src={zzanData?.shopInfo.imageUrl} alt="상점사진" onError={handleImageError} loading="lazy" />
+            <img
+              src={zzanData?.shopInfo.imageUrl}
+              alt="상점사진"
+              onError={handleImageError}
+              loading="lazy"
+            />
           </ImageWrapper>
           <NamePriceWrapper>
             <h2>{zzanData?.shopName}</h2>
             <span className="item-name">{zzanData?.itemName}</span>
             <div className="discount-info">
-              <div className="original-price">₩{zzanData?.originalPrice.toLocaleString()}</div>
+              <div className="original-price">
+                ₩{zzanData?.originalPrice.toLocaleString()}
+              </div>
               <span className="discount-rate">{zzanData?.discountRate}%</span>
-              <span className="sale-price">₩{zzanData?.salePrice.toLocaleString()}</span>
+              <span className="sale-price">
+                ₩{zzanData?.salePrice.toLocaleString()}
+              </span>
             </div>
           </NamePriceWrapper>
         </StoreHeaderWrapper>
@@ -66,9 +77,15 @@ const ZzanDetailPage = () => {
               <div className="price-item">{zzanData?.itemName}</div>
               <div>{zzanData?.originalPrice.toLocaleString()}원</div>
             </div>
+            <div className="notice">
+              가격 정보는 업소의 사정에 따라 변경될 수 있습니다.
+            </div>
           </MenuInfo>
           <MapInfo>
-            <LocationInfo address={`${zzanData?.shopInfo.roadAddress}`} way={`${zzanData?.shopInfo.way}`} />
+            <LocationInfo
+              address={`${zzanData?.shopInfo.roadAddress}`}
+              way={`${zzanData?.shopInfo.way}`}
+            />
           </MapInfo>
         </InfoWrapper>
         <BuyButtonWrapper>
@@ -170,7 +187,7 @@ const NamePriceWrapper = styled.div`
 const InfoWrapper = styled.div`
   width: 100%;
   font-size: 12px;
-
+  line-height: 26px;
   h3 {
     margin-bottom: 10px;
     font-size: 15px;
@@ -181,21 +198,26 @@ const InfoWrapper = styled.div`
 
 const StoreInfo = styled.div`
   margin: 20px 0;
-  padding: 20px 0 20px 12px;
+  padding: 20px 12px 20px 12px;
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const MenuInfo = styled.div`
   margin: 20px 0;
   background-color: ${({ theme }) => theme.colors.white};
-  padding: 20px 0 20px 12px;
+  padding: 20px 12px 20px 12px;
   .price {
     display: flex;
   }
   .price-item {
-    min-width: 50px;
+    min-width: 70px;
     font-weight: 700;
     font-family: NotoSansMediumWOFF, sans-serif, Arial;
+  }
+  .notice {
+    font-size: 10px;
+    color: ${({ theme }) => theme.colors.grey};
+    font-weight: 500;
   }
 `;
 
@@ -204,10 +226,11 @@ const MapInfo = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   p {
     padding-left: 12px;
+    padding-right: 12px;
     font-size: 12px;
   }
   h3 {
-    padding: 20px 0 0 12px;
+    padding: 20px 12px 0 12px;
     font-size: 15px;
     font-weight: 700;
   }

@@ -1,5 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowUpFromBracket, faX, faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faArrowUpFromBracket,
+  faX,
+  faHeart as faHeartSolid,
+} from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import styled, { keyframes } from "styled-components";
 import linkImg from "@/assets/images/link-share.svg";
@@ -31,6 +36,7 @@ const StoreDetailPage = () => {
       try {
         const response = await axios.get(`/api/shops/${Number(storeId)}`);
         setStoreData(response.data.data[0]);
+        console.log(response.data.data[0]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -68,7 +74,7 @@ const StoreDetailPage = () => {
     }
   };
 
-  function createDivsFromString(text: string | undefined) {
+  function createDivsFromString(text) {
     const lines = (text || "").split(/\r?\n/); // \r\n 또는 \n으로 문자열을 나눔
     const divs = lines.map((line, index) => <div key={index}>{line}</div>); // 각 줄을 <div>로 변환
 
@@ -77,16 +83,14 @@ const StoreDetailPage = () => {
 
   const renderMenuInfo = () => {
     if (storeData && storeData.menuList && storeData.menuList.length > 0) {
-      return storeData.menuList.map((menu, index) => {
-        return (
-          <p key={index}>
-            <div className="price">
-              <div className="price-item">{menu.menuName}</div>
-              <div>{menu.menuPrice.toLocaleString()}원</div>
-            </div>
-          </p>
-        );
-      });
+      return storeData.menuList.map((menu, index) => (
+        <p key={index}>
+          <div className="price">
+            <div className="price-item">{menu.menuName}</div>
+            <div>{menu.menuPrice.toLocaleString()}원</div>
+          </div>
+        </p>
+      ));
     } else {
       return (
         <div>
@@ -98,7 +102,9 @@ const StoreDetailPage = () => {
   };
 
   // 이미지 로드 실패시 대체 이미지로 설정하는 함수
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
     e.currentTarget.src = defaultImg;
   };
 
@@ -110,7 +116,12 @@ const StoreDetailPage = () => {
             <FontAwesomeIcon className="arrow" icon={faArrowLeft} />
           </div>
           <ImageWrapper>
-            <img src={storeData?.imageUrl} alt="상점사진" onError={handleImageError} loading="lazy" />
+            <img
+              src={storeData?.imageUrl}
+              alt="상점사진"
+              onError={handleImageError}
+              loading="lazy"
+            />
           </ImageWrapper>
           <NameLikeWrapper>
             <h2>{storeData?.name}</h2>
@@ -122,7 +133,10 @@ const StoreDetailPage = () => {
         </StoreHeaderWrapper>
         <LikeShare>
           <button className="like" onClick={handleLike}>
-            <FontAwesomeIcon icon={liked ? faHeartSolid : faHeartRegular} id={liked ? "liked" : ""} />
+            <FontAwesomeIcon
+              icon={liked ? faHeartSolid : faHeartRegular}
+              id={liked ? "liked" : ""}
+            />
             {liked ? "좋아요 취소" : "좋아요"}
           </button>
           <button className="share" onClick={handleShareClick}>
@@ -132,15 +146,23 @@ const StoreDetailPage = () => {
         </LikeShare>
         <InfoWrapper>
           <StoreInfo>
-            <h3>상점소개</h3>
-            <div className="infoContainer">{createDivsFromString(storeData?.info)}</div>
+            <h3>가게 소개</h3>
+            <div className="infoContainer">
+              {createDivsFromString(storeData?.info)}
+            </div>
           </StoreInfo>
           <MenuInfo>
             <h3>메뉴소개</h3>
             {renderMenuInfo()}
+            <div className="notice">
+              가격 정보는 업소의 사정에 따라 변경될 수 있습니다.
+            </div>
           </MenuInfo>
           <MapInfo>
-            <LocationInfo address={`${storeData?.address})`} way={`${storeData?.way}`} />
+            <LocationInfo
+              address={`${storeData?.address}`}
+              way={`${storeData?.way}`}
+            />
           </MapInfo>
         </InfoWrapper>
       </LayoutContainer>
@@ -273,6 +295,7 @@ const LikeShare = styled.div`
 const InfoWrapper = styled.div`
   width: 100%;
   font-size: 12px;
+  line-height: 26px;
 
   h3 {
     margin-bottom: 10px;
@@ -284,21 +307,26 @@ const InfoWrapper = styled.div`
 
 const StoreInfo = styled.div`
   margin: 20px 0;
-  padding: 20px 0 20px 12px;
+  padding: 20px 12px 20px 12px;
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const MenuInfo = styled.div`
   margin: 20px 0;
   background-color: ${({ theme }) => theme.colors.white};
-  padding: 20px 0 20px 12px;
+  padding: 20px 12px 20px 12px;
   .price {
     display: flex;
   }
   .price-item {
-    min-width: 50px;
+    min-width: 70px;
     font-weight: 700;
     font-family: NotoSansMediumWOFF, sans-serif, Arial;
+  }
+  .notice {
+    font-size: 10px;
+    color: ${({ theme }) => theme.colors.grey};
+    font-weight: 500;
   }
 `;
 
@@ -306,12 +334,13 @@ const MapInfo = styled.div`
   margin: 20px 0;
   background-color: ${({ theme }) => theme.colors.white};
   p {
-    padding-left: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
     font-size: 12px;
   }
   h3 {
-    padding: 20px 0 0 12px;
-    font-size: 14px;
+    padding: 20px 12px 0 12px;
+    font-size: 15px;
     font-weight: 700;
   }
   #map {
