@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationCrosshairs, faRotateRight } from "@fortawesome/free-solid-svg-icons";
 
 import defaultImg from "@/assets/images/default-store.png";
+import { useNavigate } from "react-router-dom";
 
 declare global {
   interface Window {
@@ -23,11 +24,19 @@ interface MapPropsType {
   isDetail: boolean;
 }
 
-const Map: React.FC<MapPropsType> = ({ storeData, currentLocation, setCurrentLocation, currentViewLocation, setCurrentViewLocation, isDetail }) => {
+const Map: React.FC<MapPropsType> = ({
+  storeData,
+  currentLocation,
+  setCurrentLocation,
+  currentViewLocation,
+  setCurrentViewLocation,
+  isDetail,
+}) => {
   const [storeInfo, setStoreInfo] = useState<StoreDataType | null>(null);
   const [isMarkerClicked, setIsMarkerClicked] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [mapInfo, setMapInfo] = useState<any>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const mapContainer = document.getElementById("map");
@@ -108,6 +117,11 @@ const Map: React.FC<MapPropsType> = ({ storeData, currentLocation, setCurrentLoc
     e.currentTarget.src = defaultImg;
   };
 
+  const handleMoveStore = (id: number | undefined) => {
+    if (!id) return;
+    navigate(`/store/${id}`);
+  };
+
   return (
     <>
       {!isDetail && (
@@ -125,7 +139,7 @@ const Map: React.FC<MapPropsType> = ({ storeData, currentLocation, setCurrentLoc
             transform: isMarkerClicked ? "translateY(0)" : "translateY(100%)",
           }}
         >
-          <CardContainer>
+          <CardContainer onClick={() => handleMoveStore(storeInfo?.id)}>
             <img src={storeInfo?.imageUrl} alt={storeInfo?.name} onError={handleImageError} loading="lazy" />
             <CardInfo>
               <h3>{storeInfo?.name}</h3>
@@ -215,6 +229,7 @@ const CardContainer = styled.div`
   background: #fff;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   margin: 1.0625rem 0;
+  cursor: pointer;
 
   & img {
     height: 71%;
