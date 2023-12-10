@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
 import useRegionStore from "@stores/location";
+import SelectBox from "./SelectBox";
 
 interface Location {
   latitude: number;
@@ -12,7 +14,8 @@ interface Location {
 const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_REST_API;
 
 const Geolocation = () => {
-  const { districtId, setDistrictId, district, setDistrict } = useRegionStore();
+  const domain = useLocation();
+  const { districtId, setDistrictId, district } = useRegionStore();
   // 초기값은 서울시청 위도 경도
   const [location, setLocation] = useState<Location | null>({
     latitude: 37.5666612,
@@ -42,18 +45,15 @@ const Geolocation = () => {
             .get(apiUrl, { headers })
             .then((response) => {
               // 응답에서 원하는 데이터 추출
-              const region2Depth =
-                response.data.documents[0].address.region_2depth_name;
+              const result = response.data.documents[0].address;
+              const region1Depth = result.region_1depth_name;
+              const region2Depth = result.region_2depth_name;
 
               // 카카오 지도에서 찾은 지역구 이름과 district 안에 키값과 같은 것 찾기 - 적용
-              const matchingRegion = Object.entries(district).find(
-                ([value]) => value === region2Depth
-              );
-
-              if (matchingRegion) {
+              const matchingRegion = Object.keys(district).find((key) => district[Number(key)] === region2Depth);
+              if (region1Depth.includes("서울") && matchingRegion) {
                 // 찾은 값을 선택된 지역으로 설정
-                setDistrictId(parseInt(matchingRegion[0]));
-                setDistrict(region2Depth);
+                setDistrictId(Number(matchingRegion));
               }
             })
             .catch((error) => {
@@ -69,21 +69,21 @@ const Geolocation = () => {
     }
   }, []);
 
-  const handleRegionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selected = parseInt(e.target.value); // 선택한 값을 숫자로 변환
-    setDistrictId(selected);
-    setDistrict(district[selected]); // 선택한 지역 이름 설정
+  const handleRegionChange = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setDistrictId(Number(e.currentTarget.id));
+    // setDistrict(district[selected]); // 선택한 지역 이름 설정
   };
+
+  const isMain = domain.pathname === "/";
 
   return (
     <DistrictContainer>
-      <select value={districtId || ""} onChange={handleRegionChange}>
-        {Object.keys(district).map((key) => (
-          <option key={key} value={parseInt(key)}>
-            {district[parseInt(key)]}
-          </option>
-        ))}
-      </select>
+      <SelectBox
+        options={Object.entries(district)}
+        selectedValue={district[districtId]}
+        onClick={handleRegionChange}
+        isMain={isMain}
+      />
     </DistrictContainer>
   );
 };
