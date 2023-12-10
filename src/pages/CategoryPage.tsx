@@ -31,7 +31,9 @@ const CategoryPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/api/shops?categoryId=${categoryId}`); // json 파일 사용
-        const filterDataByDistrict = response.data.data.filter((data: StoreData) => data.address.includes(districtName));
+        const filterDataByDistrict = response.data.data.filter((data: StoreData) =>
+          data.address.includes(districtName)
+        );
         setCategoryData(filterDataByDistrict);
         console.log(filterDataByDistrict);
       } catch (error) {
@@ -154,6 +156,7 @@ const ListLink = styled(Link)`
     margin-top: 5px;
     font-size: 14px;
     font-weight: 500;
+    font-family: "NotoSansMediumWOFF";
   }
 `;
 

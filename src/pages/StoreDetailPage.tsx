@@ -31,7 +31,6 @@ const StoreDetailPage = () => {
       try {
         const response = await axios.get(`/api/shops/${Number(storeId)}`);
         setStoreData(response.data.data[0]);
-        console.log(response.data.data[0]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -69,7 +68,7 @@ const StoreDetailPage = () => {
     }
   };
 
-  function createDivsFromString(text) {
+  function createDivsFromString(text: string | undefined) {
     const lines = (text || "").split(/\r?\n/); // \r\n 또는 \n으로 문자열을 나눔
     const divs = lines.map((line, index) => <div key={index}>{line}</div>); // 각 줄을 <div>로 변환
 
@@ -78,14 +77,16 @@ const StoreDetailPage = () => {
 
   const renderMenuInfo = () => {
     if (storeData && storeData.menuList && storeData.menuList.length > 0) {
-      return storeData.menuList.map((menu, index) => (
-        <p key={index}>
-          <div className="price">
-            <div className="price-item">{menu.menuName}</div>
-            <div>{menu.menuPrice.toLocaleString()}원</div>
-          </div>
-        </p>
-      ));
+      return storeData.menuList.map((menu, index) => {
+        return (
+          <p key={index}>
+            <div className="price">
+              <div className="price-item">{menu.menuName}</div>
+              <div>{menu.menuPrice.toLocaleString()}원</div>
+            </div>
+          </p>
+        );
+      });
     } else {
       return (
         <div>
