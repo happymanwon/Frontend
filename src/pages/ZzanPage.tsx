@@ -1,31 +1,31 @@
 import { ZzanItemType } from "@/types/zzan/zzanItemType";
-import DefaultImg from "@/assets/images/default-store-img.svg?react";
+import defaultImg from "@/assets/images/default-store.png";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
+import useRegionStore from "@/stores/location";
 
 const ZzanPage = () => {
   const [zzanData, setZzanData] = useState<ZzanItemType[] | null>(null);
-  const [imageError, setImageError] = useState<{ [key: string]: boolean }>({});
+  const { districtId } = useRegionStore();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/zzan-items`); // json 파일 사용
+        const response = await axios.get(`/api/zzan-items?categoryId=1&localCode=${districtId}`); // json 파일 사용
         setZzanData(response.data.data);
-        console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching category data:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [districtId]);
 
   // 이미지 로드 실패시 대체 이미지로 설정하는 함수
-  const handleImageError = (id: string) => () => {
-    setImageError((prev) => ({ ...prev, [id]: true }));
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = defaultImg;
   };
 
   return (
@@ -35,14 +35,9 @@ const ZzanPage = () => {
       ) : (
         <ListWrapper>
           {zzanData.map((data, index) => {
-            const isError = imageError[data.zzanItemId];
             return (
               <ListLink key={index} to={`/zzan-items/${data.zzanItemId}`}>
-                {isError ? (
-                  <DefaultImg />
-                ) : (
-                  <img src={data.imageUrl} alt={`이미지 ${index}`} onError={handleImageError(String(data.zzanItemId))} loading="lazy" />
-                )}
+                <img src={data.imageUrl} alt={`이미지 ${index}`} onError={handleImageError} loading="lazy" />
                 <h1>{data.shopName}</h1>
                 <span>{data.itemName}</span>
               </ListLink>
@@ -86,7 +81,7 @@ const ListLink = styled(Link)`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0px 4px 4px 0px #00000040;
-  font-family: NotoSansMediumWOFF, sans-serif, Arial;
+  font-family: "NotoSansMediumWOFF";
   cursor: pointer;
 
   img {
@@ -98,11 +93,13 @@ const ListLink = styled(Link)`
   h1 {
     margin: 12px 0 3px 14px;
     font-size: 15px;
+    font-family: "NotoSansMediumWOFF";
   }
   span {
     margin-left: 14px;
     font-size: 12px;
     color: ${({ theme }) => theme.colors.mainColor};
+    font-family: "NotoSansMediumWOFF";
   }
 `;
 
