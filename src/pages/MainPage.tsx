@@ -21,11 +21,6 @@ const MainPage = (): JSX.Element => {
         </TitleWrapper>
         <CategoryWrapper>
           <Category />
-          <div className="three-categories">
-            <span>미용</span>
-            <span>세탁</span>
-            <span>기타</span>
-          </div>
         </CategoryWrapper>
       </MainView>
     </MainContainer>
@@ -125,6 +120,19 @@ const CategoryWrapper = styled.div`
     width: 6.5625rem;
     height: 6.5625rem;
     color: transparent;
+    position: relative;
+    &::after {
+      content: "미용";
+      color: #1a1a1a;
+      font-family: Noto Sans KR;
+      font-size: 0.9375rem;
+      font-style: normal;
+      font-weight: 500;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+    }
   }
   #category-button-6 {
     background-image: url(${laundryIcon});
@@ -134,6 +142,19 @@ const CategoryWrapper = styled.div`
     width: 6.5625rem;
     height: 6.5625rem;
     color: transparent;
+    position: relative;
+    &::after {
+      content: "세탁";
+      color: #1a1a1a;
+      font-family: Noto Sans KR;
+      font-size: 0.9375rem;
+      font-style: normal;
+      font-weight: 500;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+    }
   }
   #category-button-7 {
     background-image: url(${etcIcon});
@@ -143,6 +164,19 @@ const CategoryWrapper = styled.div`
     width: 6.5625rem;
     height: 6.5625rem;
     color: transparent;
+    position: relative;
+    &::after {
+      content: "기타";
+      color: #1a1a1a;
+      font-family: Noto Sans KR;
+      font-size: 0.9375rem;
+      font-style: normal;
+      font-weight: 500;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+    }
   }
   .three-categories {
     font-size: 16px;
