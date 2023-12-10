@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import logoImg from "@/assets/images/medium-logo.svg";
 import titleImg from "@/assets/images/manwon-title.svg";
+import naverLogo from "@/assets/images/naver-logo.png";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -25,9 +26,14 @@ const LoginPage: React.FC = () => {
         <span className="bold-font">사람들을 위한</span>
       </div>
       <img src={titleImg} className="title" loading="lazy" />
-      <KakaoButton onClick={handleLogin}>
-        <FontAwesomeIcon icon={faComment} size="2x" style={{ color: "#2b1417" }} />
-      </KakaoButton>
+      <ButtonList>
+        <KakaoButton onClick={handleLogin}>
+          <FontAwesomeIcon icon={faComment} size="2x" style={{ color: "#2b1417" }} />
+        </KakaoButton>
+        <NaverButton>
+          <img src={naverLogo} alt="네이버 버튼" />
+        </NaverButton>
+      </ButtonList>
       <BottomWrapper>
         <div>
           <span>아직 만원의 행복 회원이 아니신가요?</span>
@@ -67,6 +73,13 @@ const JoinContainer = styled.div`
     margin-left: 5px;
   }
 `;
+const ButtonList = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 40px;
+`;
 const KakaoButton = styled.button`
   background-color: #fee500;
   border: none;
@@ -75,6 +88,23 @@ const KakaoButton = styled.button`
   height: 56px;
   color: #000000;
   cursor: pointer;
+`;
+const NaverButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1ec800;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  color: #ffffff;
+  cursor: pointer;
+
+  span {
+    font-size: 40px;
+    font-weight: 700;
+  }
 `;
 const BottomWrapper = styled.div`
   position: absolute;
