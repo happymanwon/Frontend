@@ -24,14 +24,11 @@ const MapDetailPage: React.FC = () => {
   const { isMap } = useMapToggleStore();
   const [params] = useSearchParams();
   const value = params.get("search") || "";
-  const { districtId, district }: RegionStore = useRegionStore();
+  const { districtId }: RegionStore = useRegionStore();
   const [currentLocation, setCurrentLocation] = useState<CurrentLocation | null>(null);
 
-  const localCode =
-    value === "" ? districtId : Number(Object.keys(district).filter((key) => district[Number(key)] === value)[0]);
-
   const getStoreAPI = async () => {
-    const { data } = await axios.get<ResultDataType>(`/api/shops?localCode=${localCode}`);
+    const { data } = await axios.get<ResultDataType>(`/api/shops/search?keyword=${encodeURIComponent(value)}`);
     return data;
   };
 
