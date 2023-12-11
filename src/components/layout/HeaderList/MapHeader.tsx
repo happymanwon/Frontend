@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useMapToggleStore } from "@stores/mapToggle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeft,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 import styled from "styled-components";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
@@ -83,26 +80,15 @@ const MapHeader: React.FC = () => {
         ) : (
           <>
             <SearchDiv>
-              <FontAwesomeIcon
-                icon={faArrowLeft}
-                onClick={() => history.back()}
-              />
+              <FontAwesomeIcon icon={faArrowLeft} onClick={() => history.back()} />
               <H2>{params.get("search")}</H2>
             </SearchDiv>
             <FilterDiv>
               <ToggleDiv>
-                <ToggleSpan
-                  onClick={handleToggleClick}
-                  selected={isMap}
-                  position="left"
-                >
+                <ToggleSpan onClick={handleToggleClick} selected={isMap} position="left">
                   지도
                 </ToggleSpan>
-                <ToggleSpan
-                  onClick={handleToggleClick}
-                  selected={!isMap}
-                  position="right"
-                >
+                <ToggleSpan onClick={handleToggleClick} selected={!isMap} position="right">
                   목록
                 </ToggleSpan>
               </ToggleDiv>
@@ -195,6 +181,7 @@ const SearchDiv = styled.div`
     font-weight: 700;
     line-height: 2.09375rem;
     margin: 1rem 0 0.375rem;
+    cursor: pointer;
   }
 
   &::after {
