@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
+import useUserStore from "@/stores/useUserStore";
 import ChatImg from "@/assets/images/chat-img.svg?react";
 import CoinImg from "@/assets/images/coin-img.svg?react";
 import MapImg from "@/assets/images/map-img.svg?react";
@@ -9,7 +10,9 @@ import styled from "styled-components";
 
 const Nav = () => {
   // 로그인 여부 (전역 상태 관리 시 지울 예정)
-  const [isLogin] = useState(false);
+  const { memberId, nickname } = useUserStore.getState();
+  console.log(memberId, nickname);
+  const [isLogin] = useState(memberId && true);
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
