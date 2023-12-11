@@ -15,6 +15,47 @@ const PostDetailPage = () => {
   const navigate = useNavigate();
   const { postId } = useParams<{ postId?: string }>(); // 파라미터가 없을 수 있으므로 postId를 옵셔널로 지정
   const [post, setPost] = useState<PostDataType | null>(null);
+  const [comment, setComment] = useState(""); // 댓글 내용 상태값
+  const [showModal, setShowModal] = useState(false);
+
+  // 작성자와 로그인 사용자를 비교하여 모달 표시
+  // const isAuthor = post?.writer === loggedInUser;
+
+  const handleDeleteClick = async () => {
+    const confirmed = window.confirm("정말로 삭제하시겠습니까?");
+    if (confirmed) {
+      try {
+        await axios.delete(`/api/posts/${postId}`);
+        alert("게시물이 삭제되었습니다.");
+        navigate("/community");
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
+    }
+  };
+
+  const handleEditClick = () => {
+    // 수정 페이지로 이동하는 동작
+    navigate(`/edit-post/${postId}`);
+  };
+
+  const handleCommentChange = (event) => {
+    setComment(event.target.value); // 입력된 댓글 내용을 상태값에 저장
+  };
+
+  const handleCommentSubmit = async () => {
+    try {
+      // 서버로 댓글 내용 보내기
+      const response = await axios.post("/api/comments", {
+        boardId: postId,
+        content: comment,
+      });
+      console.log("댓글이 성공적으로 전송되었습니다.", response.data);
+      setComment("");
+    } catch (error) {
+      console.error("댓글 전송 중 에러:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,9 +88,22 @@ const PostDetailPage = () => {
           <FontAwesomeIcon icon={faArrowLeft} />
         </div>
         <h2>단짠단짠</h2>
-        <div className="right">
+        {/* {isAuthor && ( */}
+        <div className="right" onClick={() => setShowModal(!showModal)}>
           <FontAwesomeIcon icon={faEllipsisVertical} />
         </div>
+        {/* )} */}
+        {showModal && (
+          // 삭제 또는 수정 모달
+          <ModalContainer>
+            <Button className="edit" onClick={handleEditClick}>
+              <span>수정하기</span>
+            </Button>
+            <Button className="delete" onClick={handleDeleteClick}>
+              <span>삭제하기</span>
+            </Button>
+          </ModalContainer>
+        )}
         <TagContainer>
           {post?.tag.map((tag: string, index: number) => (
             <div className="tag" key={index}>
@@ -92,15 +146,64 @@ const PostDetailPage = () => {
             </div>
           ))}
         </CommentContainer>
+        <WriteCommentWrapper>
+          <input
+            type="text"
+            value={comment}
+            placeholder="댓글달기"
+            onChange={handleCommentChange}
+          />
+          <button onClick={handleCommentSubmit}>게시</button>
+        </WriteCommentWrapper>
       </BodyContainer>
     </LayoutContainer>
   );
 };
 
+// 모달 스타일
+const ModalContainer = styled.div`
+  box-sizing: border-box;
+  position: absolute;
+  width: 118px;
+  height: 70px;
+  left: 286px;
+  top: 83px;
+  background: #ffffff;
+  border: 0.5px solid #dadada;
+  box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.1);
+`;
+
+const Button = styled.button`
+  position: relative;
+  text-align: center;
+  width: 118px;
+  height: 35px;
+  left: 0px;
+  border: none;
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  &.edit {
+    background-color: ${({ theme }) => theme.colors.white};
+  }
+`;
+
+// 페이지 스타일
 const LayoutContainer = styled.div`
   width: 100%;
+  display: block;
+  height: 100vh;
+  position: relative;
+  max-width: 26.5rem;
   font-family: NotoSansRegularWOFF, sans-serif, Arial;
   background-color: ${({ theme }) => theme.colors.white};
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Header = styled.div`
@@ -150,7 +253,7 @@ const TagContainer = styled.div`
 
 const BodyContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 6.125rem - 4.5rem);
+  height: calc(100vh - 6.125rem);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -241,7 +344,7 @@ const MapContainer = styled.div`
 const CommentContainer = styled.div`
   width: 23.75rem;
   margin-top: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 70px;
   .comment {
     display: flex;
     align-items: center;
@@ -253,6 +356,35 @@ const CommentContainer = styled.div`
     width: 35px;
     border-radius: 50%;
     border: 0.5px solid ${({ theme }) => theme.colors.greyUnderLine};
+  }
+`;
+
+const WriteCommentWrapper = styled.div`
+  position: fixed;
+  bottom: 0;
+  z-index: 99;
+  width: 26.5rem;
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  background-color: ${({ theme }) => theme.colors.white};
+  border-top: 0.5px solid ${({ theme }) => theme.colors.greyUnderLine};
+  input {
+    border: none;
+    margin-left: 24px;
+    width: 18.75rem;
+    &:focus {
+      outline: none;
+    }
+  }
+  button {
+    font-family: NotoSansLightWOFF, sans-serif, Arial;
+    font-size: 13px;
+    border: none;
+    background: none;
+    color: ${({ theme }) => theme.colors.mainColor};
+    cursor: pointer;
+    margin-right: 24px;
   }
 `;
 

@@ -23,6 +23,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {children}
         {location.pathname === "/login" ||
         location.pathname === "/newpost" ||
+        location.pathname.includes("/post") ||
         location.pathname.includes("/zzan-items") ? null : (
           <Nav />
         )}
