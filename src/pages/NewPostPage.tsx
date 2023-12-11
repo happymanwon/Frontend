@@ -17,6 +17,7 @@ import tagImg from "@/assets/images/tag.svg";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import TagifyComponent from "@/components/TagifyComponent";
 
 const NewPostPage = () => {
   const [mapModal, setMapModal] = useState(false);
@@ -25,12 +26,13 @@ const NewPostPage = () => {
   const [isImageAdded, setIsImageAdded] = useState(false);
 
   const [storeData, setStoreData] = useState<StoreData | null>(null);
-  const [storeAddr, setStoreAddr] = useState("");
+  const [storeAddr, setStoreAddr] = useState(""); // 글 내용 속 가게 주소
   const [showImages, setShowImages] = useState([]);
 
-  const navigate = useNavigate();
+  const [tags, setTags] = useState<string[]>([]); // 태그 상태
+  const [content, setContent] = useState(""); // 컨텐츠 상태
 
-  const suggestions = ["apple", "banana"];
+  const navigate = useNavigate();
 
   // 지도 모달창 부분
   function MapModal() {
@@ -137,14 +139,38 @@ const NewPostPage = () => {
     setShowImages(images);
   };
 
-  const submitPost = async (e) => {
+  const handleContentChange = (e) => {
+    setContent(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // try {
-    //   const response = await axios.post("/api/boards");
-    //   console.log("Post submitted successfully!", response.data);
-    // } catch (error) {
-    //   console.error("Error submitting post:", error);
-    // }
+
+    const formData = new FormData();
+    formData.append("content", content); // content 추가
+    formData.append("address", storeAddr); // 주소추가
+    // 기존의 태그 데이터 추가
+    for (const tag of tags) {
+      formData.append("tags", tag);
+    }
+
+    // 이미지 파일 추가
+    for (const image of showImages) {
+      // 이미지 파일을 Blob 형태로 변환
+      const blobImage = await fetch(image).then((r) => r.blob());
+      formData.append("images", blobImage);
+    }
+
+    try {
+      const response = await axios.post("/api/post", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
+        },
+      });
+      console.log("Data sent successfully!", response.data);
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
   };
 
   return (
@@ -155,24 +181,26 @@ const NewPostPage = () => {
         </div>
         <div className="new-post-header">
           <h2>단짠단짠 글쓰기</h2>
-          <button type="submit" form="post-content">
-            완료
-          </button>
+          <button onClick={handleSubmit}>완료</button>
         </div>
         <TagInput>
-          <img src={tagImg} />
-          <input type="text" placeholder="나만의 해시태그를 입력해 보세요" />
+          <div>
+            <img src={tagImg} />
+          </div>
+          <div className="tags">
+            <TagifyComponent setTags={setTags} />
+          </div>
         </TagInput>
       </Header>
       <ContentWrapper>
-        <form id="post-content" onSubmit={submitPost}>
-          <PostContainer>
-            <PostWrapper
-              name="content"
-              placeholder="자유롭게 이야기를 적어보세요! (글자 수는 최소 10자 이상 500자 미만)"
-            ></PostWrapper>
-          </PostContainer>
-        </form>
+        <PostContainer>
+          <PostWrapper
+            name="content"
+            value={content}
+            onChange={handleContentChange}
+            placeholder="자유롭게 이야기를 적어보세요! (글자 수는 최소 10자 이상 500자 미만)"
+          ></PostWrapper>
+        </PostContainer>
         {isMapAdded && (
           <MapContainer>
             <LocationInfo address={storeAddr} way={"가는길"} />
@@ -350,13 +378,17 @@ const Header = styled.div`
 `;
 
 const TagInput = styled.div`
-  margin: 10px 0 0 23px;
   display: flex;
-  input {
-    border: none;
-    width: 12.5rem;
-    outline: none;
-    font-size: 11px;
+  justify-content: start;
+  width: 26rem;
+  position: relative;
+  img {
+    position: absolute;
+    left: 0;
+    margin: 10px 0 0 23px;
+  }
+  .tags {
+    margin: 7px 0 0 45px;
   }
 `;
 
