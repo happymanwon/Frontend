@@ -40,7 +40,7 @@ const CardContainer = styled.div`
   height: 14.375rem;
   border-radius: 0.75rem;
   background: #fff;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
   margin: 1.0625rem 0;
   cursor: pointer;
 
