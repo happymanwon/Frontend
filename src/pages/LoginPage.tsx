@@ -10,12 +10,12 @@ import naverLogo from "@/assets/images/naver-logo.png";
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_REST_API;
-  const redirect_uri = import.meta.env.VITE_KAKAO_REDIRECT_URI; //Redirect URI
+  const redirect_front_uri = import.meta.env.VITE_KAKAO_FRONT_REDIRECT_URI; //Redirect URI
+  // const redirect_back_uri = import.meta.env.VITE_KAKAO_BACK_REDIRECT_URI; //Redirect URI
   // oauth 요청 URL
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_API_KEY}&redirect_uri=${redirect_uri}&response_type=code`;
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_API_KEY}&redirect_uri=${redirect_front_uri}&response_type=code`;
   const handleLogin = () => {
     window.location.href = kakaoURL;
-    navigate("/auth");
   };
 
   return (
@@ -28,11 +28,7 @@ const LoginPage: React.FC = () => {
       <img src={titleImg} className="title" loading="lazy" />
       <ButtonList>
         <KakaoButton onClick={handleLogin}>
-          <FontAwesomeIcon
-            icon={faComment}
-            size="2x"
-            style={{ color: "#2b1417" }}
-          />
+          <FontAwesomeIcon icon={faComment} size="2x" style={{ color: "#2b1417" }} />
         </KakaoButton>
         <NaverButton>
           <img src={naverLogo} alt="네이버 버튼" />

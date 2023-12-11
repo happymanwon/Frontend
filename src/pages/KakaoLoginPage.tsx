@@ -1,18 +1,43 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import useUserStore from "@/stores/useUserStore";
 import styled, { keyframes } from "styled-components";
 
+interface LoginData {
+  accessToken: string;
+  refreshToken: string;
+  memberId: number;
+  nickname: string;
+}
+
 const KakaoLoginPage = () => {
+  const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
+  console.log(code);
   // 코드가 잘 불려오는 지 확인
   useEffect(() => {
-    console.log(code);
     handleLogin(code);
-  }, []);
+  }, [code]);
 
-  const handleLogin = async (code) => {
+  const updateLoginData = (data: LoginData) => {
+    const { accessToken, refreshToken, memberId, nickname } = data;
+    useUserStore.getState().setLoginData({ accessToken, refreshToken, memberId, nickname });
+  };
+
+  const redirect_uri = import.meta.env.VITE_KAKAO_BACK_REDIRECT_URI; //Redirect URI
+  const handleLogin = async (code: string | null) => {
     try {
-      const response = await axios.get(`/api/auth/login/kakao?code=${code}`);
-      console.log("카카오 로그인 완료:", response.data);
+      console.log(redirect_uri);
+      console.log(code);
+      const response = await axios.get(`${redirect_uri}?code=${code}`);
+
+      if (response.data) {
+        updateLoginData(response.data);
+        navigate("/mypage");
+      } else {
+        console.log("카카오 로그인 실패");
+      }
       // 성공적으로 로그인이 되었을 때 원하는 작업 수행
     } catch (error) {
       console.error("카카오 로그인 에러:", error);
