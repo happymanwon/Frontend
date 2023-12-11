@@ -4,7 +4,10 @@ import "@yaireo/tagify/dist/tagify.css";
 
 import styled from "styled-components";
 
-const TagifyComponent = ({ setTags }) => {
+interface TagifyComponentProps {
+  setTags: (tags: string[]) => void;
+}
+const TagifyComponent: React.FC<TagifyComponentProps> = ({ setTags }) => {
   const tagifyRef = useRef(null);
   const tagifyDropdownRef = useRef(null);
 
@@ -12,7 +15,7 @@ const TagifyComponent = ({ setTags }) => {
     if (tagifyRef.current) {
       const tagify = new Tagify(tagifyRef.current, {
         // 옵션 설정
-        maxTags: 3,
+        // maxTags: 3,
         dropdown: {
           maxItems: Infinity,
           enabled: 0,
@@ -21,12 +24,16 @@ const TagifyComponent = ({ setTags }) => {
         },
       });
 
-      tagify.on("add", (e) => {
+      tagify.on("add", () => {
         setTags(tagify.value.map((item) => item.value));
       });
 
-      tagify.on("remove", (e) => {
+      tagify.on("remove", () => {
         setTags(tagify.value.map((item) => item.value));
+      });
+
+      tagify.on("input", (e) => {
+        console.log(e.detail);
       });
 
       return () => {
@@ -39,11 +46,7 @@ const TagifyComponent = ({ setTags }) => {
   return (
     <TagContainer>
       <InputContainer>
-        <input
-          ref={tagifyRef}
-          className="tagify"
-          placeholder="해시태그를 입력해 보세요"
-        />
+        <input ref={tagifyRef} className="tagify" placeholder="Enter 입력 시 태그 적용" />
       </InputContainer>
       <DropdownContainer ref={tagifyDropdownRef} />
     </TagContainer>
@@ -69,6 +72,15 @@ const InputContainer = styled.div`
     border: none;
     font-size: 11px;
     width: inherit;
+
+    .tagify__tag {
+      max-width: 23rem;
+      overflow: hidden;
+    }
+    .tagify__tag > div {
+      max-width: 93%;
+      overflow: hidden;
+    }
   }
 `;
 
