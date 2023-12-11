@@ -6,7 +6,19 @@ const KakaoLoginPage = () => {
   // 코드가 잘 불려오는 지 확인
   useEffect(() => {
     console.log(code);
+    handleLogin(code);
   }, []);
+
+  const handleLogin = async (code) => {
+    try {
+      const response = await axios.get(`/api/auth/login/kakao?code=${code}`);
+      console.log("카카오 로그인 완료:", response.data);
+      // 성공적으로 로그인이 되었을 때 원하는 작업 수행
+    } catch (error) {
+      console.error("카카오 로그인 에러:", error);
+      // 로그인 에러 발생 시 처리
+    }
+  };
 
   return (
     <SpinnerWrapper>

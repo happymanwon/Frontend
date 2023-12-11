@@ -28,7 +28,11 @@ const LoginPage: React.FC = () => {
       <img src={titleImg} className="title" loading="lazy" />
       <ButtonList>
         <KakaoButton onClick={handleLogin}>
-          <FontAwesomeIcon icon={faComment} size="2x" style={{ color: "#2b1417" }} />
+          <FontAwesomeIcon
+            icon={faComment}
+            size="2x"
+            style={{ color: "#2b1417" }}
+          />
         </KakaoButton>
         <NaverButton>
           <img src={naverLogo} alt="네이버 버튼" />
