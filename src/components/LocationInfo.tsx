@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import styled from "styled-components";
 
 declare global {
   interface Window {
@@ -56,10 +57,28 @@ const LocationInfo: React.FC<LocationInfoProps> = ({ address, way }) => {
     searchAddress(address);
   }, [address]);
 
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("클립보드에 주소가 복사되었습니다.");
+    } catch (e) {
+      alert("복사에 실패하였습니다");
+    }
+  };
+
   return (
     <div>
       <h3>위치정보</h3>
-      <p>{address}</p>
+      <AddressWrapper>
+        <p>{address}</p>
+        <button
+          onClick={() => {
+            handleCopyClipBoard(address);
+          }}
+        >
+          복사
+        </button>
+      </AddressWrapper>
       <p>{way}</p>
       <div
         ref={mapRef}
@@ -69,5 +88,18 @@ const LocationInfo: React.FC<LocationInfoProps> = ({ address, way }) => {
     </div>
   );
 };
+
+const AddressWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  button {
+    border-radius: 7px;
+    border: 0.5px solid black;
+    width: 36px;
+    height: 15px;
+    font-size: 8px;
+    background-color: white;
+  }
+`;
 
 export default LocationInfo;
