@@ -35,8 +35,8 @@ const StoreDetailPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/api/shops/${Number(storeId)}`);
-        setStoreData(response.data.data[0]);
-        console.log(response.data.data[0]);
+        setStoreData(response.data.data);
+        console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -75,8 +75,24 @@ const StoreDetailPage = () => {
   };
 
   function createDivsFromString(text) {
-    const lines = (text || "").split(/\r?\n/); // \r\n 또는 \n으로 문자열을 나눔
-    const divs = lines.map((line, index) => <div key={index}>{line}</div>); // 각 줄을 <div>로 변환
+    const lines = (text || "").split(/\r?\n/);
+    const divs = lines.map((line, index) => {
+      const boldText = "영업시간 :";
+      const boldIndex = line.indexOf(boldText);
+      if (boldIndex !== -1) {
+        return (
+          <div key={index}>
+            <span>{line.substring(0, boldIndex)}</span>
+            <span className="strong">
+              {line.substring(boldIndex, boldIndex + boldText.length)}
+            </span>
+            <span>{line.substring(boldIndex + boldText.length)}</span>
+          </div>
+        );
+      } else {
+        return <div key={index}>{line}</div>;
+      }
+    });
 
     return divs;
   }
@@ -309,6 +325,11 @@ const StoreInfo = styled.div`
   margin: 20px 0;
   padding: 20px 12px 20px 12px;
   background-color: ${({ theme }) => theme.colors.white};
+  .strong {
+    font-weight: 700;
+    font-family: NotoSansMediumWOFF, sans-serif, Arial;
+    margin-right: 10px;
+  }
 `;
 
 const MenuInfo = styled.div`
