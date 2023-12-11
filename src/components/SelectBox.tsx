@@ -43,7 +43,7 @@ const SelectBox: React.FC<SelectBoxPropsType> = ({ options, selectedValue, onCli
         <FontAwesomeIcon icon={faAngleRight} />
       </ButtonSelect>
       {isOpen && (
-        <SelectList isMain={isMain}>
+        <SelectList>
           {options.map((option) => (
             <ListItem key={option[1]} isMain={isMain}>
               <button
@@ -102,21 +102,19 @@ const SelectSpan = styled.span`
   /* margin-left: 1.5rem; */
 `;
 
-interface SelectListPropsType {
-  isMain: boolean;
-}
-const SelectList = styled.ul<SelectListPropsType>`
+const SelectList = styled.ul`
   width: fit-content;
   position: absolute;
-  top: 1.8rem;
-  left: 0;
+  top: 2rem;
+  left: -2px;
   z-index: 1;
   border-radius: 0.5rem;
-  background: ${(props) => (props.isMain ? "#59d37d" : "#fff")};
+  background: #fff;
   color: #fff;
   height: 30rem;
   overflow: auto;
   display: none;
+  box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.3);
 
   &::-webkit-scrollbar {
     display: none;
@@ -135,6 +133,9 @@ const ListItem = styled.li<ListItemPropsType>`
 
   &:not(:last-child) {
   }
+  &:hover {
+    background-color: #f5f5f5;
+  }
 
   button {
     width: 100%;
@@ -143,15 +144,16 @@ const ListItem = styled.li<ListItemPropsType>`
     text-align: left;
     border-radius: 0.5rem;
     border: 0;
-    background: ${(props) => (props.isMain ? "#59d37d" : "#fff")};
-    color: ${(props) => (props.isMain ? "#fff" : "#1A1A1A")};
-    transition: background-color 0.3s;
+    background: #fff;
+    color: #1a1a1a;
+    /* transition: background-color 0.3s; */
     cursor: pointer;
 
-    &:hover {
+    &:focus {
     }
 
-    &:focus {
+    &:hover {
+      background-color: #f5f5f5;
     }
 
     &.selected {
