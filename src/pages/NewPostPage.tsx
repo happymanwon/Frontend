@@ -4,10 +4,7 @@ import LocationInfo from "@/components/LocationInfo";
 import ImageUpload from "@/components/ImageUpload";
 import { StoreData } from "@/types/category/storeData";
 
-import {
-  faMagnifyingGlass,
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import cameraImg from "@/assets/images/camera.svg";
@@ -42,9 +39,7 @@ const NewPostPage = () => {
       try {
         const response = await axios.get("/api/shops");
 
-        const filterDataByName = response.data.data.filter((data) =>
-          data.name.includes(searchName)
-        );
+        const filterDataByName = response.data.data.filter((data) => data.name.includes(searchName));
         setStoreData(filterDataByName);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -85,11 +80,7 @@ const NewPostPage = () => {
               <p>검색결과가 없습니다.</p>
             ) : (
               storeData?.map((data: any, index: number) => (
-                <button
-                  onClick={handleNameClick}
-                  value={`${data.roadAddress}`}
-                  key={index}
-                >
+                <button onClick={handleNameClick} value={`${data.roadAddress}`} key={index}>
                   {data.name}
                 </button>
               ))
@@ -208,10 +199,7 @@ const NewPostPage = () => {
         )}
         {isImageAdded && (
           <ImageContainer>
-            <ImageUpload
-              showImages={showImages}
-              setShowImages={handleImageConfirmation}
-            />
+            <ImageUpload showImages={showImages} setShowImages={handleImageConfirmation} />
           </ImageContainer>
         )}
       </ContentWrapper>
@@ -348,10 +336,13 @@ const LayoutContainer = styled.div`
 `;
 
 const Header = styled.div`
-  width: 26rem;
-  height: 3.9375rem;
-  padding-top: 35px;
+  width: 100%;
+  /* height: 3.9375rem; */
+  padding-top: 33px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.greyUnderLine};
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 
   .left {
     position: absolute;
