@@ -4,7 +4,10 @@ import LocationInfo from "@/components/LocationInfo";
 import ImageUpload from "@/components/ImageUpload";
 import { StoreData } from "@/types/category/storeData";
 
-import { faMagnifyingGlass, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import cameraImg from "@/assets/images/camera.svg";
@@ -39,7 +42,9 @@ const NewPostPage = () => {
       try {
         const response = await axios.get("/api/shops");
 
-        const filterDataByName = response.data.data.filter((data) => data.name.includes(searchName));
+        const filterDataByName = response.data.data.filter((data) =>
+          data.name.includes(searchName)
+        );
         setStoreData(filterDataByName);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -80,7 +85,11 @@ const NewPostPage = () => {
               <p>검색결과가 없습니다.</p>
             ) : (
               storeData?.map((data: any, index: number) => (
-                <button onClick={handleNameClick} value={`${data.roadAddress}`} key={index}>
+                <button
+                  onClick={handleNameClick}
+                  value={`${data.roadAddress}`}
+                  key={index}
+                >
                   {data.name}
                 </button>
               ))
@@ -136,24 +145,23 @@ const NewPostPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.append("content", content); // content 추가
     formData.append("address", storeAddr); // 주소추가
     // 기존의 태그 데이터 추가
     for (const tag of tags) {
-      formData.append("tags", tag);
+      formData.append("hashtagNames", tag);
     }
 
     // 이미지 파일 추가
     for (const image of showImages) {
       // 이미지 파일을 Blob 형태로 변환
       const blobImage = await fetch(image).then((r) => r.blob());
-      formData.append("images", blobImage);
+      formData.append("multipartFiles", blobImage);
     }
 
     try {
-      const response = await axios.post("/api/post", formData, {
+      const response = await axios.post("/api/boards", formData, {
         headers: {
           "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
         },
@@ -199,7 +207,10 @@ const NewPostPage = () => {
         )}
         {isImageAdded && (
           <ImageContainer>
-            <ImageUpload showImages={showImages} setShowImages={handleImageConfirmation} />
+            <ImageUpload
+              showImages={showImages}
+              setShowImages={handleImageConfirmation}
+            />
           </ImageContainer>
         )}
       </ContentWrapper>
