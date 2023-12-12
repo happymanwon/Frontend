@@ -1,0 +1,20 @@
+name: Sync Repositories
+on:
+  push:
+    paths:
+      - 'Frontend/**' # Specify the path that triggers the sync when pushing to happymanwon/Frontend
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Sync changes to another repository
+        run: |
+          git config --global user.name 'jannyshim'
+          git config --global user.email '29jannyy@gmail.com'
+          
+          git remote add other_repo https://github.com/jannyshim/happy-manwon.git
+          git fetch origin
+          git push other_repo dev # Modify this if your target branch is different
