@@ -1,45 +1,148 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PostDataType } from "@/types/community/postDataType";
 import commentImg from "@/assets/images/comment.svg";
+import profileImg from "@/assets/images/default-profile.png";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import axios from "axios";
+import ReportModal from "./ReportModal";
 
 const PostList = ({ post }: { post: PostDataType }) => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [reportModal, setReportModal] = useState(false);
+
+  const reportButtonClick = () => {
+    setReportModal(true);
+  };
+
+  const handleReportClick = async (reportReason) => {
+    console.log(reportReason);
+    try {
+      await axios.post(`/api/reports/${post.boardId}`, {
+        postId: post.boardId,
+        reportReason: reportReason,
+      });
+      alert("게시물이 신고되었습니다.");
+      navigate("/community");
+    } catch (error) {
+      console.error("Error reporting post:", error);
+    }
+  };
+  const handleHiddenClick = () => {
+    // 아직 미구현
+  };
+
   return (
-    <PostLink key={post.id} to={`/post/${post.id}`}>
+    <div>
       {/* 각 게시글을 클릭하면 해당 상세 페이지로 이동 */}
       <PostWrapper>
         <div className="post-top">
-          <p className="tag">#{post.tag}</p>
-          <p className="content">{post.content}</p>
+          <div className="tag">
+            {post.hashtagNames.map((tag: string) => (
+              <span>#{tag}</span>
+            ))}
+          </div>
+          <div className="right" onClick={() => setShowModal(!showModal)}>
+            <FontAwesomeIcon icon={faEllipsisVertical} />
+          </div>
+          {showModal && (
+            // 삭제 또는 수정 모달
+            <ModalContainer>
+              <Button className="edit" onClick={reportButtonClick}>
+                <span>신고하기</span>
+              </Button>
+              <Button className="delete" onClick={handleHiddenClick}>
+                <span>글 숨기기</span>
+              </Button>
+            </ModalContainer>
+          )}
+          <PostLink key={post.boardId} to={`/post/${post.boardId}`}>
+            <p className="content">{post.content}</p>
+          </PostLink>
         </div>
         <div className="img">
-          {post.image.map((imgSrc: string) => (
+          {post.imageUrls.map((imgSrc: string) => (
             <div key={imgSrc}>
-              <img src={imgSrc} alt="이미지" className="images" loading="lazy" />
+              <img
+                src={`https://kr.object.ncloudstorage.com/happymanwon-backend/${imgSrc}`}
+                alt="이미지"
+                className="images"
+                loading="lazy"
+              />
             </div>
           ))}
         </div>
-        <div className="store-name">
+        {/* <div className="store-name">
           <img src="/src/assets/images/map-pin.svg" />#{post.store}
-        </div>
+        </div> */}
         <div className="post-end">
           <div className="write-info">
             <span>
-              <img src={post.profilepic} alt="이미지" className="profile" loading="lazy" />
+              <img
+                src={profileImg}
+                alt="이미지"
+                className="profile"
+                loading="lazy"
+              />
             </span>
-            <span className="writer">{post.writer}</span>
-            <span className="write-time">{post.date}</span>
+            <span className="writer">{post.nickname}</span>
+            <span className="write-time">{post.createdAt}</span>
           </div>
           <div className="comment">
             <img src={commentImg} alt="이미지" loading="lazy" />
-            <span>{post.comments.length}개</span>
+            {/* <span>{post.comments.length}개</span> */}
           </div>
         </div>
       </PostWrapper>
-    </PostLink>
+      {reportModal && (
+        <DarkBackground onClick={() => setReportModal(false)}>
+          <ReportModalWrapper onClick={(e) => e.stopPropagation()}>
+            <ReportModal
+              onCancel={() => setReportModal(false)}
+              onReport={handleReportClick}
+            />
+          </ReportModalWrapper>
+        </DarkBackground>
+      )}
+    </div>
   );
 };
 
+// 모달 스타일
+const ModalContainer = styled.div`
+  box-sizing: border-box;
+  position: absolute;
+  width: 118px;
+  height: 70px;
+  left: 286px;
+  top: 83px;
+  background: #ffffff;
+  border: 0.5px solid #dadada;
+  box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.1);
+`;
+
+const Button = styled.button`
+  position: relative;
+  text-align: center;
+  width: 118px;
+  height: 35px;
+  left: 0px;
+  border: none;
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  &.edit {
+    background-color: ${({ theme }) => theme.colors.white};
+  }
+`;
+
+// 페이지 스타일
 const PostWrapper = styled.div`
   font-family: NotoSansRegularWOFF, sans-serif, Arial;
   width: 22.4375rem;
@@ -52,6 +155,12 @@ const PostWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+  .right {
+    position: absolute;
+    right: 0;
+    margin-right: 30px;
+    cursor: pointer;
   }
   .tag {
     color: ${({ theme }) => theme.colors.mainColor};
@@ -98,6 +207,10 @@ const PostWrapper = styled.div`
     .write-time {
       color: ${({ theme }) => theme.colors.grey};
     }
+    .profile {
+      width: 35px;
+      height: 35px;
+    }
   }
   .comment {
     display: flex;
@@ -114,4 +227,21 @@ const PostLink = styled(Link)`
   color: #333;
 `;
 
+const DarkBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경색 */
+  z-index: 1000; /* 모달 위로 표시되도록 z-index 설정 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ReportModalWrapper = styled.div`
+  /* 모달 스타일 */
+  /* ... */
+`;
 export default PostList;
