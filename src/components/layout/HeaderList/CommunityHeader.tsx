@@ -132,6 +132,7 @@ const IconContainer = styled.div`
   align-items: center;
   font-size: 1.2rem;
   cursor: pointer;
+  color: ${({ theme }) => theme.colors.mainColor};
 `;
 
 export default CommunityHeader;

@@ -6,12 +6,10 @@ import axios from "axios";
 import { PostDataType } from "@/types/community/postDataType";
 // import { CommentDataType } from "@/types/community/commentDataType";
 import LocationInfo from "@/components/LocationInfo";
-import {
-  faArrowLeft,
-  faEllipsisVertical,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import profileImg from "@/assets/images/default-profile.png";
+import optionImg from "@/assets/images/option-button.svg";
 
 const PostDetailPage = () => {
   const navigate = useNavigate();
@@ -89,7 +87,7 @@ const PostDetailPage = () => {
         <h2>단짠단짠</h2>
         {/* {isAuthor && ( */}
         <div className="right" onClick={() => setShowModal(!showModal)}>
-          <FontAwesomeIcon icon={faEllipsisVertical} />
+          <img src={optionImg} alt="option-button" />
         </div>
         {/* )} */}
         {showModal && (
@@ -295,6 +293,7 @@ const PostHeader = styled.header`
 `;
 
 const PostWrapper = styled.div`
+  min-height: 12.625rem;
   width: 22.4375rem;
   border-radius: 12px;
   border: 1px solid ${({ theme }) => theme.colors.greyUnderLine};
