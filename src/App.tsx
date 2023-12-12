@@ -24,6 +24,7 @@ import { ThemeProvider } from "styled-components";
 import theme from "@/styles/theme";
 import { GlobalStyle } from "@/styles/global";
 import EditPostPage from "./pages/EditPostPage";
+import QrPage from "./pages/QrPage";
 
 function App() {
   return (
@@ -144,6 +145,14 @@ function App() {
               element={
                 <Layout>
                   <LoginPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/qr/:storeId"
+              element={
+                <Layout>
+                  <QrPage />
                 </Layout>
               }
             />
