@@ -26,9 +26,9 @@ const EditPostPage = () => {
   const [isMapAdded, setIsMapAdded] = useState(false);
   const [isImageAdded, setIsImageAdded] = useState(false);
 
-  const [storeData, setStoreData] = useState<StoreData | null>(null);
+  const [storeData, setStoreData] = useState<StoreData[] | null>(null);
   const [storeAddr, setStoreAddr] = useState(""); // 글 내용 속 가게 주소
-  const [showImages, setShowImages] = useState([]);
+  const [showImages, setShowImages] = useState<string[]>([]);
 
   const [tags, setTags] = useState<string[]>([]); // 태그 상태
   const [content, setContent] = useState(""); // 컨텐츠 상태

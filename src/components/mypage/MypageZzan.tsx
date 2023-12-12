@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 const item = [
@@ -32,7 +31,9 @@ const MypageZzan = () => {
             <div>{item.payStore}</div>
             <div>{item.payPrice}</div>
           </ZzanItemInfo>
-          <ZzanItemBtn isQR={item.isQR}>{item.isQR ? "QR 코드" : "사용완료"}</ZzanItemBtn>
+          <ZzanItemBtn isQR={item.isQR}>
+            {item.isQR ? "QR 코드" : "사용완료"}
+          </ZzanItemBtn>
         </ZzanItemContainer>
       ))}
     </MyZzanContainer>

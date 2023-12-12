@@ -15,7 +15,8 @@ const Header: React.FC = () => {
   const location = useLocation().pathname;
   const [param] = useSearchParams();
   const pageName = param.get("page") || null;
-  let component = null;
+
+  let component: React.ReactNode = null; // 초기값으로 React.ReactNode을 사용하여 null 대신에 다른 값도 가질 수 있게 설정
 
   if (location === "/") {
     component = <MainHeader />;

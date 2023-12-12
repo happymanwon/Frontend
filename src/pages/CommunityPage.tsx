@@ -66,11 +66,11 @@ const CommunityPage = () => {
           ? filteredPosts.map(
               (post: PostDataType) =>
                 post.nickname === "janny" && (
-                  <PostList key={post.id} post={post} />
+                  <PostList key={post.boardId} post={post} />
                 )
             )
           : posts.map((post: PostDataType) => (
-              <PostList key={post.id} post={post} />
+              <PostList key={post.boardId} post={post} />
             ))}
       </PostContainer>
       <ButtonContainer>
