@@ -134,7 +134,7 @@ const CategoryDesc = styled.div<{ categoryId: number }>`
 `;
 
 const DistrictWrapper = styled.div`
-  margin: 10px 0 10px 20px;
+  margin: 10px 0 10px 25px;
 `;
 
 const ListWrapper = styled.div`

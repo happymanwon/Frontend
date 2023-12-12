@@ -8,4 +8,5 @@ export interface StoreData {
   roadAddress: string;
   latitude: string;
   longitude: string;
+  likeCount: number;
 }

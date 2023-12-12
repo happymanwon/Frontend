@@ -71,7 +71,7 @@ const InputContainer = styled.div`
     position: absolute;
     width: 314px;
     height: 28px;
-    font-size: 14px;
+    font-size: 12px;
     padding: 8px 38px 8px 8px;
     caret-color: ${({ theme }) => theme.colors.black};
     background: transparent;

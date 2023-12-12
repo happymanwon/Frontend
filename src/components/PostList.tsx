@@ -3,8 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { PostDataType } from "@/types/community/postDataType";
 import commentImg from "@/assets/images/comment.svg";
 import profileImg from "@/assets/images/default-profile.png";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import optionImg from "@/assets/images/option-button.svg";
 import { useState } from "react";
 import axios from "axios";
 import ReportModal from "./ReportModal";
@@ -46,7 +45,7 @@ const PostList = ({ post }: { post: PostDataType }) => {
             ))}
           </div>
           <div className="right" onClick={() => setShowModal(!showModal)}>
-            <FontAwesomeIcon icon={faEllipsisVertical} />
+            <img src={optionImg} alt="option-button" />
           </div>
           {showModal && (
             // 삭제 또는 수정 모달
@@ -67,7 +66,7 @@ const PostList = ({ post }: { post: PostDataType }) => {
           {post.imageUrls.map((imgSrc: string) => (
             <div key={imgSrc}>
               <img
-                src={`https://kr.object.ncloudstorage.com/happymanwon-backend/${imgSrc}`}
+                src={`${imgSrc}`}
                 alt="이미지"
                 className="images"
                 loading="lazy"
@@ -114,11 +113,10 @@ const PostList = ({ post }: { post: PostDataType }) => {
 // 모달 스타일
 const ModalContainer = styled.div`
   box-sizing: border-box;
-  position: absolute;
+  position: relative;
+  margin-left: auto;
   width: 118px;
   height: 70px;
-  left: 286px;
-  top: 83px;
   background: #ffffff;
   border: 0.5px solid #dadada;
   box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.1);
@@ -157,9 +155,7 @@ const PostWrapper = styled.div`
     justify-content: space-between;
   }
   .right {
-    position: absolute;
-    right: 0;
-    margin-right: 30px;
+    margin-left: auto;
     cursor: pointer;
   }
   .tag {

@@ -15,6 +15,7 @@ const ZzanDetailPage = () => {
 
   const { zzanId } = useParams<{ zzanId: string }>();
   const [zzanData, setZzanData] = useState<ZzanItemType | null>(null);
+  const [isPurchase, setIsPurchase] = useState(false); // 구매하기 버튼 상태값
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +30,23 @@ const ZzanDetailPage = () => {
 
     fetchData();
   }, [zzanId]);
+
+  const handlePurchase = async () => {
+    try {
+      const response = await axios.get(
+        `/api/zzan-items/${Number(zzanId)}/purchase`
+      );
+      if (response.status === 200) {
+        alert("구매가 완료되었습니다.");
+        setIsPurchase(true);
+        navigate("/mypage");
+      }
+    } catch (error) {
+      // 에러 처리
+      alert("구매가 불가능합니다.");
+      console.error("구매 과정에서 문제가 발생했습니다:", error);
+    }
+  };
 
   // 이미지 로드 실패시 대체 이미지로 설정하는 함수
   const handleImageError = (
@@ -54,7 +72,9 @@ const ZzanDetailPage = () => {
           </ImageWrapper>
           <NamePriceWrapper>
             <h2>{zzanData?.shopName}</h2>
-            <span className="item-name">{zzanData?.itemName}</span>
+            <span className="item-name">
+              {zzanData?.itemName} | {zzanData?.count}개
+            </span>
             <div className="discount-info">
               <div className="original-price">
                 ₩{zzanData?.originalPrice.toLocaleString()}
@@ -88,8 +108,10 @@ const ZzanDetailPage = () => {
             />
           </MapInfo>
         </InfoWrapper>
-        <BuyButtonWrapper>
-          <button>구매하기</button>
+        <BuyButtonWrapper isPurchased={isPurchase}>
+          <button onClick={handlePurchase} disabled={isPurchase}>
+            구매하기
+          </button>
         </BuyButtonWrapper>
       </LayoutContainer>
     </LayoutPage>
@@ -239,7 +261,7 @@ const MapInfo = styled.div`
   }
 `;
 
-const BuyButtonWrapper = styled.div`
+const BuyButtonWrapper = styled.div<{ isPurchased }>`
   position: fixed;
   bottom: 0;
   z-index: 99;
@@ -247,14 +269,17 @@ const BuyButtonWrapper = styled.div`
   height: 3.125rem;
   display: flex;
   justify-content: center;
-  background-color: ${({ theme }) => theme.colors.mainColor2};
+  background-color: ${({ theme, isPurchased }) =>
+    isPurchased ? theme.colors.grey : theme.colors.mainColor2};
+
   button {
     font-family: NotoSansLightWOFF, sans-serif, Arial;
     font-size: 18px;
     border: none;
     background: none;
     color: ${({ theme }) => theme.colors.white};
-    cursor: pointer;
+    cursor: ${({ isPurchased }) => (isPurchased ? "not-allowed" : "pointer")};
+    pointer-events: ${({ isPurchased }) => (isPurchased ? "none" : "auto")};
   }
 `;
 export default ZzanDetailPage;

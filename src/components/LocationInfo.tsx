@@ -70,7 +70,7 @@ const LocationInfo: React.FC<LocationInfoProps> = ({ address, way }) => {
     <div>
       <h3>위치정보</h3>
       <AddressWrapper>
-        <p>{address}</p>
+        <p className="address">{address}</p>
         <button
           onClick={() => {
             handleCopyClipBoard(address);
@@ -99,6 +99,10 @@ const AddressWrapper = styled.div`
     height: 15px;
     font-size: 8px;
     background-color: white;
+  }
+  .address {
+    font-family: NotoSansMediumWOFF, sans-serif, Arial;
+    font-weight: 700;
   }
 `;
 

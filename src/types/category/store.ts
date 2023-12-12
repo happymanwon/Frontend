@@ -10,6 +10,7 @@ export interface Store {
   longitude: string;
   info: string;
   menuList: MenuList[];
+  likeCount: number;
 }
 
 interface MenuList {

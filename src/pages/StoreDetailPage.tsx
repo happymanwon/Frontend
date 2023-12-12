@@ -141,7 +141,7 @@ const StoreDetailPage = () => {
           </ImageWrapper>
           <NameLikeWrapper>
             <h2>{storeData?.name}</h2>
-            <div className="total-like">좋아요00개</div>
+            <div className="total-like">좋아요 {storeData?.likeCount} 개</div>
           </NameLikeWrapper>
           <div className="district-pride">
             {districtName} | {storeData?.menuList[0]?.menuName}
