@@ -30,13 +30,9 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `/api/shops?categoryId=${Number(categoryId)}&localCode=${Number(
-            districtId
-          )}`
-        ); // json 파일 사용
-        const filterDataByDistrict = response.data.data.filter(
-          (data: StoreData) => data.address.includes(districtName)
+        const response = await axios.get(`/api/shops?categoryId=${Number(categoryId)}&localCode=${Number(districtId)}`); // json 파일 사용
+        const filterDataByDistrict = response.data.data.filter((data: StoreData) =>
+          data.address.includes(districtName)
         );
         setCategoryData(filterDataByDistrict);
         console.log(filterDataByDistrict);
@@ -70,12 +66,7 @@ const CategoryPage = () => {
                 {isError ? (
                   <DefaultImg /> // 로드 실패 시 SVG 컴포넌트 렌더링
                 ) : (
-                  <img
-                    src={data.imageUrl}
-                    alt={data.name}
-                    onError={handleImageError(String(data.id))}
-                    loading="lazy"
-                  />
+                  <img src={data.imageUrl} alt={data.name} onError={handleImageError(String(data.id))} loading="lazy" />
                 )}
                 <h1>{data.name}</h1>
               </ListLink>
@@ -134,7 +125,7 @@ const CategoryDesc = styled.div<{ categoryId: number }>`
 `;
 
 const DistrictWrapper = styled.div`
-  margin: 10px 0 10px 25px;
+  margin: 10px 0 10px 20px;
 `;
 
 const ListWrapper = styled.div`
