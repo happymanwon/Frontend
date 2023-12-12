@@ -33,9 +33,7 @@ const ZzanDetailPage = () => {
 
   const handlePurchase = async () => {
     try {
-      const response = await axios.get(
-        `/api/zzan-items/${Number(zzanId)}/purchase`
-      );
+      const response = await axios.get(`/api/zzan-items/${Number(zzanId)}/purchase`);
       if (response.status === 200) {
         alert("구매가 완료되었습니다.");
         setIsPurchase(true);
@@ -49,9 +47,7 @@ const ZzanDetailPage = () => {
   };
 
   // 이미지 로드 실패시 대체 이미지로 설정하는 함수
-  const handleImageError = (
-    e: React.SyntheticEvent<HTMLImageElement, Event>
-  ) => {
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = defaultImg;
   };
 
@@ -63,26 +59,17 @@ const ZzanDetailPage = () => {
             <FontAwesomeIcon className="arrow" icon={faArrowLeft} />
           </div>
           <ImageWrapper>
-            <img
-              src={zzanData?.shopInfo.imageUrl}
-              alt="상점사진"
-              onError={handleImageError}
-              loading="lazy"
-            />
+            <img src={zzanData?.shopInfo.imageUrl} alt="상점사진" onError={handleImageError} loading="lazy" />
           </ImageWrapper>
           <NamePriceWrapper>
             <h2>{zzanData?.shopName}</h2>
-            <span className="item-name">
-              {zzanData?.itemName} | {zzanData?.count}개
-            </span>
+            <span className="item-name">{zzanData?.itemName}</span>
+            <span className="item-name margin-8">|</span>
+            <span className="item-name">{zzanData?.count}개</span>
             <div className="discount-info">
-              <div className="original-price">
-                ₩{zzanData?.originalPrice.toLocaleString()}
-              </div>
+              <div className="original-price">₩{zzanData?.originalPrice.toLocaleString()}</div>
               <span className="discount-rate">{zzanData?.discountRate}%</span>
-              <span className="sale-price">
-                ₩{zzanData?.salePrice.toLocaleString()}
-              </span>
+              <span className="sale-price">₩{zzanData?.salePrice.toLocaleString()}</span>
             </div>
           </NamePriceWrapper>
         </StoreHeaderWrapper>
@@ -97,15 +84,10 @@ const ZzanDetailPage = () => {
               <div className="price-item">{zzanData?.itemName}</div>
               <div>{zzanData?.originalPrice.toLocaleString()}원</div>
             </div>
-            <div className="notice">
-              가격 정보는 업소의 사정에 따라 변경될 수 있습니다.
-            </div>
+            <div className="notice">가격 정보는 업소의 사정에 따라 변경될 수 있습니다.</div>
           </MenuInfo>
           <MapInfo>
-            <LocationInfo
-              address={`${zzanData?.shopInfo.roadAddress}`}
-              way={`${zzanData?.shopInfo.way}`}
-            />
+            <LocationInfo address={`${zzanData?.shopInfo.roadAddress}`} way={`${zzanData?.shopInfo.way}`} />
           </MapInfo>
         </InfoWrapper>
         <BuyButtonWrapper isPurchased={isPurchase}>
@@ -183,6 +165,9 @@ const NamePriceWrapper = styled.div`
   .item-name {
     color: ${({ theme }) => theme.colors.grey};
     font-weight: 700;
+  }
+  .margin-8 {
+    margin: 0 8px;
   }
 
   .discount-info {
@@ -269,8 +254,7 @@ const BuyButtonWrapper = styled.div<{ isPurchased }>`
   height: 3.125rem;
   display: flex;
   justify-content: center;
-  background-color: ${({ theme, isPurchased }) =>
-    isPurchased ? theme.colors.grey : theme.colors.mainColor2};
+  background-color: ${({ theme, isPurchased }) => (isPurchased ? theme.colors.grey : theme.colors.mainColor2)};
 
   button {
     font-family: NotoSansLightWOFF, sans-serif, Arial;
