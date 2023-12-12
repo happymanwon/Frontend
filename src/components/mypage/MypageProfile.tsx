@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -28,7 +28,12 @@ const MypageProfile = () => {
         </div>
         <InputTag>
           <label htmlFor="">닉네임</label>
-          <input type="text" id="nickname" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+          <input
+            type="text"
+            id="nickname"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          />
         </InputTag>
       </MypageProfileContainer>
     </HeaderContainer>
