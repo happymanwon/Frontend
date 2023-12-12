@@ -12,6 +12,7 @@ interface LoginData {
 }
 
 const KakaoLoginPage = () => {
+  const { setLoginData } = useUserStore();
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
   console.log(code);
@@ -22,7 +23,7 @@ const KakaoLoginPage = () => {
 
   const updateLoginData = (data: LoginData) => {
     const { accessToken, refreshToken, memberId, nickname } = data;
-    useUserStore.getState().setLoginData({ accessToken, refreshToken, memberId, nickname });
+    setLoginData({ accessToken, refreshToken, memberId, nickname });
   };
 
   const redirect_uri = import.meta.env.VITE_KAKAO_BACK_REDIRECT_URI; //Redirect URI
@@ -31,6 +32,7 @@ const KakaoLoginPage = () => {
       console.log(redirect_uri);
       console.log(code);
       const response = await axios.get(`${redirect_uri}?code=${code}`);
+      console.log(response.data);
 
       if (response.data) {
         updateLoginData(response.data);

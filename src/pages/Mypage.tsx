@@ -6,6 +6,7 @@ import {
   MypageCommunity,
   MypageSetting,
   MypageProfile,
+  MypageCharge,
 } from "@/components/mypage";
 
 const Mypage = () => {
@@ -22,6 +23,8 @@ const Mypage = () => {
     return <MypageSetting />;
   } else if (pageName === "profile") {
     return <MypageProfile />;
+  } else if (pageName === "charge") {
+    return <MypageCharge />;
   }
 
   return <MypageMain />;

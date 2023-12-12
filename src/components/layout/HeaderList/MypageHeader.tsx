@@ -13,6 +13,7 @@ const pageTitle: PageTitleType = {
   zzan: "짠처리 결제 관리",
   community: "커뮤니티 글 관리",
   setting: "설정",
+  charge: "포인트 충전",
 };
 
 const MypageHeader = () => {
@@ -21,9 +22,7 @@ const MypageHeader = () => {
 
   return (
     <MypageHeaderContainer isPageName={pageName !== null}>
-      {pageName && (
-        <FontAwesomeIcon icon={faArrowLeft} onClick={() => history.back()} />
-      )}
+      {pageName && <FontAwesomeIcon icon={faArrowLeft} onClick={() => history.back()} />}
       <H2>{pageTitle[pageName as keyof PageTitleType] || "마이페이지"}</H2>
     </MypageHeaderContainer>
   );
@@ -35,8 +34,7 @@ interface MypageHeaderContainerPropsType {
 
 const MypageHeaderContainer = styled.div<MypageHeaderContainerPropsType>`
   display: flex;
-  justify-content: ${(props) =>
-    props.isPageName ? "space-between" : "center"};
+  justify-content: ${(props) => (props.isPageName ? "space-between" : "center")};
   align-items: center;
   height: inherit;
   padding: 0 23px;
