@@ -17,12 +17,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {location.pathname === "/login" ||
         location.pathname.includes("/zzan-items") ||
         location.pathname.includes("/newpost") ||
+        location.pathname.includes("/editpost") ||
         location.pathname.includes("/post") ? null : (
           <Header />
         )}
         {children}
         {location.pathname === "/login" ||
         location.pathname === "/newpost" ||
+        location.pathname.includes("/editpost") ||
         location.pathname.includes("/post") ||
         location.pathname.includes("/zzan-items") ? null : (
           <Nav />
