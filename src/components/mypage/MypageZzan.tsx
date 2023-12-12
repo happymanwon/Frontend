@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const item = [
   {
+    id: 1,
     image: "/data/fakeimg/sushi.jpg",
     payDate: "2023-12-12 결제",
     payStore: "스시히로이",
@@ -10,6 +12,7 @@ const item = [
     isQR: true,
   },
   {
+    id: 2,
     image: "/data/fakeimg/toast.png",
     payDate: "2023-12-11 결제",
     payStore: "토스트",
@@ -19,6 +22,14 @@ const item = [
 ];
 
 const MypageZzan = () => {
+  const navigate = useNavigate();
+
+  const MoveQR = (id: number, isQR: boolean) => () => {
+    if (isQR) {
+      navigate(`/qr/${id}`);
+    }
+  };
+
   return (
     <MyZzanContainer>
       <span>2023년 12월</span>
@@ -32,7 +43,9 @@ const MypageZzan = () => {
             <div>{item.payStore}</div>
             <div>{item.payPrice}</div>
           </ZzanItemInfo>
-          <ZzanItemBtn isQR={item.isQR}>{item.isQR ? "QR 코드" : "사용완료"}</ZzanItemBtn>
+          <ZzanItemBtn isQR={item.isQR} onClick={MoveQR(item.id, item.isQR)}>
+            {item.isQR ? "QR 코드" : "사용완료"}
+          </ZzanItemBtn>
         </ZzanItemContainer>
       ))}
     </MyZzanContainer>
