@@ -8,5 +8,6 @@
       "source": "/api/:path*/",
       "destination": "http://118.67.134.91:8080/:path*/"
     }
-  ]
+  ],
+  "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }]
 }
