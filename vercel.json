@@ -1,9 +1,9 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "http://118.67.134.91:8080/api/$1"
-    }
+      "source": "/api/(.*)",
+      "destination": "http://118.67.134.91:8080/api/$1"
+    },
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
