@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 interface SelectBoxPropsType {
   options: string[][];
@@ -40,7 +40,7 @@ const SelectBox: React.FC<SelectBoxPropsType> = ({ options, selectedValue, onCli
     <StyledSelect>
       <ButtonSelect className={isOpen ? "on" : ""} onClick={handleOpen} isMain={isMain}>
         <SelectSpan>{selectedValue}</SelectSpan>
-        <FontAwesomeIcon icon={faAngleRight} />
+        <FontAwesomeIcon icon={faAngleDown} />
       </ButtonSelect>
       {isOpen && (
         <SelectList>
@@ -94,7 +94,7 @@ const ButtonSelect = styled.button<ButtonSelectPropsType>`
   }
 
   &.on svg {
-    transform: rotate(-270deg);
+    transform: rotate(180deg);
   }
 `;
 
