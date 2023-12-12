@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { PostDataType } from "@/types/community/postDataType";
+// import { CommentDataType } from "@/types/community/commentDataType";
 import LocationInfo from "@/components/LocationInfo";
 import {
   faArrowLeft,
   faEllipsisVertical,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import profileImg from "@/assets/images/default-profile.png";
 
 const PostDetailPage = () => {
   const navigate = useNavigate();
@@ -19,13 +21,13 @@ const PostDetailPage = () => {
   const [showModal, setShowModal] = useState(false);
 
   // 작성자와 로그인 사용자를 비교하여 모달 표시
-  // const isAuthor = post?.writer === loggedInUser;
+  // const isAuthor = post?.nickname === loggedInUser;
 
   const handleDeleteClick = async () => {
     const confirmed = window.confirm("정말로 삭제하시겠습니까?");
     if (confirmed) {
       try {
-        await axios.delete(`/api/posts/${postId}`);
+        await axios.delete(`/api/boards/${postId}`);
         alert("게시물이 삭제되었습니다.");
         navigate("/community");
       } catch (error) {
@@ -36,7 +38,7 @@ const PostDetailPage = () => {
 
   const handleEditClick = () => {
     // 수정 페이지로 이동하는 동작
-    navigate(`/edit-post/${postId}`);
+    navigate(`/editpost/${postId}`);
   };
 
   const handleCommentChange = (event) => {
@@ -60,14 +62,11 @@ const PostDetailPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get(`/api/stores/${categoryId}`);     // 백엔드랑 통신할 때
-        const response = await axios.get<PostDataType[]>(`/data/fakedata.json`); // json 파일 사용
+        const response = await axios.get(`/api/boards/${postId}`); // json 파일 사용
 
         if (postId) {
-          const postData = response.data.filter(
-            (item) => item.id === parseInt(postId, 10)
-          )[0];
-          postData ? setPost(postData) : setPost(null);
+          const postData = response.data.data;
+          setPost(postData);
         }
       } catch (error) {
         console.error("Error fetching category data:", error);
@@ -105,7 +104,7 @@ const PostDetailPage = () => {
           </ModalContainer>
         )}
         <TagContainer>
-          {post?.tag.map((tag: string, index: number) => (
+          {post?.hashtagNames.map((tag: string, index: number) => (
             <div className="tag" key={index}>
               {tag}
             </div>
@@ -116,15 +115,15 @@ const PostDetailPage = () => {
         <PostContainer>
           <PostHeader>
             <span>
-              <img src={post.profilepic} className="profile" loading="lazy" />
+              <img src={profileImg} className="profile" loading="lazy" />
             </span>
-            <span className="writer">{post.writer}</span>
-            <span className="date">{post.date}</span>
+            <span className="writer">{post.nickname}</span>
+            <span className="date">{post.createdAt}</span>
           </PostHeader>
           <PostWrapper>
             <p className="content">{post.content}</p>
             <div className="img">
-              {post.image.map((imgSrc: string, index: number) => (
+              {post.imageUrls.map((imgSrc: string, index: number) => (
                 <div key={index}>
                   <img src={imgSrc} className="images" loading="lazy" />
                 </div>
@@ -139,7 +138,7 @@ const PostDetailPage = () => {
           />
         </MapContainer>
         <CommentContainer>
-          {post.comments.map((commentData: any, index: number) => (
+          {post.commentList.map((commentData: any, index: number) => (
             <div className="comment" key={index}>
               <img src={commentData.profilepic} alt="Profile" loading="lazy" />
               <p>{commentData.comment}</p>

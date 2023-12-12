@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
+import useUserStore from "@/stores/useUserStore";
 import { PostDataType } from "@/types/community/postDataType";
 import PostList from "@/components/PostList";
 import checkImg from "@/assets/images/check.svg";
@@ -14,6 +15,7 @@ const CommunityPage = () => {
   const [showMyPosts, setShowMyPosts] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { nickname } = useUserStore();
 
   const MoveToTop = () => {
     console.log("MoveToTop function called");
@@ -27,9 +29,8 @@ const CommunityPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get(`/api/stores/${categoryId}`);     // 백엔드랑 통신할 때
-        const response = await axios.get<PostDataType[]>(`/data/fakedata.json`); // json 파일 사용
-        setPosts(response.data);
+        const response = await axios.get("/api/boards");
+        setPosts(response.data.data);
       } catch (error) {
         console.error("Error fetching category data:", error);
       }
@@ -38,7 +39,9 @@ const CommunityPage = () => {
     fetchData();
   }, []);
 
-  const filteredPosts = showMyPosts ? posts.filter((post) => post.writer === "janny") : posts;
+  const filteredPosts = showMyPosts
+    ? posts.filter((post) => post.nickname === nickname)
+    : posts;
 
   const handleMyPost = (checked: boolean) => {
     setShowMyPosts(checked);
@@ -60,8 +63,15 @@ const CommunityPage = () => {
       </Checkbox>
       <PostContainer>
         {showMyPosts
-          ? filteredPosts.map((post: PostDataType) => post.writer === "janny" && <PostList key={post.id} post={post} />)
-          : posts.map((post: PostDataType) => <PostList key={post.id} post={post} />)}
+          ? filteredPosts.map(
+              (post: PostDataType) =>
+                post.nickname === "janny" && (
+                  <PostList key={post.id} post={post} />
+                )
+            )
+          : posts.map((post: PostDataType) => (
+              <PostList key={post.id} post={post} />
+            ))}
       </PostContainer>
       <ButtonContainer>
         <button onClick={handleNewPost}>
