@@ -2,36 +2,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { PostDataType } from "@/types/community/postDataType";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const CommunityHeader = () => {
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
-  const { postId } = useParams<{ postId?: string }>(); // 파라미터가 없을 수 있으므로 postId를 옵셔널로 지정
-  const [post, setPost] = useState<PostDataType | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get<PostDataType[]>(`/data/fakedata.json`); // json 파일 사용
-
-        if (postId) {
-          const postData = response.data.filter(
-            (item) => item.id === parseInt(postId, 10)
-          )[0];
-          postData ? setPost(postData) : setPost(null);
-        }
-      } catch (error) {
-        console.error("Error fetching category data:", error);
-      }
-    };
-
-    fetchData();
-  }, [postId]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);

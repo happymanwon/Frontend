@@ -46,7 +46,7 @@ const CategoryPage = () => {
     };
 
     fetchData();
-  }, [categoryId, districtName]);
+  }, [categoryId, districtName, districtId]);
 
   // 이미지 로드 실패시 대체 이미지로 설정하는 함수
   const handleImageError = (id: string) => () => {

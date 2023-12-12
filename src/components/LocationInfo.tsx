@@ -41,7 +41,7 @@ const LocationInfo: React.FC<LocationInfoProps> = ({ address, way }) => {
             map: map,
             position: coords,
           });
-
+          console.log(marker);
           // 인포윈도우로 장소에 대한 설명을 표시합니다
           // const infowindow = new window.kakao.maps.InfoWindow({
           //   content:
