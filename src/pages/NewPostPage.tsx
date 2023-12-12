@@ -167,6 +167,7 @@ const NewPostPage = () => {
         },
       });
       console.log("Data sent successfully!", response.data);
+      navigate("/community");
     } catch (error) {
       console.error("Error sending data:", error);
     }

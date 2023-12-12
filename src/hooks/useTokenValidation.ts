@@ -12,7 +12,7 @@ const useTokenValidation = (token) => {
           const response = await axios.get(
             `/api/auth/token/validation?token=${token}`
           );
-          console.log("토큰이 유효합니다:", response.data.valid);
+          console.log("토큰이 유효합니다:", response.data.data.valid);
           setIsValid(true);
         } else {
           console.log("토큰이 없습니다.");
