@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 import MainHeader from "./HeaderList/MainHeader";
 import StoreListHeader from "./HeaderList/StoreListHeader";
@@ -9,10 +9,12 @@ import CommunityHeader from "./HeaderList/CommunityHeader";
 import ZzanHeader from "./HeaderList/ZzanHeader";
 
 import styled from "styled-components";
+import QrHeader from "./HeaderList/QrHeader";
 
 const Header: React.FC = () => {
   const location = useLocation().pathname;
-
+  const [param] = useSearchParams();
+  const pageName = param.get("page") || null;
   let component = null;
 
   if (location === "/") {
@@ -27,11 +29,17 @@ const Header: React.FC = () => {
   if (location === "/zzan") {
     component = <ZzanHeader />;
   }
-  if (location.includes("/mypage")) {
+  if (pageName !== "profile" && location.includes("/mypage")) {
     component = <MypageHeader />;
+  } else if (pageName === "profile" && location.includes("/mypage")) {
+    return null;
   }
   if (location.includes("/community")) {
     component = <CommunityHeader />;
+  }
+
+  if (location.includes("/qr")) {
+    component = <QrHeader />;
   }
 
   return <HeaderContainer>{component}</HeaderContainer>;
