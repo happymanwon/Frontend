@@ -1,4 +1,3 @@
-import React from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -22,7 +21,9 @@ const MypageHeader = () => {
 
   return (
     <MypageHeaderContainer isPageName={pageName !== null}>
-      {pageName && <FontAwesomeIcon icon={faArrowLeft} onClick={() => history.back()} />}
+      {pageName && (
+        <FontAwesomeIcon icon={faArrowLeft} onClick={() => history.back()} />
+      )}
       <H2>{pageTitle[pageName as keyof PageTitleType] || "마이페이지"}</H2>
     </MypageHeaderContainer>
   );
@@ -34,7 +35,8 @@ interface MypageHeaderContainerPropsType {
 
 const MypageHeaderContainer = styled.div<MypageHeaderContainerPropsType>`
   display: flex;
-  justify-content: ${(props) => (props.isPageName ? "space-between" : "center")};
+  justify-content: ${(props) =>
+    props.isPageName ? "space-between" : "center"};
   align-items: center;
   height: inherit;
   padding: 0 23px;

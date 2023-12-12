@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import profile_img from "@/assets/images/new-sejong-profile.png";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +17,9 @@ const MypageMain = () => {
             <span>환영해요!</span>
           </ProfileName>
         </Profile>
-        <ProfileEdit onClick={() => navigate("/mypage?page=profile")}>프로필 수정</ProfileEdit>
+        <ProfileEdit onClick={() => navigate("/mypage?page=profile")}>
+          프로필 수정
+        </ProfileEdit>
       </ProfileSection>
       <PaySection>
         <PointInfo>
@@ -28,7 +29,9 @@ const MypageMain = () => {
             <FontAwesomeIcon icon={faAngleRight} />
           </div>
         </PointInfo>
-        <Charge onClick={() => navigate("/mypage?page=charge")}>포인트 충전</Charge>
+        <Charge onClick={() => navigate("/mypage?page=charge")}>
+          포인트 충전
+        </Charge>
       </PaySection>
       <MoveSection>
         <MoveMenu onClick={() => navigate("/mypage?page=zzan")}>

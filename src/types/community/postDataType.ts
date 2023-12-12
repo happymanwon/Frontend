@@ -7,6 +7,6 @@ export interface PostDataType {
   hashtagNames: string[];
   createdAt: string;
   updatedAt: string;
-  commentList: CommentDataType;
+  commentList: CommentDataType[];
   imageUrls: string[];
 }
