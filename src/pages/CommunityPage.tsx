@@ -65,7 +65,7 @@ const CommunityPage = () => {
         {showMyPosts
           ? filteredPosts.map(
               (post: PostDataType) =>
-                post.nickname === "janny" && (
+                post.nickname === nickname && (
                   <PostList key={post.boardId} post={post} />
                 )
             )
