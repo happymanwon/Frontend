@@ -31,9 +31,7 @@ const CategoryPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/api/shops?categoryId=${Number(categoryId)}&localCode=${Number(districtId)}`); // json 파일 사용
-        const filterDataByDistrict = response.data.data.filter((data: StoreData) =>
-          data.address.includes(districtName)
-        );
+        const filterDataByDistrict = response.data.data.filter((data: StoreData) => data.address.includes(districtName));
         setCategoryData(filterDataByDistrict);
         console.log(filterDataByDistrict);
       } catch (error) {
@@ -80,7 +78,7 @@ const CategoryPage = () => {
 
 const CategoryContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 6.125rem - 4.5rem);
+  // height: calc(100vh - 6.125rem - 4.5rem);
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;

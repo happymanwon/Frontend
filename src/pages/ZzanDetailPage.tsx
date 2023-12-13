@@ -172,7 +172,7 @@ const ZzanDetailPage = () => {
 const LayoutPage = styled.div`
   display: block;
   background-color: ${({ theme }) => theme.colors.greyBackground};
-  height: 100vh;
+  /* height: 100vh; */
   position: relative;
   max-width: 26.5rem;
   margin: auto;

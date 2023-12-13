@@ -40,6 +40,7 @@ const CommunityPage = () => {
     fetchData();
   }, []);
 
+
   const sortedPosts = [...posts].sort((a, b) => {
     // boardId를 기준으로 내림차순으로 정렬
     return b.boardId - a.boardId;
@@ -93,7 +94,7 @@ const CommunityPage = () => {
 
 const LayoutContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 6.125rem - 4.5rem);
+  // height: calc(100vh - 6.125rem - 4.5rem);
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;

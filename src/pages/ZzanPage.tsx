@@ -51,7 +51,7 @@ const ZzanPage = () => {
 
 const ZzanContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 6.125rem - 4.5rem);
+  // height: calc(100vh - 6.125rem - 4.5rem);
   background-color: ${({ theme }) => theme.colors.greyBackground};
   overflow: auto;
   &::-webkit-scrollbar {

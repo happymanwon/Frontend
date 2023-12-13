@@ -64,12 +64,7 @@ const MapDetailPage: React.FC = () => {
     <MapContainer>
       {isMap ? (
         <>
-          <Map
-            storeData={storeData!}
-            currentLocation={currentLocation}
-            setCurrentLocation={setCurrentLocation}
-            isDetail={true}
-          />
+          <Map storeData={storeData!} currentLocation={currentLocation} setCurrentLocation={setCurrentLocation} isDetail={true} />
           <MapBottomSheet storeData={storeData!} />
         </>
       ) : (
@@ -83,13 +78,13 @@ const MapDetailPage: React.FC = () => {
 
 const MapContainer = styled.main`
   width: 100%;
-  height: calc(100vh - 6.125rem - 4.5rem);
+  // height: calc(100vh - 6.125rem - 4.5rem);
   position: relative;
   overflow: hidden;
 `;
 
 const CardMain = styled.div`
-  height: calc(100vh - 6.125rem - 4.5rem);
+  // height: calc(100vh - 6.125rem - 4.5rem);
   padding: 0 1.75rem;
   overflow: auto;
   scrollbar-width: none;
