@@ -4,7 +4,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 import { StoreData } from "@/types/category/storeData";
-import DefaultImg from "@assets/image/default-store-img.svg?react";
+import DefaultImg from "@/assets/image/default-store-img.svg?react";
 
 const SearchPage = (): JSX.Element => {
   const location = useLocation();
