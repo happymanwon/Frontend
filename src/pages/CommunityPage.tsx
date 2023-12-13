@@ -30,6 +30,7 @@ const CommunityPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get("/api/boards");
+
         setPosts(response.data.data);
       } catch (error) {
         console.error("Error fetching category data:", error);
@@ -39,7 +40,15 @@ const CommunityPage = () => {
     fetchData();
   }, []);
 
-  const filteredPosts = showMyPosts ? posts.filter((post) => post.nickname === nickname) : posts;
+
+  const sortedPosts = [...posts].sort((a, b) => {
+    // boardId를 기준으로 내림차순으로 정렬
+    return b.boardId - a.boardId;
+  });
+
+  const filteredPosts = showMyPosts
+    ? posts.filter((post) => post.nickname === nickname)
+    : posts;
 
   const handleMyPost = (checked: boolean) => {
     setShowMyPosts(checked);
@@ -61,8 +70,15 @@ const CommunityPage = () => {
       </Checkbox>
       <PostContainer>
         {showMyPosts
-          ? filteredPosts.map((post: PostDataType) => post.nickname === nickname && <PostList key={post.boardId} post={post} />)
-          : posts.map((post: PostDataType) => <PostList key={post.boardId} post={post} />)}
+          ? filteredPosts.map(
+              (post: PostDataType) =>
+                post.nickname === nickname && (
+                  <PostList key={post.boardId} post={post} />
+                )
+            )
+          : sortedPosts.map((post: PostDataType) => (
+              <PostList key={post.boardId} post={post} />
+            ))}
       </PostContainer>
       <ButtonContainer>
         <button onClick={handleNewPost}>

@@ -1,9 +1,15 @@
 import styled from "styled-components";
 
-const ImageUpload = ({ setShowImages, showImages }) => {
+const ImageUpload = ({
+  setShowImages,
+  showImages,
+  imageFiles,
+  setImageFiles,
+}) => {
   // X버튼 클릭 시 이미지 삭제
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((_, index) => index !== id));
+    setImageFiles(imageFiles.filter((_, index) => index !== id));
   };
 
   return (

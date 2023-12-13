@@ -4,14 +4,17 @@ import { PostDataType } from "@/types/community/postDataType";
 import commentImg from "@/assets/images/comment.svg";
 import profileImg from "@/assets/images/default-profile.png";
 import optionImg from "@/assets/images/option-button.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import ReportModal from "./ReportModal";
+import useUserStore from "@/stores/useUserStore";
 
 const PostList = ({ post }: { post: PostDataType }) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [reportModal, setReportModal] = useState(false);
+  const [storeName, setStoreName] = useState("");
+  const { accessToken } = useUserStore();
 
   const reportButtonClick = () => {
     setReportModal(true);
@@ -20,10 +23,18 @@ const PostList = ({ post }: { post: PostDataType }) => {
   const handleReportClick = async (reportReason) => {
     console.log(reportReason);
     try {
-      await axios.post(`/api/reports/${post.boardId}`, {
-        postId: post.boardId,
-        reportReason: reportReason,
-      });
+      await axios.post(
+        `/api/reports/${post.boardId}`,
+        {
+          postId: post.boardId,
+          reportReason: reportReason,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       alert("게시물이 신고되었습니다.");
       navigate("/community");
     } catch (error) {
@@ -34,14 +45,34 @@ const PostList = ({ post }: { post: PostDataType }) => {
     // 아직 미구현
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/shops");
+        const filteredData = response.data.data.filter(
+          (data) => data.roadAddress === post.roadName
+        );
+        if (filteredData.length > 0) {
+          setStoreName(filteredData[0].name); // Assuming you want to set the store name from the first match
+        } else {
+          setStoreName(""); // Or set it to an empty string if there's no match
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [post.roadName]);
+
   return (
     <div>
       {/* 각 게시글을 클릭하면 해당 상세 페이지로 이동 */}
       <PostWrapper>
         <div className="post-top">
           <div className="tag">
-            {post.hashtagNames.map((tag: string) => (
-              <span>#{tag}</span>
+            {post.hashtagNames.map((tag: string, id: number) => (
+              <span key={id}>#{tag}</span>
             ))}
           </div>
           <div className="right" onClick={() => setShowModal(!showModal)}>
@@ -66,7 +97,7 @@ const PostList = ({ post }: { post: PostDataType }) => {
           {post.imageUrls.map((imgSrc: string) => (
             <div key={imgSrc}>
               <img
-                src={`${imgSrc}`}
+                src={imgSrc}
                 alt="이미지"
                 className="images"
                 loading="lazy"
@@ -74,9 +105,11 @@ const PostList = ({ post }: { post: PostDataType }) => {
             </div>
           ))}
         </div>
-        {/* <div className="store-name">
-          <img src="/src/assets/images/map-pin.svg" />#{post.store}
-        </div> */}
+        {post.roadName && (
+          <div className="store-name">
+            <img src="/src/assets/images/map-pin.svg" />#{storeName}
+          </div>
+        )}
         <div className="post-end">
           <div className="write-info">
             <span>
