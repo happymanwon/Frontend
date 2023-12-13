@@ -30,6 +30,8 @@ const EditPostPage = () => {
   const [storeAddr, setStoreAddr] = useState(""); // 글 내용 속 가게 주소
   const [showImages, setShowImages] = useState<string[]>([]);
 
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+
   const [tags, setTags] = useState<string[]>([]); // 태그 상태
   const [content, setContent] = useState(""); // 컨텐츠 상태
 
@@ -45,14 +47,15 @@ const EditPostPage = () => {
         setContent(response.data.data.content);
         setTags(response.data.data.hashtagNames);
         // setStoreAddr(response.data.data.address)
-        setShowImages(response.data.dataimageUrls);
+        setShowImages(response.data.data.imageUrls);
+        setImageFiles(response.data.data.imageUrls);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [postId]);
 
   // 지도 모달창 부분
   function MapModal() {
@@ -122,21 +125,16 @@ const EditPostPage = () => {
 
   // 이미지 모달창 부분
   function ImageModal() {
-    // 이미지 상대경로 저장
     const handleAddImages = (e) => {
-      const imageLists = e.target.files;
-      let imageUrlLists = [...showImages];
+      const selectedFiles = Array.from(e.target.files || []) as File[];
+      const updatedImageFiles = [...imageFiles, ...selectedFiles];
+      setImageFiles(updatedImageFiles);
 
-      for (let i = 0; i < imageLists.length; i++) {
-        const currentImageUrl = URL.createObjectURL(imageLists[i]);
-        imageUrlLists.push(currentImageUrl);
-      }
+      setShowImages((prevImages) => [
+        ...(prevImages || []),
+        ...selectedFiles.map((file) => URL.createObjectURL(file)),
+      ]);
 
-      if (imageUrlLists.length > 10) {
-        imageUrlLists = imageUrlLists.slice(0, 10);
-      }
-
-      setShowImages(imageUrlLists);
       setImageModal(false);
       setIsImageAdded(true);
     };
@@ -165,53 +163,32 @@ const EditPostPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("content", content); // content 추가
+    formData.append("address", storeAddr); // 주소추가
+    // 기존의 태그 데이터 추가
+    for (const tag of tags) {
+      formData.append("hashtagNames", tag);
+    }
 
-    const data = {
-      hashtagNames: tags,
-      content: content,
-    };
+    // 이미지 파일 추가
+    for (const image of imageFiles) {
+      formData.append("multipartFiles", image); // Append the image directly
+    }
 
     try {
-      const token = accessToken;
-      const response = await axios.post("/api/boards", data, {
+      const response = await axios.patch(`/api/boards/${postId}`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
         },
       });
       console.log("Data sent successfully!", response.data);
+      navigate("/community");
     } catch (error) {
       console.error("Error sending data:", error);
     }
   };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const formData = new FormData();
-  //   formData.append("content", content); // content 추가
-  //   formData.append("address", storeAddr); // 주소추가
-  //   // 기존의 태그 데이터 추가
-  //   for (const tag of tags) {
-  //     formData.append("hashtagNames", tag);
-  //   }
-
-  //   // 이미지 파일 추가
-  //   for (const image of showImages) {
-  //     // 이미지 파일을 Blob 형태로 변환
-  //     const blobImage = await fetch(image).then((r) => r.blob());
-  //     formData.append("images", blobImage);
-  //   }
-
-  //   try {
-  //     const response = await axios.post("/api/post", formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
-  //       },
-  //     });
-  //     console.log("Data sent successfully!", response.data);
-  //   } catch (error) {
-  //     console.error("Error sending data:", error);
-  //   }
-  // };
 
   return (
     <LayoutContainer>
@@ -251,6 +228,8 @@ const EditPostPage = () => {
             <ImageUpload
               showImages={showImages}
               setShowImages={handleImageConfirmation}
+              imageFiles={imageFiles}
+              setImageFiles={setImageFiles}
             />
           </ImageContainer>
         )}
