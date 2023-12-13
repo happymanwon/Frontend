@@ -30,6 +30,7 @@ const CommunityPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get("/api/boards");
+
         setPosts(response.data.data);
       } catch (error) {
         console.error("Error fetching category data:", error);
@@ -38,6 +39,11 @@ const CommunityPage = () => {
 
     fetchData();
   }, []);
+
+  const sortedPosts = [...posts].sort((a, b) => {
+    // boardId를 기준으로 내림차순으로 정렬
+    return b.boardId - a.boardId;
+  });
 
   const filteredPosts = showMyPosts
     ? posts.filter((post) => post.nickname === nickname)
@@ -69,7 +75,7 @@ const CommunityPage = () => {
                   <PostList key={post.boardId} post={post} />
                 )
             )
-          : posts.map((post: PostDataType) => (
+          : sortedPosts.map((post: PostDataType) => (
               <PostList key={post.boardId} post={post} />
             ))}
       </PostContainer>
