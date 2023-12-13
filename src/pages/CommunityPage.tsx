@@ -93,7 +93,7 @@ const CommunityPage = () => {
 
 const LayoutContainer = styled.div`
   width: 100%;
-  // height: calc(100vh - 6.125rem - 4.5rem);
+  height: calc(100vh - 6.125rem - 4.5rem);
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
