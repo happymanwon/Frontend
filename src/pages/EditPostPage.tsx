@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import cameraImg from "/camera.svg";
+import cameraImg from "@/assets/images/camera.svg";
 import pinImg from "/map-pin.svg";
 import tagImg from "/tag.svg";
 
