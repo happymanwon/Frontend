@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { PostDataType } from "@/types/community/postDataType";
 import commentImg from "/comment.svg";
 import profileImg from "/default-profile.png";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import ReportModal from "./ReportModal";
 import useUserStore from "@/stores/useUserStore";
-import { getTimeDifference } from "@/utils/getTimeDifference";
+import { getTimeDifference } from "@utils/getTimeDifference";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
@@ -17,8 +17,34 @@ const PostList = ({ post }: { post: PostDataType }) => {
   const [reportModal, setReportModal] = useState(false);
   const { accessToken } = useUserStore();
 
+  const handleTagClick = (tagName: string) => {
+    navigate(`/search-post/${tagName}`);
+  };
+
   const reportButtonClick = () => {
     setReportModal(true);
+  };
+
+  const imgListRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  const startDragging = (clientX: number) => {
+    setIsDragging(true);
+    setStartX(clientX - (imgListRef.current?.offsetLeft ?? 0));
+    setScrollLeft(imgListRef.current?.scrollLeft ?? 0);
+  };
+
+  const onDragEnd = () => {
+    setIsDragging(false);
+  };
+
+  const onDragMove = (clientX: number) => {
+    if (!isDragging) return;
+    const x = clientX - (imgListRef.current?.offsetLeft ?? 0);
+    const walk = (x - startX) * 1; // 스크롤 속도 조절
+    imgListRef.current!.scrollLeft = scrollLeft - walk;
   };
 
   // 신고 기능
@@ -49,32 +75,24 @@ const PostList = ({ post }: { post: PostDataType }) => {
   //   // 아직 미구현
   // };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/api/shops");
-        const filteredData = response.data.data.filter(
-          (data) => data.roadAddress === post.roadName
-        );
-        if (filteredData.length > 0) {
-          setStoreName(filteredData[0].name); // Assuming you want to set the store name from the first match
-        } else {
-          setStoreName(""); // Or set it to an empty string if there's no match
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [post.roadName]);
-
   return (
     <>
       {/* 각 게시글을 클릭하면 해당 상세 페이지로 이동 */}
       <PostItemContainer onClick={() => navigate(`/post/${post.boardId}`)}>
         <TopArea>
-          <div>{post.hashtagNames.map((tag) => `#${tag} `)}</div>
+          <div className="tag">
+            {post.hashtagNames.map((tag: string, id: number) => (
+              <button
+                key={id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTagClick(tag);
+                }}
+              >
+                #{tag}
+              </button>
+            ))}
+          </div>
           <FontAwesomeIcon
             icon={faEllipsisVertical}
             onClick={(e) => {
@@ -98,7 +116,17 @@ const PostList = ({ post }: { post: PostDataType }) => {
         </TopArea>
         <MiddleArea>
           <p>{post.content}</p>
-          <div className="imgList">
+          <div
+            className="imgList"
+            ref={imgListRef}
+            onMouseDown={(e) => startDragging(e.clientX)}
+            onMouseLeave={onDragEnd}
+            onMouseUp={onDragEnd}
+            onMouseMove={(e) => onDragMove(e.clientX)}
+            onTouchStart={(e) => startDragging(e.touches[0].clientX)}
+            onTouchEnd={onDragEnd}
+            onTouchMove={(e) => onDragMove(e.touches[0].clientX)}
+          >
             {post.imageUrls.map((image: string, index: number) => (
               <img key={index} src={image} alt="" />
             ))}
@@ -173,6 +201,17 @@ const TopArea = styled.div`
     margin-right: 0.75rem;
     font-size: 1rem;
     cursor: pointer;
+  }
+
+  & > .tag {
+    button {
+      border: none;
+      background: none;
+      color: ${({ theme }) => theme.colors.mainColor};
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0 4px 0 0;
+    }
   }
 `;
 

@@ -4,10 +4,7 @@ import LocationInfo from "@/components/LocationInfo";
 import ImageUpload from "@/components/ImageUpload";
 import { StoreData } from "@/types/category/storeData";
 
-import {
-  faMagnifyingGlass,
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import cameraImg from "@/assets/images/camera.svg";
@@ -28,6 +25,7 @@ const EditPostPage = () => {
 
   const [storeData, setStoreData] = useState<StoreData[] | null>(null);
   const [storeAddr, setStoreAddr] = useState(""); // 글 내용 속 가게 주소
+  const [storeName, setStoreName] = useState(""); // 글 내용 속 가게 이름
   const [showImages, setShowImages] = useState<string[]>([]);
 
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -61,6 +59,7 @@ const EditPostPage = () => {
         setContent(response.data.data.content);
         setTags(response.data.data.hashtagNames);
         setStoreAddr(response.data.data.roadName);
+        setStoreName(response.data.data.shopName);
         setShowImages(response.data.data.imageUrls);
         const imageUrls = response.data.data.imageUrls || [];
         const filePromises = imageUrls.map((url) => convertURLtoFile(url));
@@ -83,9 +82,7 @@ const EditPostPage = () => {
       try {
         const response = await axios.get("/api/shops");
 
-        const filterDataByName = response.data.data.filter((data) =>
-          data.name.includes(searchName)
-        );
+        const filterDataByName = response.data.data.filter((data) => data.name.includes(searchName));
         setStoreData(filterDataByName);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -94,6 +91,7 @@ const EditPostPage = () => {
 
     const handleNameClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       const button = e.target as HTMLButtonElement;
+      setStoreName(button.name);
       setStoreAddr(button.value);
       setMapModal(false);
       setIsMapAdded(true);
@@ -126,11 +124,7 @@ const EditPostPage = () => {
               <p>검색결과가 없습니다.</p>
             ) : (
               storeData?.map((data: any, index: number) => (
-                <button
-                  onClick={handleNameClick}
-                  value={`${data.roadAddress}`}
-                  key={index}
-                >
+                <button onClick={handleNameClick} value={`${data.roadAddress}`} name={`${data.name}`} key={index}>
                   {data.name}
                 </button>
               ))
@@ -148,10 +142,7 @@ const EditPostPage = () => {
       const updatedImageFiles = [...imageFiles, ...selectedFiles];
       setImageFiles(updatedImageFiles);
 
-      setShowImages((prevImages) => [
-        ...(prevImages || []),
-        ...selectedFiles.map((file) => URL.createObjectURL(file)),
-      ]);
+      setShowImages((prevImages) => [...(prevImages || []), ...selectedFiles.map((file) => URL.createObjectURL(file))]);
 
       setImageModal(false);
       setIsImageAdded(true);
@@ -183,7 +174,9 @@ const EditPostPage = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("content", content); // content 추가
-    formData.append("address", storeAddr); // 주소추가
+    formData.append("roadName", storeAddr); // 주소추가
+    formData.append("shopName", storeName); // 가게 이름 추가
+
     // 기존의 태그 데이터 추가
     for (const tag of tags) {
       formData.append("hashtagNames", tag);
@@ -197,7 +190,7 @@ const EditPostPage = () => {
     try {
       const response = await axios.patch(`/api/boards/${postId}`, formData, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          // Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
         },
       });
@@ -401,6 +394,9 @@ const Header = styled.div`
   .new-post-header {
     display: flex;
     justify-content: space-around;
+    button {
+      cursor: pointer;
+    }
   }
   h2 {
     text-align: center;
@@ -520,6 +516,7 @@ const BottomButtonWrapper = styled.nav`
   button {
     border: none;
     background: none;
+    cursor: pointer;
     img {
       width: 26px;
       height: 26px;

@@ -33,15 +33,11 @@ const PostSearchPage = () => {
       try {
         if (tagName) {
           const response = await axios.get("/api/boards");
-          const filteredByTag = response.data.data.filter(
-            (post: PostDataType) => post.hashtagNames.includes(tagName)
-          );
+          const filteredByTag = response.data.data.filter((post: PostDataType) => post.hashtagNames.includes(tagName));
           setPosts(filteredByTag);
         } else if (keyword) {
           const response = await axios.get("/api/boards");
-          const filteredByKeyword = response.data.data.filter(
-            (post: PostDataType) => post.content.includes(keyword)
-          );
+          const filteredByKeyword = response.data.data.filter((post: PostDataType) => post.content.includes(keyword));
           setPosts(filteredByKeyword);
         }
       } catch (error) {
@@ -57,9 +53,7 @@ const PostSearchPage = () => {
     return b.boardId - a.boardId;
   });
 
-  const filteredPosts = showMyPosts
-    ? posts.filter((post) => post.nickname === nickname)
-    : posts;
+  const filteredPosts = showMyPosts ? posts.filter((post) => post.nickname === nickname) : posts;
 
   const handleMyPost = (checked: boolean) => {
     setShowMyPosts(checked);
@@ -82,14 +76,9 @@ const PostSearchPage = () => {
       <PostContainer>
         {showMyPosts
           ? filteredPosts.map(
-              (post: PostDataType) =>
-                post.nickname === nickname && (
-                  <PostList key={post.boardId} post={post} />
-                )
+              (post: PostDataType) => post.nickname === nickname && <PostList key={post.boardId} post={post} />
             )
-          : sortedPosts.map((post: PostDataType) => (
-              <PostList key={post.boardId} post={post} />
-            ))}
+          : sortedPosts.map((post: PostDataType) => <PostList key={post.boardId} post={post} />)}
       </PostContainer>
       <ButtonContainer>
         <button onClick={handleNewPost}>
@@ -144,6 +133,9 @@ const PostContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0 12px;
+  box-sizing: border-box;
+  gap: 12px;
 `;
 
 const ButtonContainer = styled.div`

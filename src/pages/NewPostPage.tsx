@@ -4,10 +4,7 @@ import LocationInfo from "@/components/LocationInfo";
 import ImageUpload from "@/components/ImageUpload";
 import { StoreData } from "@/types/category/storeData";
 
-import {
-  faMagnifyingGlass,
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import cameraImg from "@/assets/images/camera.svg";
@@ -27,6 +24,7 @@ const NewPostPage = () => {
 
   const [storeData, setStoreData] = useState<StoreData[] | null>(null);
   const [storeAddr, setStoreAddr] = useState(""); // 글 내용 속 가게 주소
+  const [storeName, setStoreName] = useState(""); // 글 내용 속 가게 이름
   const [showImages, setShowImages] = useState<string[]>([]);
 
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -44,9 +42,7 @@ const NewPostPage = () => {
       try {
         const response = await axios.get("/api/shops");
 
-        const filterDataByName = response.data.data.filter((data) =>
-          data.name.includes(searchName)
-        );
+        const filterDataByName = response.data.data.filter((data) => data.name.includes(searchName));
         setStoreData(filterDataByName);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -55,6 +51,7 @@ const NewPostPage = () => {
 
     const handleNameClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       const button = e.target as HTMLButtonElement;
+      setStoreName(button.name);
       setStoreAddr(button.value);
       setMapModal(false);
       setIsMapAdded(true);
@@ -87,11 +84,7 @@ const NewPostPage = () => {
               <p>검색결과가 없습니다.</p>
             ) : (
               storeData?.map((data: any, index: number) => (
-                <button
-                  onClick={handleNameClick}
-                  value={`${data.roadAddress}`}
-                  key={index}
-                >
+                <button onClick={handleNameClick} value={`${data.roadAddress}`} name={`${data.name}`} key={index}>
                   {data.name}
                 </button>
               ))
@@ -109,10 +102,7 @@ const NewPostPage = () => {
       const updatedImageFiles = [...imageFiles, ...selectedFiles];
       setImageFiles(updatedImageFiles);
 
-      setShowImages((prevImages) => [
-        ...(prevImages || []),
-        ...selectedFiles.map((file) => URL.createObjectURL(file)),
-      ]);
+      setShowImages((prevImages) => [...(prevImages || []), ...selectedFiles.map((file) => URL.createObjectURL(file))]);
 
       setImageModal(false);
       setIsImageAdded(true);
@@ -145,6 +135,8 @@ const NewPostPage = () => {
     const formData = new FormData();
     formData.append("content", content); // content 추가
     formData.append("roadName", storeAddr); // 주소추가
+    formData.append("shopName", storeName); // 가게 이름 추가
+
     // 기존의 태그 데이터 추가
     for (const tag of tags) {
       formData.append("hashtagNames", tag);
@@ -362,6 +354,9 @@ const Header = styled.div`
   .new-post-header {
     display: flex;
     justify-content: space-around;
+    button {
+      cursor: pointer;
+    }
   }
   h2 {
     text-align: center;
@@ -481,6 +476,7 @@ const BottomButtonWrapper = styled.nav`
   button {
     border: none;
     background: none;
+    cursor: pointer;
     img {
       width: 26px;
       height: 26px;
