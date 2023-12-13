@@ -8,14 +8,14 @@ import { StoreData } from "@/types/category/storeData";
 import useRegionStore from "../stores/location";
 import useCategoryStore from "../stores/categories";
 
-import korImg from "@/assets/images/h-kor.svg";
-import cnImg from "@/assets/images/h-cn.svg";
-import jpImg from "@/assets/images/h-jp.svg";
-import etcfoodImg from "@/assets/images/h-etcfood.svg";
-import hairImg from "@/assets/images/h-hair.svg";
-import laundryImg from "@/assets/images/h-laundry.svg";
-import etcImg from "@/assets/images/h-etc.svg";
-import DefaultImg from "@/assets/images/default-store-img.svg?react";
+import korImg from "/h-kor.svg";
+import cnImg from "/h-cn.svg";
+import jpImg from "/h-jp.svg";
+import etcfoodImg from "/h-etcfood.svg";
+import hairImg from "/h-hair.svg";
+import laundryImg from "/h-laundry.svg";
+import etcImg from "/h-etc.svg";
+import DefaultImg from "/default-store-img.svg?react";
 
 const CategoryPage = () => {
   const { districtId, district } = useRegionStore();
@@ -30,8 +30,14 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/shops?categoryId=${Number(categoryId)}&localCode=${Number(districtId)}`); // json 파일 사용
-        const filterDataByDistrict = response.data.data.filter((data: StoreData) => data.address.includes(districtName));
+        const response = await axios.get(
+          `/api/shops?categoryId=${Number(categoryId)}&localCode=${Number(
+            districtId
+          )}`
+        ); // json 파일 사용
+        const filterDataByDistrict = response.data.data.filter(
+          (data: StoreData) => data.address.includes(districtName)
+        );
         setCategoryData(filterDataByDistrict);
         console.log(filterDataByDistrict);
       } catch (error) {
@@ -64,7 +70,12 @@ const CategoryPage = () => {
                 {isError ? (
                   <DefaultImg /> // 로드 실패 시 SVG 컴포넌트 렌더링
                 ) : (
-                  <img src={data.imageUrl} alt={data.name} onError={handleImageError(String(data.id))} loading="lazy" />
+                  <img
+                    src={data.imageUrl}
+                    alt={data.name}
+                    onError={handleImageError(String(data.id))}
+                    loading="lazy"
+                  />
                 )}
                 <h1>{data.name}</h1>
               </ListLink>

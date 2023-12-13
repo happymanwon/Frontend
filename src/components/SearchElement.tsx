@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Category from "@/components/Category";
-import bigLogoImg from "@/assets/images/big-logo.svg";
-import titleImg from "@/assets/images/manwon-title.svg";
+import bigLogoImg from "/big-logo.svg";
+import titleImg from "/manwon-title.svg";
 
 const SearchElement = () => {
   const navigate = useNavigate();

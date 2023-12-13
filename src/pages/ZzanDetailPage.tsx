@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import defaultImg from "@/assets/images/default-store.png";
+import defaultImg from "/default-store.png";
 import { ZzanItemType } from "@/types/zzan/zzanItemType";
 import useUserStore from "@/stores/useUserStore";
 

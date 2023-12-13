@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import mapPin from "@/assets/images/map-pin.svg";
+import mapPin from "/map-pin.svg";
 
 const items = [
   {

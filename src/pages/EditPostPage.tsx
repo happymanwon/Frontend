@@ -10,9 +10,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import cameraImg from "@/assets/images/camera.svg";
-import pinImg from "@/assets/images/map-pin.svg";
-import tagImg from "@/assets/images/tag.svg";
+import cameraImg from "/camera.svg";
+import pinImg from "/map-pin.svg";
+import tagImg from "/tag.svg";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -40,10 +40,13 @@ const EditPostPage = () => {
 
   const navigate = useNavigate();
 
-  const convertUrlToBlob = async (url) => {
+  const convertURLtoFile = async (url: string) => {
     const response = await fetch(url);
-    const blob = await response.blob();
-    return new File([blob], "filename.jpg", { type: "image/jpeg" }); // Adjust filename and type accordingly
+    const data = await response.blob();
+    const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+    const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+    const metadata = { type: `image/${ext}` };
+    return new File([data], filename!, metadata);
   };
 
   useEffect(() => {
@@ -51,8 +54,7 @@ const EditPostPage = () => {
       try {
         const response = await axios.get(`/api/boards/${postId}`, {
           headers: {
-            Authorization: `Bearer ${accessToken}`, // Your authorization header
-            // Other headers if needed
+            Authorization: `Bearer ${accessToken}`,
           },
         });
 
@@ -61,7 +63,7 @@ const EditPostPage = () => {
         setStoreAddr(response.data.data.roadName);
         setShowImages(response.data.data.imageUrls);
         const imageUrls = response.data.data.imageUrls || [];
-        const filePromises = imageUrls.map((url) => convertUrlToBlob(url));
+        const filePromises = imageUrls.map((url) => convertURLtoFile(url));
         const imageFiles = await Promise.all(filePromises);
 
         setImageFiles((prevFiles) => [...prevFiles, ...imageFiles]);

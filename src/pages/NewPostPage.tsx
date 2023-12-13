@@ -10,9 +10,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import cameraImg from "@/assets/images/camera.svg";
-import pinImg from "@/assets/images/map-pin.svg";
-import tagImg from "@/assets/images/tag.svg";
+import cameraImg from "/camera.svg";
+import pinImg from "/map-pin.svg";
+import tagImg from "/tag.svg";
 import useUserStore from "@/stores/useUserStore";
 
 import { useState } from "react";
@@ -161,7 +161,7 @@ const NewPostPage = () => {
     try {
       const response = await axios.post("/api/boards", formData, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          // Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
         },
       });

@@ -8,8 +8,8 @@ import { PostDataType } from "@/types/community/postDataType";
 import LocationInfo from "@/components/LocationInfo";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import profileImg from "@/assets/images/default-profile.png";
-import optionImg from "@/assets/images/option-button.svg";
+import profileImg from "/default-profile.png";
+import optionImg from "/option-button.svg";
 import useUserStore from "@/stores/useUserStore";
 import { getTimeDifference } from "@/utils/getTimeDifference";
 

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import checkImg from "@/assets/images/white-check.svg";
+import checkImg from "/white-check.svg";
 import { useState } from "react";
 
 const ReportModal = ({ onCancel, onReport }) => {

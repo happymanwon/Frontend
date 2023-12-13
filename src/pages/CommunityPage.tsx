@@ -5,9 +5,9 @@ import axios from "axios";
 import useUserStore from "@/stores/useUserStore";
 import { PostDataType } from "@/types/community/postDataType";
 import PostList from "@/components/PostList";
-import checkImg from "@/assets/images/check.svg";
-import newPostImg from "@/assets/images/new-post.svg";
-import scrollUpImg from "@/assets/images/top-button.svg";
+import checkImg from "/check.svg";
+import newPostImg from "/new-post.svg";
+import scrollUpImg from "/top-button.svg";
 import { useNavigate } from "react-router-dom";
 
 const CommunityPage = () => {
@@ -39,7 +39,6 @@ const CommunityPage = () => {
 
     fetchData();
   }, []);
-
 
   const sortedPosts = [...posts].sort((a, b) => {
     // boardId를 기준으로 내림차순으로 정렬

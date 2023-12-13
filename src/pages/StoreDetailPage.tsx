@@ -7,9 +7,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import styled, { keyframes } from "styled-components";
-import linkImg from "@/assets/images/link-share.svg";
-import kakaoImg from "@/assets/images/kakao-share.svg";
-import defaultImg from "@/assets/images/default-store.png";
+import linkImg from "/link-share.svg";
+import kakaoImg from "/kakao-share.svg";
+import defaultImg from "/default-store.png";
 
 import { Store } from "@/types/category/store";
 import useRegionStore from "../stores/location";

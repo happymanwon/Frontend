@@ -4,7 +4,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 import { StoreData } from "@/types/category/storeData";
-import DefaultImg from "@/assets/images/default-store-img.svg?react";
+import DefaultImg from "/default-store-img.svg?react";
 
 const SearchPage = (): JSX.Element => {
   const location = useLocation();
@@ -22,7 +22,9 @@ const SearchPage = (): JSX.Element => {
         }
         // const response = await axios.get(`/api/stores`);     // 백엔드랑 통신할 때
         const response = await axios.get("/api/shops"); // json 파일 사용
-        const filterDataByKeyword = response.data.data.filter((data: StoreData) => data.name.includes(searchKeyword));
+        const filterDataByKeyword = response.data.data.filter(
+          (data: StoreData) => data.name.includes(searchKeyword)
+        );
         setSearchResult(filterDataByKeyword);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -51,7 +53,12 @@ const SearchPage = (): JSX.Element => {
                   {isError ? (
                     <DefaultImg />
                   ) : (
-                    <img src={data.imageUrl} alt={`이미지 ${index}`} onError={handleImageError(String(data.id))} loading="lazy" />
+                    <img
+                      src={data.imageUrl}
+                      alt={`이미지 ${index}`}
+                      onError={handleImageError(String(data.id))}
+                      loading="lazy"
+                    />
                   )}
                   <h1>{data.name}</h1>
                 </ListLink>

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { PostDataType } from "@/types/community/postDataType";
-import commentImg from "@/assets/images/comment.svg";
-import profileImg from "@/assets/images/default-profile.png";
-import optionImg from "@/assets/images/option-button.svg";
+import commentImg from "/comment.svg";
+import profileImg from "/default-profile.png";
+import optionImg from "/option-button.svg";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ReportModal from "./ReportModal";

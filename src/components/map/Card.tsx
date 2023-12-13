@@ -1,7 +1,7 @@
 import React from "react";
 import { StoreDataType } from "@/types/map/storeDataType";
 import { styled } from "styled-components";
-import defaultImg from "@/assets/images/default-store.png";
+import defaultImg from "/default-store.png";
 import { useNavigate } from "react-router-dom";
 
 interface CardPropsType {
@@ -11,7 +11,9 @@ interface CardPropsType {
 const Card: React.FC<CardPropsType> = ({ storeData }) => {
   const navigate = useNavigate();
   // 이미지 로드 실패시 대체 이미지로 설정하는 함수
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
     e.currentTarget.src = defaultImg;
   };
 
@@ -19,8 +21,16 @@ const Card: React.FC<CardPropsType> = ({ storeData }) => {
     <>
       {storeData?.map((store: StoreDataType) => {
         return (
-          <CardContainer key={store.id} onClick={() => navigate(`/store/${store.id}`)}>
-            <img src={store.imageUrl} alt={store.name} onError={handleImageError} loading="lazy" />
+          <CardContainer
+            key={store.id}
+            onClick={() => navigate(`/store/${store.id}`)}
+          >
+            <img
+              src={store.imageUrl}
+              alt={store.name}
+              onError={handleImageError}
+              loading="lazy"
+            />
             <CardInfo>
               <h3>{store.name}</h3>
               <p>좋아요 25개</p>

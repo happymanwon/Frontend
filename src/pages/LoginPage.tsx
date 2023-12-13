@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
-import logoImg from "@/assets/images/medium-logo.svg";
-import titleImg from "@/assets/images/manwon-title.svg";
-import naverLogo from "@/assets/images/naver-logo.png";
+import logoImg from "/medium-logo.svg";
+import titleImg from "/manwon-title.svg";
+import naverLogo from "/naver-logo.png";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -28,7 +28,11 @@ const LoginPage: React.FC = () => {
       <img src={titleImg} className="title" loading="lazy" />
       <ButtonList>
         <KakaoButton onClick={handleLogin}>
-          <FontAwesomeIcon icon={faComment} size="2x" style={{ color: "#2b1417" }} />
+          <FontAwesomeIcon
+            icon={faComment}
+            size="2x"
+            style={{ color: "#2b1417" }}
+          />
         </KakaoButton>
         <NaverButton>
           <img src={naverLogo} alt="네이버 버튼" />

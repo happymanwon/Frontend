@@ -1,5 +1,5 @@
 import { ZzanItemType } from "@/types/zzan/zzanItemType";
-import defaultImg from "@/assets/images/default-store.png";
+import defaultImg from "/default-store.png";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
@@ -13,7 +13,9 @@ const ZzanPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/zzan-items?categoryId=1&localCode=${districtId}`); // json 파일 사용
+        const response = await axios.get(
+          `/api/zzan-items?categoryId=1&localCode=${districtId}`
+        ); // json 파일 사용
         setZzanData(response.data.data);
       } catch (error) {
         console.error("Error fetching category data:", error);
@@ -24,7 +26,9 @@ const ZzanPage = () => {
   }, [districtId]);
 
   // 이미지 로드 실패시 대체 이미지로 설정하는 함수
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
     e.currentTarget.src = defaultImg;
   };
 
@@ -37,7 +41,12 @@ const ZzanPage = () => {
           {zzanData.map((data, index) => {
             return (
               <ListLink key={index} to={`/zzan-items/${data.zzanItemId}`}>
-                <img src={data.imageUrl} alt={`이미지 ${index}`} onError={handleImageError} loading="lazy" />
+                <img
+                  src={data.imageUrl}
+                  alt={`이미지 ${index}`}
+                  onError={handleImageError}
+                  loading="lazy"
+                />
                 <h1>{data.shopName}</h1>
                 <span>{data.itemName}</span>
               </ListLink>

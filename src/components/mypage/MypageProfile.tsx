@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import profile_img from "@/assets/images/new-sejong-profile.png";
-import Camera from "@/assets/images/camera.svg?react";
+import profile_img from "/new-sejong-profile.png";
+import Camera from "/camera.svg?react";
 
 const MypageProfile = () => {
   const [nickname, setNickname] = useState("세종대왕");

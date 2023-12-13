@@ -1,11 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import useUserStore from "@/stores/useUserStore";
-import ChatImg from "@/assets/images/chat-img.svg?react";
-import CoinImg from "@/assets/images/coin-img.svg?react";
-import MapImg from "@/assets/images/map-img.svg?react";
-import sejongImg from "@/assets/images/sejong-img.svg";
-import UserImg from "@/assets/images/user-img.svg?react";
+import ChatImg from "/chat-img.svg?react";
+import CoinImg from "/coin-img.svg?react";
+import MapImg from "/map-img.svg?react";
+import sejongImg from "/sejong-img.svg";
+import UserImg from "/user-img.svg?react";
 import styled from "styled-components";
 
 const Nav = () => {
@@ -19,7 +19,10 @@ const Nav = () => {
 
   return (
     <Navbar style={{ zIndex: "10", backgroundColor: "#fff" }}>
-      <NavLink to="/map" className={isActive("/map") || isActive("/map/detail") ? "active" : ""}>
+      <NavLink
+        to="/map"
+        className={isActive("/map") || isActive("/map/detail") ? "active" : ""}
+      >
         <MapImg />
         <p>짠지도</p>
       </NavLink>
@@ -28,9 +31,18 @@ const Nav = () => {
         <p>짠처리</p>
       </NavLink>
       <NavLink to="/">
-        <img src={sejongImg} alt="세종 이미지" width={49} height={49} loading="lazy" />
+        <img
+          src={sejongImg}
+          alt="세종 이미지"
+          width={49}
+          height={49}
+          loading="lazy"
+        />
       </NavLink>
-      <NavLink to="/community" className={isActive("/community") ? "active" : ""}>
+      <NavLink
+        to="/community"
+        className={isActive("/community") ? "active" : ""}
+      >
         <ChatImg />
         <p>단짠단짠</p>
       </NavLink>
