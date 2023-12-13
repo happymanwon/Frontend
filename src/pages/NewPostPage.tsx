@@ -11,8 +11,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import cameraImg from "@/assets/images/camera.svg";
-import pinImg from "@/assets/images/map-pin.svg";
-import tagImg from "@/assets/images/tag.svg";
+import pinImg from "/map-pin.svg";
+import tagImg from "/tag.svg";
 
 import { useState } from "react";
 import axios from "axios";
