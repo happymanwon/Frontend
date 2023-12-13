@@ -5,6 +5,7 @@ export interface PostDataType {
   profilepic: string;
   content: string;
   hashtagNames: string[];
+  roadName: string;
   createdAt: string;
   updatedAt: string;
   commentList: CommentDataType[];
