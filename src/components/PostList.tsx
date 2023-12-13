@@ -17,6 +17,10 @@ const PostList = ({ post }: { post: PostDataType }) => {
   const [storeName, setStoreName] = useState("");
   const { accessToken } = useUserStore();
 
+  const handleTagClick = (tagName: string) => {
+    navigate(`/search-post/${tagName}`);
+  };
+
   const reportButtonClick = () => {
     setReportModal(true);
   };
@@ -73,7 +77,9 @@ const PostList = ({ post }: { post: PostDataType }) => {
         <div className="post-top">
           <div className="tag">
             {post.hashtagNames.map((tag: string, id: number) => (
-              <span key={id}>#{tag}</span>
+              <button key={id} onClick={() => handleTagClick(tag)}>
+                #{tag}
+              </button>
             ))}
           </div>
           <div className="right" onClick={() => setShowModal(!showModal)}>
@@ -182,8 +188,8 @@ const PostWrapper = styled.div`
   width: 22.4375rem;
   border-radius: 12px;
   background-color: ${({ theme }) => theme.colors.white};
-  margin-bottom: 10px;
   padding: 13px 21px;
+  margin-bottom: 10px;
   .post-top {
     font-size: 12px;
     display: flex;
@@ -195,10 +201,16 @@ const PostWrapper = styled.div`
     cursor: pointer;
   }
   .tag {
-    color: ${({ theme }) => theme.colors.mainColor};
+    button {
+      border: none;
+      background: none;
+      color: ${({ theme }) => theme.colors.mainColor};
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0 4px 0 0;
+    }
   }
   .content {
-    margin-top: 7px;
     margin-bottom: 15px;
   }
   .profile {

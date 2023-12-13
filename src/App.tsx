@@ -15,6 +15,7 @@ import NewPostPage from "@/pages/NewPostPage";
 import LoginPage from "@/pages/LoginPage";
 import Mypage from "@/pages/Mypage";
 import NotFoundPage from "@/pages/NotFoundPage";
+import PostSearchPage from "@/pages/PostSearchPage";
 
 import SearchElement from "@/components/SearchElement";
 import Layout from "@/components/layout/Layout";
@@ -115,6 +116,22 @@ function App() {
                 element={
                   <Layout>
                     <PostDetailPage />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/search-post/:tagName"
+                element={
+                  <Layout>
+                    <PostSearchPage />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/search-post/:keyword"
+                element={
+                  <Layout>
+                    <PostSearchPage />
                   </Layout>
                 }
               />
