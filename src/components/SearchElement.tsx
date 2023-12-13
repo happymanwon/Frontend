@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Category from "@/components/Category";
-import bigLogoImg from "/big-logo.svg";
-import titleImg from "/manwon-title.svg";
+import bigLogoImg from "public/big-logo.svg";
+import titleImg from "public/manwon-title.svg";
 
 const SearchElement = () => {
   const navigate = useNavigate();
@@ -30,12 +30,24 @@ const SearchElement = () => {
     <SearchPage>
       <SearchMain>
         <LogoWrapper>
-          <img className="biglogo" src={bigLogoImg} alt="큰 로고이미지" loading="lazy" />
+          <img
+            className="biglogo"
+            src={bigLogoImg}
+            alt="큰 로고이미지"
+            loading="lazy"
+          />
           <div>
-            <span className="normal-font">한 푼이라도 아쉬운 사람들을 위한</span>
+            <span className="normal-font">
+              한 푼이라도 아쉬운 사람들을 위한
+            </span>
             <span className="bold-font">만원의 행복 서비스</span>
           </div>
-          <img className="title" src={titleImg} alt="만원의행복" loading="lazy" />
+          <img
+            className="title"
+            src={titleImg}
+            alt="만원의행복"
+            loading="lazy"
+          />
         </LogoWrapper>
         <InputContainer>
           <input

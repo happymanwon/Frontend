@@ -5,9 +5,9 @@ import axios from "axios";
 import useUserStore from "@/stores/useUserStore";
 import { PostDataType } from "@/types/community/postDataType";
 import PostList from "@/components/PostList";
-import checkImg from "/check.svg";
-import newPostImg from "/new-post.svg";
-import scrollUpImg from "/top-button.svg";
+import checkImg from "public/check.svg";
+import newPostImg from "public/new-post.svg";
+import scrollUpImg from "public/top-button.svg";
 import { useNavigate } from "react-router-dom";
 
 const CommunityPage = () => {
