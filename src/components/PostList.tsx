@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ReportModal from "./ReportModal";
 import useUserStore from "@/stores/useUserStore";
+import { getTimeDifference } from "@/utils/getTimeDifference";
 
 const PostList = ({ post }: { post: PostDataType }) => {
   const navigate = useNavigate();
@@ -121,11 +122,13 @@ const PostList = ({ post }: { post: PostDataType }) => {
               />
             </span>
             <span className="writer">{post.nickname}</span>
-            <span className="write-time">{post.createdAt}</span>
+            <span className="write-time">
+              {getTimeDifference(post.createAt)}
+            </span>
           </div>
           <div className="comment">
             <img src={commentImg} alt="이미지" loading="lazy" />
-            {/* <span>{post.comments.length}개</span> */}
+            {/* <span>{post.commentList.length}개</span> */}
           </div>
         </div>
       </PostWrapper>
@@ -206,9 +209,11 @@ const PostWrapper = styled.div`
   .img {
     display: flex;
     gap: 5px;
+    margin-bottom: 5px;
   }
   .images {
     border-radius: 8px;
+    height: 6.8125rem;
     width: 6.8125rem;
   }
   .store-name {
@@ -254,6 +259,9 @@ const PostWrapper = styled.div`
 const PostLink = styled(Link)`
   text-decoration: none;
   color: #333;
+  .content {
+    line-height: 16px;
+  }
 `;
 
 const DarkBackground = styled.div`

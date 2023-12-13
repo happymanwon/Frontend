@@ -84,6 +84,7 @@ const PostDetailPage = () => {
           const postData = response.data.data;
           setPost(postData);
         }
+        console.log(response.data.data.commentList.length);
       } catch (error) {
         console.error("Error fetching category data:", error);
       }
@@ -134,7 +135,7 @@ const PostDetailPage = () => {
               <img src={profileImg} className="profile" loading="lazy" />
             </span>
             <span className="writer">{post.nickname}</span>
-            <span className="date">{post.createdAt}</span>
+            <span className="date">{getTimeDifference(post.createAt)}</span>
           </PostHeader>
           <PostWrapper>
             <p className="content">{post.content}</p>
@@ -335,6 +336,7 @@ const PostWrapper = styled.div`
   .images {
     border-radius: 8px;
     width: 6.8125rem;
+    height: 6.8125rem;
     margin-bottom: 5px;
   }
 `;

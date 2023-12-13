@@ -5,6 +5,6 @@ export interface CommentDataType {
   nickname: string;
   profilepic: string;
   content: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -6,8 +6,8 @@ export interface PostDataType {
   content: string;
   hashtagNames: string[];
   roadName: string;
-  createdAt: string;
-  updatedAt: string;
+  createAt: Date;
+  updateAt: Date;
   commentList: CommentDataType[];
   imageUrls: string[];
 }
