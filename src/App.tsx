@@ -25,7 +25,7 @@ import theme from "@/styles/theme";
 import EditPostPage from "./pages/EditPostPage";
 import QrPage from "./pages/QrPage";
 
-import PrivateRoute from "./PrivateRoute";
+// import PrivateRoute from "./PrivateRoute";
 import ZoomProvider from "./ZoomProvider";
 
 function App() {
@@ -129,41 +129,41 @@ function App() {
               <Route
                 path="/newpost"
                 element={
-                  <PrivateRoute>
-                    <Layout>
-                      <NewPostPage />
-                    </Layout>
-                  </PrivateRoute>
+                  // <PrivateRoute>
+                  <Layout>
+                    <NewPostPage />
+                  </Layout>
+                  // </PrivateRoute>
                 }
               />
               <Route
                 path="/editpost/:postId"
                 element={
-                  <PrivateRoute>
-                    <Layout>
-                      <EditPostPage />
-                    </Layout>
-                  </PrivateRoute>
+                  // <PrivateRoute>
+                  <Layout>
+                    <EditPostPage />
+                  </Layout>
+                  // </PrivateRoute>
                 }
               />
               <Route
                 path="/mypage"
                 element={
-                  <PrivateRoute>
-                    <Layout>
-                      <Mypage />
-                    </Layout>
-                  </PrivateRoute>
+                  // <PrivateRoute>
+                  <Layout>
+                    <Mypage />
+                  </Layout>
+                  // </PrivateRoute>
                 }
               />
               <Route
                 path="/qr/:storeId"
                 element={
-                  <PrivateRoute>
-                    <Layout>
-                      <QrPage />
-                    </Layout>
-                  </PrivateRoute>
+                  // <PrivateRoute>
+                  <Layout>
+                    <QrPage />
+                  </Layout>
+                  // </PrivateRoute>
                 }
               />
               <Route path="/*" element={<NotFoundPage />} />
