@@ -15,7 +15,7 @@ import etcfoodImg from "/h-etcfood.svg";
 import hairImg from "/h-hair.svg";
 import laundryImg from "/h-laundry.svg";
 import etcImg from "/h-etc.svg";
-import DefaultImg from "@/assets/image/default-store-img.svg?react";
+import DefaultImg from "@/assets/images/default-store-img.svg?react";
 
 const CategoryPage = () => {
   const { districtId, district } = useRegionStore();

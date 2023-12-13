@@ -1,11 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import useUserStore from "@/stores/useUserStore";
-import ChatImg from "@/assets/image/chat-img.svg?react";
-import CoinImg from "@/assets/image/coin-img.svg?react";
-import MapImg from "@/assets/image/map-img.svg?react";
+import ChatImg from "@/assets/images/chat-img.svg?react";
+import CoinImg from "@/assets/images/coin-img.svg?react";
+import MapImg from "@/assets/images/map-img.svg?react";
 import sejongImg from "/sejong-img.svg";
-import UserImg from "@/assets/image/user-img.svg?react";
+import UserImg from "@/assets/images/user-img.svg?react";
 import styled from "styled-components";
 
 const Nav = () => {
