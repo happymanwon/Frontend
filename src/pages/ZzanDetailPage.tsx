@@ -128,7 +128,7 @@ const ZzanDetailPage = () => {
           <MapInfo>
             <LocationInfo
               address={`${zzanData?.shopInfo.roadAddress}`}
-              way={`${zzanData?.shopInfo.way}`}
+              way={""}
             />
           </MapInfo>
         </InfoWrapper>

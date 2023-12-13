@@ -40,22 +40,38 @@ const EditPostPage = () => {
 
   const navigate = useNavigate();
 
+  const convertUrlToBlob = async (url) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], "filename.jpg", { type: "image/jpeg" }); // Adjust filename and type accordingly
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/boards/${postId}`); // json 파일 사용
+        const response = await axios.get(`/api/boards/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // Your authorization header
+            // Other headers if needed
+          },
+        });
+
         setContent(response.data.data.content);
         setTags(response.data.data.hashtagNames);
-        // setStoreAddr(response.data.data.address)
+        setStoreAddr(response.data.data.roadName);
         setShowImages(response.data.data.imageUrls);
-        setImageFiles(response.data.data.imageUrls);
+        const imageUrls = response.data.data.imageUrls || [];
+        const filePromises = imageUrls.map((url) => convertUrlToBlob(url));
+        const imageFiles = await Promise.all(filePromises);
+
+        setImageFiles((prevFiles) => [...prevFiles, ...imageFiles]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [postId]);
+  }, [accessToken, postId]);
 
   // 지도 모달창 부분
   function MapModal() {
@@ -197,7 +213,7 @@ const EditPostPage = () => {
           <FontAwesomeIcon icon={faArrowLeft} />
         </div>
         <div className="new-post-header">
-          <h2>단짠단짠 글쓰기</h2>
+          <h2>단짠단짠 수정하기</h2>
           <button onClick={handleSubmit}>완료</button>
         </div>
         <TagInput>
