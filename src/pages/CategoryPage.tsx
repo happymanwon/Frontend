@@ -8,13 +8,13 @@ import { StoreData } from "@/types/category/storeData";
 import useRegionStore from "../stores/location";
 import useCategoryStore from "../stores/categories";
 
-import korImg from "public/h-kor.svg";
-import cnImg from "public/h-cn.svg";
-import jpImg from "public/h-jp.svg";
-import etcfoodImg from "public/h-etcfood.svg";
-import hairImg from "public/h-hair.svg";
-import laundryImg from "public/h-laundry.svg";
-import etcImg from "public/h-etc.svg";
+import korImg from "/h-kor.svg";
+import cnImg from "/h-cn.svg";
+import jpImg from "/h-jp.svg";
+import etcfoodImg from "/h-etcfood.svg";
+import hairImg from "/h-hair.svg";
+import laundryImg from "/h-laundry.svg";
+import etcImg from "/h-etc.svg";
 import DefaultImg from "@assets/image/default-store-img.svg?react";
 
 const CategoryPage = () => {

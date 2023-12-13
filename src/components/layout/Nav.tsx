@@ -4,7 +4,7 @@ import useUserStore from "@/stores/useUserStore";
 import ChatImg from "@assets/image/chat-img.svg?react";
 import CoinImg from "@assets/image/coin-img.svg?react";
 import MapImg from "@assets/image/map-img.svg?react";
-import sejongImg from "public/sejong-img.svg";
+import sejongImg from "/sejong-img.svg";
 import UserImg from "@assets/image/user-img.svg?react";
 import styled from "styled-components";
 
