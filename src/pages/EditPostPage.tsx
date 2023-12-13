@@ -11,8 +11,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import cameraImg from "@/assets/images/camera.svg";
-import pinImg from "@/assets/images/map-pin.svg";
-import tagImg from "@/assets/images/tag.svg";
+import pinImg from "/map-pin.svg";
+import tagImg from "/tag.svg";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -30,6 +30,8 @@ const EditPostPage = () => {
   const [storeAddr, setStoreAddr] = useState(""); // 글 내용 속 가게 주소
   const [showImages, setShowImages] = useState<string[]>([]);
 
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+
   const [tags, setTags] = useState<string[]>([]); // 태그 상태
   const [content, setContent] = useState(""); // 컨텐츠 상태
 
@@ -38,21 +40,40 @@ const EditPostPage = () => {
 
   const navigate = useNavigate();
 
+  const convertURLtoFile = async (url: string) => {
+    const response = await fetch(url);
+    const data = await response.blob();
+    const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+    const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+    const metadata = { type: `image/${ext}` };
+    return new File([data], filename!, metadata);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/boards/${postId}`); // json 파일 사용
+        const response = await axios.get(`/api/boards/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
         setContent(response.data.data.content);
         setTags(response.data.data.hashtagNames);
-        // setStoreAddr(response.data.data.address)
-        setShowImages(response.data.dataimageUrls);
+        setStoreAddr(response.data.data.roadName);
+        setShowImages(response.data.data.imageUrls);
+        const imageUrls = response.data.data.imageUrls || [];
+        const filePromises = imageUrls.map((url) => convertURLtoFile(url));
+        const imageFiles = await Promise.all(filePromises);
+
+        setImageFiles((prevFiles) => [...prevFiles, ...imageFiles]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [accessToken, postId]);
 
   // 지도 모달창 부분
   function MapModal() {
@@ -122,21 +143,16 @@ const EditPostPage = () => {
 
   // 이미지 모달창 부분
   function ImageModal() {
-    // 이미지 상대경로 저장
     const handleAddImages = (e) => {
-      const imageLists = e.target.files;
-      let imageUrlLists = [...showImages];
+      const selectedFiles = Array.from(e.target.files || []) as File[];
+      const updatedImageFiles = [...imageFiles, ...selectedFiles];
+      setImageFiles(updatedImageFiles);
 
-      for (let i = 0; i < imageLists.length; i++) {
-        const currentImageUrl = URL.createObjectURL(imageLists[i]);
-        imageUrlLists.push(currentImageUrl);
-      }
+      setShowImages((prevImages) => [
+        ...(prevImages || []),
+        ...selectedFiles.map((file) => URL.createObjectURL(file)),
+      ]);
 
-      if (imageUrlLists.length > 10) {
-        imageUrlLists = imageUrlLists.slice(0, 10);
-      }
-
-      setShowImages(imageUrlLists);
       setImageModal(false);
       setIsImageAdded(true);
     };
@@ -165,53 +181,32 @@ const EditPostPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("content", content); // content 추가
+    formData.append("address", storeAddr); // 주소추가
+    // 기존의 태그 데이터 추가
+    for (const tag of tags) {
+      formData.append("hashtagNames", tag);
+    }
 
-    const data = {
-      hashtagNames: tags,
-      content: content,
-    };
+    // 이미지 파일 추가
+    for (const image of imageFiles) {
+      formData.append("multipartFiles", image); // Append the image directly
+    }
 
     try {
-      const token = accessToken;
-      const response = await axios.post("/api/boards", data, {
+      const response = await axios.patch(`/api/boards/${postId}`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
         },
       });
       console.log("Data sent successfully!", response.data);
+      navigate("/community");
     } catch (error) {
       console.error("Error sending data:", error);
     }
   };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const formData = new FormData();
-  //   formData.append("content", content); // content 추가
-  //   formData.append("address", storeAddr); // 주소추가
-  //   // 기존의 태그 데이터 추가
-  //   for (const tag of tags) {
-  //     formData.append("hashtagNames", tag);
-  //   }
-
-  //   // 이미지 파일 추가
-  //   for (const image of showImages) {
-  //     // 이미지 파일을 Blob 형태로 변환
-  //     const blobImage = await fetch(image).then((r) => r.blob());
-  //     formData.append("images", blobImage);
-  //   }
-
-  //   try {
-  //     const response = await axios.post("/api/post", formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
-  //       },
-  //     });
-  //     console.log("Data sent successfully!", response.data);
-  //   } catch (error) {
-  //     console.error("Error sending data:", error);
-  //   }
-  // };
 
   return (
     <LayoutContainer>
@@ -220,7 +215,7 @@ const EditPostPage = () => {
           <FontAwesomeIcon icon={faArrowLeft} />
         </div>
         <div className="new-post-header">
-          <h2>단짠단짠 글쓰기</h2>
+          <h2>단짠단짠 수정하기</h2>
           <button onClick={handleSubmit}>완료</button>
         </div>
         <TagInput>
@@ -251,6 +246,8 @@ const EditPostPage = () => {
             <ImageUpload
               showImages={showImages}
               setShowImages={handleImageConfirmation}
+              imageFiles={imageFiles}
+              setImageFiles={setImageFiles}
             />
           </ImageContainer>
         )}

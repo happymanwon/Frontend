@@ -25,10 +25,18 @@ const PostList = ({ post }: { post: PostDataType }) => {
   const handleReportClick = async (reportReason) => {
     console.log(reportReason);
     try {
-      await axios.post(`/api/reports/${post.boardId}`, {
-        postId: post.boardId,
-        reportReason: reportReason,
-      });
+      await axios.post(
+        `/api/reports/${post.boardId}`,
+        {
+          postId: post.boardId,
+          reportReason: reportReason,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       alert("게시물이 신고되었습니다.");
       // navigate("/community");
     } catch (error) {
@@ -40,6 +48,26 @@ const PostList = ({ post }: { post: PostDataType }) => {
   // const handleHiddenClick = () => {
   //   // 아직 미구현
   // };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/shops");
+        const filteredData = response.data.data.filter(
+          (data) => data.roadAddress === post.roadName
+        );
+        if (filteredData.length > 0) {
+          setStoreName(filteredData[0].name); // Assuming you want to set the store name from the first match
+        } else {
+          setStoreName(""); // Or set it to an empty string if there's no match
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [post.roadName]);
 
   return (
     <>
@@ -89,7 +117,7 @@ const PostList = ({ post }: { post: PostDataType }) => {
           </div>
           <div>
             <img src={commentImg} alt="이미지" loading="lazy" />
-            {/* <span>{post.comments.length}개</span> */}
+            {/* <span>{post.commentList.length}개</span> */}
           </div>
         </BottomArea>
       </PostItemContainer>
@@ -174,7 +202,6 @@ const ButtonList = styled.div`
     line-height: 25.5px; /* 150% */
     cursor: pointer;
   }
-
   & > button:hover {
     background-color: #f2f4f6;
   }
@@ -277,8 +304,6 @@ const BottomArea = styled.div`
     line-height: 21px; /* 150% */
   }
 `;
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const DarkBackground = styled.div`
   position: fixed;

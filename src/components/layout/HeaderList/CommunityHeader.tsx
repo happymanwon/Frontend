@@ -20,7 +20,7 @@ const CommunityHeader = () => {
     }
   };
   const handleSearch = () => {
-    navigate(`/community/search?keyword=${encodeURIComponent(search)}`);
+    navigate(`/search-post/${search}`);
   };
 
   return (

@@ -11,8 +11,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import cameraImg from "@/assets/images/camera.svg";
-import pinImg from "@/assets/images/map-pin.svg";
-import tagImg from "@/assets/images/tag.svg";
+import pinImg from "/map-pin.svg";
+import tagImg from "/tag.svg";
 
 import { useState } from "react";
 import axios from "axios";
@@ -28,6 +28,8 @@ const NewPostPage = () => {
   const [storeData, setStoreData] = useState<StoreData[] | null>(null);
   const [storeAddr, setStoreAddr] = useState(""); // 글 내용 속 가게 주소
   const [showImages, setShowImages] = useState<string[]>([]);
+
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
 
   const [tags, setTags] = useState<string[]>([]); // 태그 상태
   const [content, setContent] = useState(""); // 컨텐츠 상태
@@ -102,21 +104,16 @@ const NewPostPage = () => {
 
   // 이미지 모달창 부분
   function ImageModal() {
-    // 이미지 상대경로 저장
     const handleAddImages = (e) => {
-      const imageLists = e.target.files;
-      let imageUrlLists = [...showImages];
+      const selectedFiles = Array.from(e.target.files || []) as File[];
+      const updatedImageFiles = [...imageFiles, ...selectedFiles];
+      setImageFiles(updatedImageFiles);
 
-      for (let i = 0; i < imageLists.length; i++) {
-        const currentImageUrl = URL.createObjectURL(imageLists[i]);
-        imageUrlLists.push(currentImageUrl);
-      }
+      setShowImages((prevImages) => [
+        ...(prevImages || []),
+        ...selectedFiles.map((file) => URL.createObjectURL(file)),
+      ]);
 
-      if (imageUrlLists.length > 10) {
-        imageUrlLists = imageUrlLists.slice(0, 10);
-      }
-
-      setShowImages(imageUrlLists);
       setImageModal(false);
       setIsImageAdded(true);
     };
@@ -147,22 +144,21 @@ const NewPostPage = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("content", content); // content 추가
-    formData.append("address", storeAddr); // 주소추가
+    formData.append("roadName", storeAddr); // 주소추가
     // 기존의 태그 데이터 추가
     for (const tag of tags) {
       formData.append("hashtagNames", tag);
     }
 
     // 이미지 파일 추가
-    for (const image of showImages) {
-      // 이미지 파일을 Blob 형태로 변환
-      const blobImage = await fetch(image).then((r) => r.blob());
-      formData.append("multipartFiles", blobImage);
+    for (const image of imageFiles) {
+      formData.append("multipartFiles", image); // Append the image directly
     }
 
     try {
       const response = await axios.post("/api/boards", formData, {
         headers: {
+          // Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
         },
       });
@@ -211,6 +207,8 @@ const NewPostPage = () => {
             <ImageUpload
               showImages={showImages}
               setShowImages={handleImageConfirmation}
+              imageFiles={imageFiles}
+              setImageFiles={setImageFiles}
             />
           </ImageContainer>
         )}

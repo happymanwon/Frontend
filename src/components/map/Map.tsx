@@ -3,9 +3,12 @@ import { StoreDataType } from "@/types/map/storeDataType";
 
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationCrosshairs, faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLocationCrosshairs,
+  faRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
 
-import defaultImg from "@/assets/images/default-store.png";
+import defaultImg from "/default-store.png";
 import { useNavigate } from "react-router-dom";
 
 declare global {
@@ -18,9 +21,13 @@ declare global {
 interface MapPropsType {
   storeData: StoreDataType[];
   currentLocation: { lat: number; lng: number };
-  setCurrentLocation: React.Dispatch<React.SetStateAction<{ lat: number; lng: number } | null>>;
+  setCurrentLocation: React.Dispatch<
+    React.SetStateAction<{ lat: number; lng: number } | null>
+  >;
   currentViewLocation?: { lat: number; lng: number };
-  setCurrentViewLocation?: React.Dispatch<React.SetStateAction<{ lat: number; lng: number } | null>>;
+  setCurrentViewLocation?: React.Dispatch<
+    React.SetStateAction<{ lat: number; lng: number } | null>
+  >;
   isDetail: boolean;
 }
 
@@ -41,7 +48,10 @@ const Map: React.FC<MapPropsType> = ({
   useEffect(() => {
     const mapContainer = document.getElementById("map");
     const mapOption = {
-      center: new window.kakao.maps.LatLng(currentLocation.lat, currentLocation.lng),
+      center: new window.kakao.maps.LatLng(
+        currentLocation.lat,
+        currentLocation.lng
+      ),
       level: 5,
     };
     const map = new window.kakao.maps.Map(mapContainer, mapOption);
@@ -49,8 +59,16 @@ const Map: React.FC<MapPropsType> = ({
 
     // 지도의 중심이 변경되어야 하는 경우에만 업데이트
     if (currentViewLocation && setCurrentViewLocation) {
-      if (currentViewLocation.lat !== currentLocation.lat || currentViewLocation.lng !== currentLocation.lng) {
-        map.setCenter(new window.kakao.maps.LatLng(currentViewLocation.lat, currentViewLocation.lng));
+      if (
+        currentViewLocation.lat !== currentLocation.lat ||
+        currentViewLocation.lng !== currentLocation.lng
+      ) {
+        map.setCenter(
+          new window.kakao.maps.LatLng(
+            currentViewLocation.lat,
+            currentViewLocation.lng
+          )
+        );
       }
     }
 
@@ -62,7 +80,10 @@ const Map: React.FC<MapPropsType> = ({
     // 데이터를 이용하여 지도에 마커 추가
     storeData.forEach((store: StoreDataType) => {
       if (store.latitude && store.longitude) {
-        const coords = new window.kakao.maps.LatLng(parseFloat(store.latitude), parseFloat(store.longitude));
+        const coords = new window.kakao.maps.LatLng(
+          parseFloat(store.latitude),
+          parseFloat(store.longitude)
+        );
         const marker = new window.kakao.maps.Marker({
           map: map,
           position: coords,
@@ -113,7 +134,9 @@ const Map: React.FC<MapPropsType> = ({
   };
 
   // 이미지 로드 실패시 대체 이미지로 설정하는 함수
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
     e.currentTarget.src = defaultImg;
   };
 
@@ -130,7 +153,11 @@ const Map: React.FC<MapPropsType> = ({
         </CurrentLocationSearch>
       )}
       <MapContainer id="map"></MapContainer>
-      <CurrentLocationButton onClick={currentLocationHandler} isDetail={isDetail} isMarkerClicked={isMarkerClicked}>
+      <CurrentLocationButton
+        onClick={currentLocationHandler}
+        isDetail={isDetail}
+        isMarkerClicked={isMarkerClicked}
+      >
         <FontAwesomeIcon icon={faLocationCrosshairs} />
       </CurrentLocationButton>
       {!isDetail && (
@@ -140,7 +167,12 @@ const Map: React.FC<MapPropsType> = ({
           }}
         >
           <CardContainer onClick={() => handleMoveStore(storeInfo?.id)}>
-            <img src={storeInfo?.imageUrl} alt={storeInfo?.name} onError={handleImageError} loading="lazy" />
+            <img
+              src={storeInfo?.imageUrl}
+              alt={storeInfo?.name}
+              onError={handleImageError}
+              loading="lazy"
+            />
             <CardInfo>
               <h3>{storeInfo?.name}</h3>
               <p>{storeInfo?.id}</p>
@@ -183,7 +215,8 @@ interface CurrentLocationButtonPropsType {
 
 const CurrentLocationButton = styled.div<CurrentLocationButtonPropsType>`
   position: absolute;
-  bottom: ${(props) => (props.isDetail ? "15rem" : props.isMarkerClicked ? "17rem" : "1.25rem")};
+  bottom: ${(props) =>
+    props.isDetail ? "15rem" : props.isMarkerClicked ? "17rem" : "1.25rem"};
   right: 1.25rem;
   width: 2.5rem;
   height: 2.5rem;
@@ -206,7 +239,8 @@ const BottomSheetContainer = styled.div`
   height: 16.5625rem;
   background-color: #fff;
   z-index: 1;
-  box-shadow: 0 0px 20px 0 rgba(38, 89, 115, 0.11), 0 -1px 0 rgba(38, 89, 115, 0.05);
+  box-shadow: 0 0px 20px 0 rgba(38, 89, 115, 0.11),
+    0 -1px 0 rgba(38, 89, 115, 0.05);
   border-radius: 1.25rem 1.25rem 0 0;
 
   display: flex;

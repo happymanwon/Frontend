@@ -1,15 +1,16 @@
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import mapPin from "@/assets/images/map-pin.svg";
+import mapPin from "/map-pin.svg";
 
 const items = [
   {
     id: 1,
     tag: ["맛집", "일상"],
-    content: "가보고 싶었던 곳인데! \n블로그 시작하면서 카페에서 찍은 예쁜 사진들로 스타츠하고 싶어요.",
+    content:
+      "가보고 싶었던 곳인데! \n블로그 시작하면서 카페에서 찍은 예쁜 사진들로 스타츠하고 싶어요.",
     images: [
       "/data/fakeimg/sushi.jpg",
       "/data/fakeimg/toast.png",
@@ -53,7 +54,10 @@ const CommunityPostItem = () => {
         <div key={index}>
           <TopArea>
             <div>{item.tag.map((tag: string) => `#${tag} `)}</div>
-            <FontAwesomeIcon icon={faEllipsisVertical} onClick={() => setIsClicked(!isClicked)} />
+            <FontAwesomeIcon
+              icon={faEllipsisVertical}
+              onClick={() => setIsClicked(!isClicked)}
+            />
             {isClicked && (
               <ButtonList>
                 <button>수정하기</button>

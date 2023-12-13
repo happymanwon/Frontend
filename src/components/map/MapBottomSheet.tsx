@@ -57,6 +57,14 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 375px) {
+    zoom: 0.9;
+  }
+
+  @media (max-width: 320px) {
+    zoom: 0.8;
+  }
 `;
 
 export default MapBottomSheet;

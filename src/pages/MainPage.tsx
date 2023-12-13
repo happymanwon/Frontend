@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import Category from "@/components/Category";
-import korImg from "@/assets/images/c-kor.svg";
-import cnImg from "@/assets/images/c-cn.svg";
-import jpImg from "@/assets/images/c-jp.svg";
-import etcImg from "@/assets/images/c-etcfood.svg";
-import hairIcon from "@/assets/images/c-hair.svg";
-import laundryIcon from "@/assets/images/c-laundry.svg";
-import etcIcon from "@/assets/images/c-etc.svg";
+import korImg from "/c-kor.svg";
+import cnImg from "/c-cn.svg";
+import jpImg from "/c-jp.svg";
+import etcImg from "/c-etcfood.svg";
+import hairIcon from "/c-hair.svg";
+import laundryIcon from "/c-laundry.svg";
+import etcIcon from "/c-etc.svg";
 
 const MainPage = (): JSX.Element => {
   return (

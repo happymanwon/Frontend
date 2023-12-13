@@ -81,8 +81,7 @@ const MapPage: React.FC = () => {
     }
   }, [currentViewLocation, storeData]);
 
-  if (isStoreDataLoading || currentLocation === null || filteredStores === null || currentViewLocation === null)
-    return null;
+  if (isStoreDataLoading || currentLocation === null || filteredStores === null || currentViewLocation === null) return null;
   if (storeDataError || locationError) {
     let errorMessage = "";
 
@@ -111,7 +110,7 @@ const MapPage: React.FC = () => {
 
 const MapContainer = styled.main`
   width: 100%;
-  height: calc(100vh - 6.125rem - 4.5rem);
+  // height: calc(100vh - 6.125rem - 4.5rem);
   position: relative;
   overflow: hidden;
 `;

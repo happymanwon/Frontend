@@ -22,7 +22,9 @@ const SearchPage = (): JSX.Element => {
         }
         // const response = await axios.get(`/api/stores`);     // 백엔드랑 통신할 때
         const response = await axios.get("/api/shops"); // json 파일 사용
-        const filterDataByKeyword = response.data.data.filter((data: StoreData) => data.name.includes(searchKeyword));
+        const filterDataByKeyword = response.data.data.filter(
+          (data: StoreData) => data.name.includes(searchKeyword)
+        );
         setSearchResult(filterDataByKeyword);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -51,7 +53,12 @@ const SearchPage = (): JSX.Element => {
                   {isError ? (
                     <DefaultImg />
                   ) : (
-                    <img src={data.imageUrl} alt={`이미지 ${index}`} onError={handleImageError(String(data.id))} loading="lazy" />
+                    <img
+                      src={data.imageUrl}
+                      alt={`이미지 ${index}`}
+                      onError={handleImageError(String(data.id))}
+                      loading="lazy"
+                    />
                   )}
                   <h1>{data.name}</h1>
                 </ListLink>
@@ -66,7 +73,7 @@ const SearchPage = (): JSX.Element => {
 
 const SearchContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 6.125rem - 4.5rem);
+  // height: calc(100vh - 6.125rem - 4.5rem);
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;

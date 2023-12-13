@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+// import { useState } from "react";
 import useUserStore from "@/stores/useUserStore";
 import ChatImg from "@/assets/images/chat-img.svg?react";
 import CoinImg from "@/assets/images/coin-img.svg?react";
 import MapImg from "@/assets/images/map-img.svg?react";
-import sejongImg from "@/assets/images/sejong-img.svg";
+import sejongImg from "/sejong-img.svg";
 import UserImg from "@/assets/images/user-img.svg?react";
 import styled from "styled-components";
 
@@ -12,14 +12,17 @@ const Nav = () => {
   // 로그인 여부 (전역 상태 관리 시 지울 예정)
   const { memberId, nickname } = useUserStore.getState();
   console.log(memberId, nickname);
-  const [isLogin] = useState(memberId && true);
+  // const [isLogin] = useState(memberId && true);
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <Navbar style={{ zIndex: "10", backgroundColor: "#fff" }}>
-      <NavLink to="/map" className={isActive("/map") || isActive("/map/detail") ? "active" : ""}>
+      <NavLink
+        to="/map"
+        className={isActive("/map") || isActive("/map/detail") ? "active" : ""}
+      >
         <MapImg />
         <p>짠지도</p>
       </NavLink>
@@ -28,23 +31,32 @@ const Nav = () => {
         <p>짠처리</p>
       </NavLink>
       <NavLink to="/">
-        <img src={sejongImg} alt="세종 이미지" width={49} height={49} loading="lazy" />
+        <img
+          src={sejongImg}
+          alt="세종 이미지"
+          width={49}
+          height={49}
+          loading="lazy"
+        />
       </NavLink>
-      <NavLink to="/community" className={isActive("/community") ? "active" : ""}>
+      <NavLink
+        to="/community"
+        className={isActive("/community") ? "active" : ""}
+      >
         <ChatImg />
         <p>단짠단짠</p>
       </NavLink>
-      {isLogin ? (
-        <NavLink to="/mypage" className={isActive("/mypage") ? "active" : ""}>
-          <UserImg />
-          <p>마이페이지</p>
-        </NavLink>
-      ) : (
+      {/* {isLogin ? ( */}
+      <NavLink to="/mypage" className={isActive("/mypage") ? "active" : ""}>
+        <UserImg />
+        <p>마이페이지</p>
+      </NavLink>
+      {/* ) : (
         <NavLink to="/login" className={isActive("/login") ? "active" : ""}>
           <UserImg />
           <p>로그인</p>
         </NavLink>
-      )}
+      )} */}
     </Navbar>
   );
 };

@@ -7,7 +7,7 @@ const ZzanHeader: React.FC = () => {
       <H2>짠처리</H2>
       <SelectBoxContainer>
         <Geolocation />
-        <BuyListButton>구매내역</BuyListButton>
+        {/* <BuyListButton>구매내역</BuyListButton> */}
       </SelectBoxContainer>
     </MapHeaderContainer>
   );
@@ -49,15 +49,15 @@ const SelectBoxContainer = styled.div`
   }
 `;
 
-const BuyListButton = styled.button`
-  border-radius: 8px;
-  width: 89px;
-  height: 30px;
-  color: ${({ theme }) => theme.colors.grey};
-  font-size: 12px;
-  border: 1px solid ${({ theme }) => theme.colors.grey};
-  background-color: ${({ theme }) => theme.colors.white};
-  cursor: pointer;
-`;
+// const BuyListButton = styled.button`
+//   border-radius: 8px;
+//   width: 89px;
+//   height: 30px;
+//   color: ${({ theme }) => theme.colors.grey};
+//   font-size: 12px;
+//   border: 1px solid ${({ theme }) => theme.colors.grey};
+//   background-color: ${({ theme }) => theme.colors.white};
+//   cursor: pointer;
+// `;
 
 export default ZzanHeader;

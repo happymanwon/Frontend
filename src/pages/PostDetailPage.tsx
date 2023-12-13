@@ -8,11 +8,15 @@ import { PostDataType } from "@/types/community/postDataType";
 import LocationInfo from "@/components/LocationInfo";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import profileImg from "@/assets/images/default-profile.png";
-import optionImg from "@/assets/images/option-button.svg";
+import profileImg from "/default-profile.png";
+import optionImg from "/option-button.svg";
+import useUserStore from "@/stores/useUserStore";
+import { getTimeDifference } from "@/utils/getTimeDifference";
 
 const PostDetailPage = () => {
   const navigate = useNavigate();
+  const { accessToken } = useUserStore();
+
   const { postId } = useParams<{ postId?: string }>(); // 파라미터가 없을 수 있으므로 postId를 옵셔널로 지정
   const [post, setPost] = useState<PostDataType | null>(null);
   const [comment, setComment] = useState(""); // 댓글 내용 상태값
@@ -25,7 +29,11 @@ const PostDetailPage = () => {
     const confirmed = window.confirm("정말로 삭제하시겠습니까?");
     if (confirmed) {
       try {
-        await axios.delete(`/api/boards/${postId}`);
+        await axios.delete(`/api/boards/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
         alert("게시물이 삭제되었습니다.");
         navigate("/community");
       } catch (error) {
@@ -46,14 +54,24 @@ const PostDetailPage = () => {
   const handleCommentSubmit = async () => {
     try {
       // 서버로 댓글 내용 보내기
-      const response = await axios.post("/api/comments", {
-        boardId: postId,
-        content: comment,
-      });
+      const response = await axios.post(
+        "/api/comments",
+        {
+          boardId: Number(postId),
+          content: comment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       console.log("댓글이 성공적으로 전송되었습니다.", response.data);
       setComment("");
+      window.location.reload();
     } catch (error) {
       console.error("댓글 전송 중 에러:", error);
+      console.log(comment);
     }
   };
 
@@ -66,6 +84,7 @@ const PostDetailPage = () => {
           const postData = response.data.data;
           setPost(postData);
         }
+        console.log(response.data.data.commentList.length);
       } catch (error) {
         console.error("Error fetching category data:", error);
       }
@@ -116,7 +135,7 @@ const PostDetailPage = () => {
               <img src={profileImg} className="profile" loading="lazy" />
             </span>
             <span className="writer">{post.nickname}</span>
-            <span className="date">{post.createdAt}</span>
+            <span className="date">{getTimeDifference(post.createAt)}</span>
           </PostHeader>
           <PostWrapper>
             <p className="content">{post.content}</p>
@@ -129,17 +148,22 @@ const PostDetailPage = () => {
             </div>
           </PostWrapper>
         </PostContainer>
-        <MapContainer>
-          <LocationInfo
-            address={"서울특별시 중구 세종대로 110 서울특별시청"}
-            way={"가는길"}
-          />
-        </MapContainer>
+        {post.roadName && (
+          <MapContainer>
+            <LocationInfo address={post.roadName} way={""} />
+          </MapContainer>
+        )}
         <CommentContainer>
           {post.commentList.map((commentData: any, index: number) => (
             <div className="comment" key={index}>
-              <img src={commentData.profilepic} alt="Profile" loading="lazy" />
-              <p>{commentData.comment}</p>
+              <img src={profileImg} alt="Profile" loading="lazy" />
+              <div className="comment-info">
+                <div className="write-info">
+                  <span>{commentData.nickname}</span>
+                  <div>{getTimeDifference(commentData.createdAt)}</div>
+                </div>
+                <div>{commentData.content}</div>
+              </div>
             </div>
           ))}
         </CommentContainer>
@@ -312,6 +336,7 @@ const PostWrapper = styled.div`
   .images {
     border-radius: 8px;
     width: 6.8125rem;
+    height: 6.8125rem;
     margin-bottom: 5px;
   }
 `;
@@ -349,6 +374,15 @@ const CommentContainer = styled.div`
     font-size: 8px;
     gap: 10px;
     margin-bottom: 10px;
+  }
+  .write-info {
+    display: flex;
+    gap: 5px;
+    line-height: 13px;
+    span {
+      font-family: NotoSansMediumWOFF, sans-serif, Arial;
+      font-weight: 700;
+    }
   }
   img {
     width: 35px;

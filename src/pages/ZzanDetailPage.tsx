@@ -1,27 +1,39 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import defaultImg from "@/assets/images/default-store.png";
+import defaultImg from "/default-store.png";
 import { ZzanItemType } from "@/types/zzan/zzanItemType";
+import useUserStore from "@/stores/useUserStore";
 
 import LocationInfo from "@/components/LocationInfo";
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import usePurchaseStore from "@/stores/usePurchaseStore";
 
 const ZzanDetailPage = () => {
   const navigate = useNavigate();
+  const { accessToken } = useUserStore();
 
   const { zzanId } = useParams<{ zzanId: string }>();
   const [zzanData, setZzanData] = useState<ZzanItemType | null>(null);
   const [isPurchase, setIsPurchase] = useState(false); // 구매하기 버튼 상태값
+  // const [qr, setQr] = useState("");
+  // const [showQRModal, setShowQRModal] = useState(false);
+
+  const { purchasedId, addPurchasedId } = usePurchaseStore();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/api/zzan-items/${Number(zzanId)}`);
         setZzanData(response.data.data);
+        const isPurchased = purchasedId.includes(String(zzanId));
+        if (isPurchased) {
+          setIsPurchase(true);
+          console.log(isPurchased);
+        }
         console.log(response.data.message);
       } catch (error) {
         console.error("Error fetching category data:", error);
@@ -29,27 +41,43 @@ const ZzanDetailPage = () => {
     };
 
     fetchData();
-  }, [zzanId]);
+  }, [zzanId, purchasedId]);
 
   const handlePurchase = async () => {
     try {
-      const response = await axios.get(`/api/zzan-items/${Number(zzanId)}/purchase`);
-      if (response.status === 200) {
-        alert("구매가 완료되었습니다.");
+      const response = await axios.get(
+        `/api/zzan-items/${Number(zzanId)}/purchase`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (response.status === 201) {
+        // setQr(response.data.data.qrUrl);
+        console.log(response.data.data);
+        alert("구매가 완료되었습니다. 구매내역은 마이페이지에서 확인해주세요.");
         setIsPurchase(true);
-        navigate("/mypage");
+        addPurchasedId(String(zzanId));
+        // setShowQRModal(true);
       }
-    } catch (error) {
+    } catch (error: any) {
       // 에러 처리
-      alert("구매가 불가능합니다.");
+      alert(error.response.data.message);
       console.error("구매 과정에서 문제가 발생했습니다:", error);
     }
   };
 
   // 이미지 로드 실패시 대체 이미지로 설정하는 함수
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
     e.currentTarget.src = defaultImg;
   };
+
+  // const closeModal = () => {
+  //   setShowQRModal(false);
+  // };
 
   return (
     <LayoutPage>
@@ -59,7 +87,12 @@ const ZzanDetailPage = () => {
             <FontAwesomeIcon className="arrow" icon={faArrowLeft} />
           </div>
           <ImageWrapper>
-            <img src={zzanData?.shopInfo.imageUrl} alt="상점사진" onError={handleImageError} loading="lazy" />
+            <img
+              src={zzanData?.shopInfo.imageUrl}
+              alt="상점사진"
+              onError={handleImageError}
+              loading="lazy"
+            />
           </ImageWrapper>
           <NamePriceWrapper>
             <h2>{zzanData?.shopName}</h2>
@@ -67,9 +100,13 @@ const ZzanDetailPage = () => {
             <span className="item-name margin-8">|</span>
             <span className="item-name">{zzanData?.count}개</span>
             <div className="discount-info">
-              <div className="original-price">₩{zzanData?.originalPrice.toLocaleString()}</div>
+              <div className="original-price">
+                ₩{zzanData?.originalPrice.toLocaleString()}
+              </div>
               <span className="discount-rate">{zzanData?.discountRate}%</span>
-              <span className="sale-price">₩{zzanData?.salePrice.toLocaleString()}</span>
+              <span className="sale-price">
+                ₩{zzanData?.salePrice.toLocaleString()}
+              </span>
             </div>
           </NamePriceWrapper>
         </StoreHeaderWrapper>
@@ -84,10 +121,15 @@ const ZzanDetailPage = () => {
               <div className="price-item">{zzanData?.itemName}</div>
               <div>{zzanData?.originalPrice.toLocaleString()}원</div>
             </div>
-            <div className="notice">가격 정보는 업소의 사정에 따라 변경될 수 있습니다.</div>
+            <div className="notice">
+              가격 정보는 업소의 사정에 따라 변경될 수 있습니다.
+            </div>
           </MenuInfo>
           <MapInfo>
-            <LocationInfo address={`${zzanData?.shopInfo.roadAddress}`} way={`${zzanData?.shopInfo.way}`} />
+            <LocationInfo
+              address={`${zzanData?.shopInfo.roadAddress}`}
+              way={""}
+            />
           </MapInfo>
         </InfoWrapper>
         <BuyButtonWrapper isPurchased={isPurchase}>
@@ -95,15 +137,42 @@ const ZzanDetailPage = () => {
             구매하기
           </button>
         </BuyButtonWrapper>
+        {/* {showQRModal && (
+          <ModalContent>
+            <img src={qr} alt="QR Code" />
+            <CloseButton onClick={closeModal}>닫기</CloseButton>
+          </ModalContent>
+        )} */}
       </LayoutContainer>
     </LayoutPage>
   );
 };
+// 모달 스타일링
+// const ModalContent = styled.div`
+//   position: absolute;
+//   width: 382px;
+//   height: 242px;
+//   left: calc(50% - 382px / 2 - 0.5px);
+//   top: 40%;
+//   background: #ffffff;
+//   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+//   border-radius: 5px;
+// `;
+
+// const CloseButton = styled.button`
+//   width: 50%;
+//   font-size: 14px;
+//   color: #ffffff;
+//   background: #888888;
+//   border-radius: 5px;
+//   border: none;
+//   cursor: pointer;
+// `;
 
 const LayoutPage = styled.div`
   display: block;
   background-color: ${({ theme }) => theme.colors.greyBackground};
-  height: 100vh;
+  /* height: 100vh; */
   position: relative;
   max-width: 26.5rem;
   margin: auto;
@@ -254,7 +323,8 @@ const BuyButtonWrapper = styled.div<{ isPurchased }>`
   height: 3.125rem;
   display: flex;
   justify-content: center;
-  background-color: ${({ theme, isPurchased }) => (isPurchased ? theme.colors.grey : theme.colors.mainColor2)};
+  background-color: ${({ theme, isPurchased }) =>
+    isPurchased ? theme.colors.grey : theme.colors.mainColor2};
 
   button {
     font-family: NotoSansLightWOFF, sans-serif, Arial;
