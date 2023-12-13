@@ -12,21 +12,11 @@ const ReportModal = ({ onCancel, onReport }) => {
     <ModalContainer>
       <ReportOptions>
         <label>
-          <input
-            type="radio"
-            name="report"
-            value="거짓 정보"
-            onChange={() => setReportReason("거짓 정보")}
-          />
+          <input type="radio" name="report" value="거짓 정보" onChange={() => setReportReason("거짓 정보")} />
           <span>거짓 정보</span>
         </label>
         <label>
-          <input
-            type="radio"
-            name="report"
-            value="광고 및 스팸"
-            onChange={() => setReportReason("광고 및 스팸")}
-          />
+          <input type="radio" name="report" value="광고 및 스팸" onChange={() => setReportReason("광고 및 스팸")} />
           <span>광고 및 스팸</span>
         </label>
         <label>
@@ -110,11 +100,14 @@ const ReportOptions = styled.div`
   flex-direction: column;
   justify-content: start;
   font-size: 14px;
-  margin: 10px;
+  margin: 17px;
   gap: 10px;
 
   label {
     height: 26px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   span {
   }
@@ -124,6 +117,7 @@ const ReportOptions = styled.div`
     border-radius: 2px;
     width: 1.4375rem;
     height: 1.4375rem;
+    margin: 0;
     &:checked::after {
       content: "";
       position: absolute;

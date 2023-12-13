@@ -1,24 +1,25 @@
 import styled from "styled-components";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
+import * as _ from "lodash";
 
 import useUserStore from "@/stores/useUserStore";
 import { PostDataType } from "@/types/community/postDataType";
+import { StoreDataType } from "@/types/map/storeDataType";
 import PostList from "@/components/PostList";
 import checkImg from "@/assets/images/check.svg";
 import newPostImg from "@/assets/images/new-post.svg";
 import scrollUpImg from "@/assets/images/top-button.svg";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 const CommunityPage = () => {
-  const [posts, setPosts] = useState<PostDataType[]>([]);
   const [showMyPosts, setShowMyPosts] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { nickname } = useUserStore();
 
   const MoveToTop = () => {
-    console.log("MoveToTop function called");
     ref.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -26,26 +27,45 @@ const CommunityPage = () => {
     navigate("/newpost");
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/api/boards");
-        setPosts(response.data.data);
-      } catch (error) {
-        console.error("Error fetching category data:", error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const boardList = await axios.get("/api/boards");
+      const shopList = await axios.get("/api/shops");
 
-    fetchData();
-  }, []);
+      // a 리스트의 각 요소의 roadAddress를 roadName으로 매핑
+      const shopListMapped = shopList.data.data.map((item: StoreDataType) => ({ ...item, roadName: item.roadAddress }));
 
-  const filteredPosts = showMyPosts
-    ? posts.filter((post) => post.nickname === nickname)
-    : posts;
+      // aMapped와 b 사이의 교집합을 찾음, 기준은 roadName
+      const intersection = _.intersectionBy(shopListMapped, boardList.data.data, "roadName");
+      boardList.data.data.forEach((item: PostDataType) => {
+        const bItem = _.find(intersection, { roadName: item.roadName });
+        if (bItem && typeof bItem === "object" && "name" in bItem) {
+          item.storeName = bItem.name as string;
+        }
+      });
+
+      return boardList.data.data.sort((a: PostDataType, b: PostDataType) => b.boardId - a.boardId);
+    } catch (error) {
+      console.error("Error fetching category data:", error);
+    }
+  };
+
+  const {
+    status,
+    data: boardDataList,
+    error,
+  } = useQuery({
+    queryKey: ["boards"],
+    queryFn: () => fetchData(),
+    select: (data) => data,
+  });
 
   const handleMyPost = (checked: boolean) => {
     setShowMyPosts(checked);
   };
+
+  if (status === "pending") return null;
+  if (status === "error") return <div>{error.message}</div>;
 
   return (
     <LayoutContainer ref={ref}>
@@ -63,15 +83,10 @@ const CommunityPage = () => {
       </Checkbox>
       <PostContainer>
         {showMyPosts
-          ? filteredPosts.map(
-              (post: PostDataType) =>
-                post.nickname === "janny" && (
-                  <PostList key={post.boardId} post={post} />
-                )
-            )
-          : posts.map((post: PostDataType) => (
-              <PostList key={post.boardId} post={post} />
-            ))}
+          ? boardDataList
+              .filter((post: PostDataType) => post.nickname === nickname)
+              .map((post: PostDataType) => <PostList key={post.boardId} post={post} />)
+          : boardDataList.map((post: PostDataType) => <PostList key={post.boardId} post={post} />)}
       </PostContainer>
       <ButtonContainer>
         <button onClick={handleNewPost}>
@@ -126,6 +141,9 @@ const PostContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0 12px;
+  gap: 12px;
+  box-sizing: border-box;
 `;
 
 const ButtonContainer = styled.div`

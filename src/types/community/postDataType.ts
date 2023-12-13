@@ -9,4 +9,5 @@ export interface PostDataType {
   updatedAt: string;
   commentList: CommentDataType[];
   imageUrls: string[];
+  storeName?: string;
 }

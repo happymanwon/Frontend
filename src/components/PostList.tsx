@@ -1,22 +1,27 @@
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PostDataType } from "@/types/community/postDataType";
-import commentImg from "@/assets/images/comment.svg";
-import profileImg from "@/assets/images/default-profile.png";
-import optionImg from "@/assets/images/option-button.svg";
+import commentImg from "/comment.svg";
+import profileImg from "/default-profile.png";
 import { useState } from "react";
 import axios from "axios";
 import ReportModal from "./ReportModal";
+import useUserStore from "@/stores/useUserStore";
+import { getTimeDifference } from "@/utils/getTimeDifference";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
 const PostList = ({ post }: { post: PostDataType }) => {
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   const [reportModal, setReportModal] = useState(false);
+  const { accessToken } = useUserStore();
 
   const reportButtonClick = () => {
     setReportModal(true);
   };
 
+  // 신고 기능
   const handleReportClick = async (reportReason) => {
     console.log(reportReason);
     try {
@@ -25,203 +30,255 @@ const PostList = ({ post }: { post: PostDataType }) => {
         reportReason: reportReason,
       });
       alert("게시물이 신고되었습니다.");
-      navigate("/community");
+      // navigate("/community");
     } catch (error) {
       console.error("Error reporting post:", error);
     }
   };
-  const handleHiddenClick = () => {
-    // 아직 미구현
-  };
+
+  // // 숨기기 기능
+  // const handleHiddenClick = () => {
+  //   // 아직 미구현
+  // };
 
   return (
-    <div>
+    <>
       {/* 각 게시글을 클릭하면 해당 상세 페이지로 이동 */}
-      <PostWrapper>
-        <div className="post-top">
-          <div className="tag">
-            {post.hashtagNames.map((tag: string) => (
-              <span>#{tag}</span>
+      <PostItemContainer onClick={() => navigate(`/post/${post.boardId}`)}>
+        <TopArea>
+          <div>{post.hashtagNames.map((tag) => `#${tag} `)}</div>
+          <FontAwesomeIcon
+            icon={faEllipsisVertical}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsClicked(!isClicked);
+            }}
+          />
+          {isClicked && (
+            <ButtonList>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  reportButtonClick();
+                }}
+              >
+                신고하기
+              </button>
+              <button>글 숨기기</button>
+            </ButtonList>
+          )}
+        </TopArea>
+        <MiddleArea>
+          <p>{post.content}</p>
+          <div className="imgList">
+            {post.imageUrls.map((image: string, index: number) => (
+              <img key={index} src={image} alt="" />
             ))}
           </div>
-          <div className="right" onClick={() => setShowModal(!showModal)}>
-            <img src={optionImg} alt="option-button" />
+          <div className="location-text">
+            <img src="/map-pin.svg" alt="pin" />
+            <span>{post.storeName}</span>
           </div>
-          {showModal && (
-            // 삭제 또는 수정 모달
-            <ModalContainer>
-              <Button className="edit" onClick={reportButtonClick}>
-                <span>신고하기</span>
-              </Button>
-              <Button className="delete" onClick={handleHiddenClick}>
-                <span>글 숨기기</span>
-              </Button>
-            </ModalContainer>
-          )}
-          <PostLink key={post.boardId} to={`/post/${post.boardId}`}>
-            <p className="content">{post.content}</p>
-          </PostLink>
-        </div>
-        <div className="img">
-          {post.imageUrls.map((imgSrc: string) => (
-            <div key={imgSrc}>
-              <img
-                src={`${imgSrc}`}
-                alt="이미지"
-                className="images"
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </div>
-        {/* <div className="store-name">
-          <img src="/src/assets/images/map-pin.svg" />#{post.store}
-        </div> */}
-        <div className="post-end">
-          <div className="write-info">
-            <span>
-              <img
-                src={profileImg}
-                alt="이미지"
-                className="profile"
-                loading="lazy"
-              />
-            </span>
+        </MiddleArea>
+        <BottomArea>
+          <div>
+            <img src={profileImg} alt="이미지" className="profile" loading="lazy" />
             <span className="writer">{post.nickname}</span>
-            <span className="write-time">{post.createdAt}</span>
+            <span>·</span>
+            <span className="write-time">{getTimeDifference(post.createAt)}</span>
           </div>
-          <div className="comment">
+          <div>
             <img src={commentImg} alt="이미지" loading="lazy" />
             {/* <span>{post.comments.length}개</span> */}
           </div>
-        </div>
-      </PostWrapper>
+        </BottomArea>
+      </PostItemContainer>
+
       {reportModal && (
-        <DarkBackground onClick={() => setReportModal(false)}>
+        <DarkBackground
+          onClick={(e) => {
+            e.stopPropagation();
+            setReportModal(false);
+          }}
+        >
           <ReportModalWrapper onClick={(e) => e.stopPropagation()}>
-            <ReportModal
-              onCancel={() => setReportModal(false)}
-              onReport={handleReportClick}
-            />
+            <ReportModal onCancel={() => setReportModal(false)} onReport={handleReportClick} />
           </ReportModalWrapper>
         </DarkBackground>
       )}
-    </div>
+    </>
   );
 };
 
-// 모달 스타일
-const ModalContainer = styled.div`
-  box-sizing: border-box;
-  position: relative;
-  margin-left: auto;
-  width: 118px;
-  height: 70px;
-  background: #ffffff;
-  border: 0.5px solid #dadada;
-  box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.1);
-`;
-
-const Button = styled.button`
-  position: relative;
-  text-align: center;
-  width: 118px;
-  height: 35px;
-  left: 0px;
-  border: none;
-  span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  &.edit {
-    background-color: ${({ theme }) => theme.colors.white};
-  }
-`;
-
-// 페이지 스타일
-const PostWrapper = styled.div`
-  font-family: NotoSansRegularWOFF, sans-serif, Arial;
-  width: 22.4375rem;
+const PostItemContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.8125rem 0 0.8125rem 1.3125rem;
+  border: 1px solid #dadada;
   border-radius: 12px;
-  background-color: ${({ theme }) => theme.colors.white};
-  margin-bottom: 10px;
-  padding: 13px 21px;
-  .post-top {
-    font-size: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .right {
-    margin-left: auto;
+  background-color: #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+`;
+
+const TopArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: #2ab673;
+  font-family: NotoSansRegularWOFF, sans-serif, Arial;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 25.5px; /* 150% */
+  position: relative;
+
+  & > svg {
+    position: relative;
+    width: 15px;
+    height: 15px;
+    padding: 5px;
+    color: #888;
+    margin-right: 0.75rem;
+    font-size: 1rem;
     cursor: pointer;
   }
-  .tag {
-    color: ${({ theme }) => theme.colors.mainColor};
+`;
+
+const ButtonList = styled.div`
+  position: absolute;
+  top: 25px;
+  right: 15px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 118px;
+  height: 70px;
+  border: 0.5px solid #dadada;
+  background: #fff;
+  box-shadow: 0px -2px 6px 0px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+
+  & > button {
+    width: 100%;
+    height: 50%;
+    border: none;
+    background-color: #fff;
+    font-family: NotoSansRegularWOFF, sans-serif, Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 25.5px; /* 150% */
+    cursor: pointer;
   }
-  .content {
-    margin-top: 7px;
-    margin-bottom: 15px;
-  }
-  .profile {
-    width: 35px;
-    border-radius: 50%;
-    border: 0.5px solid ${({ theme }) => theme.colors.greyUnderLine};
-  }
-  .img {
-    display: flex;
-    gap: 5px;
-  }
-  .images {
-    border-radius: 8px;
-    width: 6.8125rem;
-  }
-  .store-name {
-    font-size: 8px;
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-    color: ${({ theme }) => theme.colors.grey};
-  }
-  .post-end {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .write-info {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 8px;
-    .writer {
-      color: ${({ theme }) => theme.colors.mainColor};
-      font-weight: 700;
-      font-family: NotoSansMediumWOFF, sans-serif, Arial;
-    }
-    .write-time {
-      color: ${({ theme }) => theme.colors.grey};
-    }
-    .profile {
-      width: 35px;
-      height: 35px;
-    }
-  }
-  .comment {
-    display: flex;
-    align-items: center;
-    font-size: 8px;
-    span {
-      margin-left: 3px;
-    }
+
+  & > button:hover {
+    background-color: #f2f4f6;
   }
 `;
 
-const PostLink = styled(Link)`
-  text-decoration: none;
-  color: #333;
+const MiddleArea = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 0;
+
+  & > p {
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+    font-family: NotoSansRegularWOFF, sans-serif, Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17.5px; /* 145.833% */
+    padding-right: 30px;
+  }
+  & > .imgList {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    overflow-x: scroll;
+    margin-bottom: 7px;
+    cursor: grab; /* 마우스 커서 변경 */
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  & > .imgList > img {
+    width: 6.875rem;
+    height: 6.875rem;
+    border-radius: 0.5rem;
+    margin-right: 0.5rem;
+    object-fit: cover;
+    flex-shrink: 0; /* 이미지가 줄어들지 않도록 설정 */
+  }
+
+  & > .location-text {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-left: 0.8125rem;
+  }
+
+  & > .location-text > span {
+    color: #888;
+    font-family: NotoSansRegularWOFF, sans-serif, Arial;
+    font-size: 8.182px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20.864px; /* 255% */
+  }
 `;
+
+const BottomArea = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #888;
+  font-family: NotoSansMediumWOFF;
+  font-size: 7.256px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 129.3%;
+  padding-right: 22px;
+
+  & > div:nth-child(1) {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    & > img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 0.5px solid #dadada;
+      margin-right: 5px;
+    }
+
+    & > .writer {
+      color: #2ab673;
+      font-family: NotoSansMediumWOFF;
+      font-weight: 700;
+    }
+  }
+  & > div:nth-child(2) {
+    color: var(--Primary-Black, var(--Primary-Black, #1a1a1a));
+    font-family: NotoSansMediumWOFF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 21px; /* 150% */
+  }
+`;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const DarkBackground = styled.div`
   position: fixed;
