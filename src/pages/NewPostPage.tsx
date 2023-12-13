@@ -10,10 +10,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import cameraImg from "/camera.svg";
-import pinImg from "/map-pin.svg";
-import tagImg from "/tag.svg";
-import useUserStore from "@/stores/useUserStore";
+import cameraImg from "@/assets/images/camera.svg";
+import pinImg from "@/assets/images/map-pin.svg";
+import tagImg from "@/assets/images/tag.svg";
 
 import { useState } from "react";
 import axios from "axios";
@@ -34,8 +33,6 @@ const NewPostPage = () => {
 
   const [tags, setTags] = useState<string[]>([]); // 태그 상태
   const [content, setContent] = useState(""); // 컨텐츠 상태
-
-  const { accessToken } = useUserStore();
 
   const navigate = useNavigate();
 
