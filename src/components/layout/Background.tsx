@@ -11,6 +11,10 @@ const BackgroundStyle = styled.div`
   height: 100%;
   position: fixed;
   width: 100vw;
+
+  @media (max-width: 425px) {
+    position: relative;
+  }
 `;
 
 export default Background;

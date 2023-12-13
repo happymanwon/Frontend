@@ -39,9 +39,7 @@ const CommunityPage = () => {
     fetchData();
   }, []);
 
-  const filteredPosts = showMyPosts
-    ? posts.filter((post) => post.nickname === nickname)
-    : posts;
+  const filteredPosts = showMyPosts ? posts.filter((post) => post.nickname === nickname) : posts;
 
   const handleMyPost = (checked: boolean) => {
     setShowMyPosts(checked);
@@ -63,15 +61,8 @@ const CommunityPage = () => {
       </Checkbox>
       <PostContainer>
         {showMyPosts
-          ? filteredPosts.map(
-              (post: PostDataType) =>
-                post.nickname === nickname && (
-                  <PostList key={post.boardId} post={post} />
-                )
-            )
-          : posts.map((post: PostDataType) => (
-              <PostList key={post.boardId} post={post} />
-            ))}
+          ? filteredPosts.map((post: PostDataType) => post.nickname === nickname && <PostList key={post.boardId} post={post} />)
+          : posts.map((post: PostDataType) => <PostList key={post.boardId} post={post} />)}
       </PostContainer>
       <ButtonContainer>
         <button onClick={handleNewPost}>
@@ -87,7 +78,7 @@ const CommunityPage = () => {
 
 const LayoutContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 6.125rem - 4.5rem);
+  // height: calc(100vh - 6.125rem - 4.5rem);
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
