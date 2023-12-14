@@ -46,12 +46,12 @@ const MypageMain = () => {
             <FontAwesomeIcon icon={faAngleRight} />
           </MoveMenuTitle>
         </MoveMenu>
-        <MoveMenu onClick={() => navigate("/mypage?page=setting")}>
+        {/* <MoveMenu onClick={() => navigate("/mypage?page=setting")}>
           <MoveMenuTitle>
             설정
             <FontAwesomeIcon icon={faAngleRight} />
           </MoveMenuTitle>
-        </MoveMenu>
+        </MoveMenu> */}
       </MoveSection>
     </MypageContainer>
   );

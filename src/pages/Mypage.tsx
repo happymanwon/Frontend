@@ -7,6 +7,7 @@ import {
   MypageSetting,
   MypageProfile,
   MypageCharge,
+  MypagePayment,
 } from "@/components/mypage";
 
 const Mypage = () => {
@@ -25,6 +26,8 @@ const Mypage = () => {
     return <MypageProfile />;
   } else if (pageName === "charge") {
     return <MypageCharge />;
+  } else if (pageName === "payment") {
+    return <MypagePayment />;
   }
 
   return <MypageMain />;
