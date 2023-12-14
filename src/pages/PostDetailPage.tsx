@@ -51,6 +51,10 @@ const PostDetailPage = () => {
     setComment(event.target.value); // 입력된 댓글 내용을 상태값에 저장
   };
 
+  const handleTagClick = (tagName: string) => {
+    navigate(`/search-post/${tagName}`);
+  };
+
   const handleCommentSubmit = async () => {
     try {
       // 서버로 댓글 내용 보내기
@@ -121,11 +125,19 @@ const PostDetailPage = () => {
           </ModalContainer>
         )}
         <TagContainer>
-          {post?.hashtagNames.map((tag: string, index: number) => (
-            <div className="tag" key={index}>
-              {tag}
-            </div>
-          ))}
+          <div className="tag">
+            {post.hashtagNames.map((tag: string, id: number) => (
+              <button
+                key={id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTagClick(tag);
+                }}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
         </TagContainer>
       </Header>
       <BodyContainer>
@@ -257,18 +269,18 @@ const TagContainer = styled.div`
   margin-top: 10px;
   margin-left: 15px;
   margin-right: auto;
-  gap: 3px;
-  .tag {
-    width: 4.5rem;
-    height: 1.6875rem;
-    border: none;
-    border-radius: 20px;
-    background-color: ${({ theme }) => theme.colors.greyBackground};
-    font-size: 11px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  & > .tag {
+    button {
+      margin-right: 5px;
+      padding: 0px 15px;
+      height: 1.6875rem;
+      border: none;
+      border-radius: 20px;
+      text-align: center;
+      background-color: ${({ theme }) => theme.colors.greyBackground};
+      font-size: 11px;
+      cursor: pointer;
+    }
   }
 `;
 

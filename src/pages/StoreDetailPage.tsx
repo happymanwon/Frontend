@@ -3,7 +3,7 @@ import {
   faArrowLeft,
   faArrowUpFromBracket,
   faX,
-  faHeart as faHeartSolid,
+  // faHeart as faHeartSolid,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import styled, { keyframes } from "styled-components";
@@ -13,7 +13,7 @@ import defaultImg from "/default-store.png";
 
 import { Store } from "@/types/category/store";
 import useRegionStore from "../stores/location";
-import useLikeStore from "../stores/likes";
+// import useLikeStore from "../stores/likes";
 import { ShareKakao } from "@/components/ShareKakao";
 import LocationInfo from "@/components/LocationInfo";
 
@@ -25,7 +25,7 @@ const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { districtId, district } = useRegionStore();
   const districtName = district[districtId];
-  const { liked, toggleLike } = useLikeStore();
+  // const { liked, toggleLike } = useLikeStore();
 
   const { storeId } = useParams<{ storeId: string }>();
   const [storeData, setStoreData] = useState<Store>();
@@ -49,8 +49,9 @@ const StoreDetailPage = () => {
   };
 
   const handleLike = () => {
-    toggleLike();
+    // toggleLike();
     // 좋아요 카운트  +1 관련 기능은 추후 추가
+    alert("로그인이 필요합니다.");
   };
 
   const handleShare = async () => {
@@ -150,10 +151,12 @@ const StoreDetailPage = () => {
         <LikeShare>
           <button className="like" onClick={handleLike}>
             <FontAwesomeIcon
-              icon={liked ? faHeartSolid : faHeartRegular}
-              id={liked ? "liked" : ""}
+              icon={faHeartRegular}
+              // icon={liked ? faHeartSolid : faHeartRegular}
+              // id={liked ? "liked" : ""}
             />
-            {liked ? "좋아요 취소" : "좋아요"}
+            {/* {liked ? "좋아요 취소" : "좋아요"} */}
+            좋아요
           </button>
           <button className="share" onClick={handleShareClick}>
             <FontAwesomeIcon icon={faArrowUpFromBracket} />
