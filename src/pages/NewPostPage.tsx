@@ -4,7 +4,10 @@ import LocationInfo from "@/components/LocationInfo";
 import ImageUpload from "@/components/ImageUpload";
 import { StoreData } from "@/types/category/storeData";
 
-import { faMagnifyingGlass, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import cameraImg from "@/assets/images/camera.svg";
@@ -42,7 +45,9 @@ const NewPostPage = () => {
       try {
         const response = await axios.get("/api/shops");
 
-        const filterDataByName = response.data.data.filter((data) => data.name.includes(searchName));
+        const filterDataByName = response.data.data.filter((data) =>
+          data.name.includes(searchName)
+        );
         setStoreData(filterDataByName);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -84,7 +89,12 @@ const NewPostPage = () => {
               <p>검색결과가 없습니다.</p>
             ) : (
               storeData?.map((data: any, index: number) => (
-                <button onClick={handleNameClick} value={`${data.roadAddress}`} name={`${data.name}`} key={index}>
+                <button
+                  onClick={handleNameClick}
+                  value={`${data.roadAddress}`}
+                  name={`${data.name}`}
+                  key={index}
+                >
                   {data.name}
                 </button>
               ))
@@ -102,7 +112,10 @@ const NewPostPage = () => {
       const updatedImageFiles = [...imageFiles, ...selectedFiles];
       setImageFiles(updatedImageFiles);
 
-      setShowImages((prevImages) => [...(prevImages || []), ...selectedFiles.map((file) => URL.createObjectURL(file))]);
+      setShowImages((prevImages) => [
+        ...(prevImages || []),
+        ...selectedFiles.map((file) => URL.createObjectURL(file)),
+      ]);
 
       setImageModal(false);
       setIsImageAdded(true);
@@ -370,6 +383,7 @@ const Header = styled.div`
     position: absolute;
     right: 0;
     margin-right: 20px;
+    cursor: pointer;
   }
 `;
 

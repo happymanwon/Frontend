@@ -308,6 +308,7 @@ const LikeShare = styled.div`
     align-items: center;
     justify-content: center;
     gap: 10px;
+    cursor: pointer;
   }
 `;
 
@@ -407,6 +408,7 @@ const BottomSheet = styled.div`
   button {
     border: none;
     background-color: ${({ theme }) => theme.colors.white};
+    cursor: pointer;
   }
   .underline {
     border-bottom: 0.5px solid ${({ theme }) => theme.colors.greyUnderLine};

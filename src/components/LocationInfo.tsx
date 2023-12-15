@@ -99,6 +99,7 @@ const AddressWrapper = styled.div`
     height: 15px;
     font-size: 8px;
     background-color: white;
+    cursor: pointer;
   }
   .address {
     font-family: NotoSansMediumWOFF, sans-serif, Arial;
