@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { PostDataType } from "@/types/community/postDataType";
-// import { CommentDataType } from "@/types/community/commentDataType";
+import { CommentDataType } from "@/types/community/commentDataType";
 import LocationInfo from "@/components/LocationInfo";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +12,7 @@ import profileImg from "/default-profile.png";
 import optionImg from "/option-button.svg";
 import useUserStore from "@/stores/useUserStore";
 import { getTimeDifference } from "@/utils/getTimeDifference";
+import CommentList from "@/components/CommentList";
 
 const PostDetailPage = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const PostDetailPage = () => {
 
   const { postId } = useParams<{ postId?: string }>(); // 파라미터가 없을 수 있으므로 postId를 옵셔널로 지정
   const [post, setPost] = useState<PostDataType | null>(null);
+  const [comments, setComments] = useState<CommentDataType[] | null>(null);
   const [comment, setComment] = useState(""); // 댓글 내용 상태값
   const [showModal, setShowModal] = useState(false);
 
@@ -43,16 +45,15 @@ const PostDetailPage = () => {
   };
 
   const handleEditClick = () => {
-    // 수정 페이지로 이동하는 동작
     navigate(`/editpost/${postId}`);
-  };
-
-  const handleCommentChange = (event) => {
-    setComment(event.target.value); // 입력된 댓글 내용을 상태값에 저장
   };
 
   const handleTagClick = (tagName: string) => {
     navigate(`/search-post/${tagName}`);
+  };
+
+  const handleCommentChange = (e) => {
+    setComment(e.target.value); // 입력된 댓글 내용을 상태값에 저장
   };
 
   const handleCommentSubmit = async () => {
@@ -86,7 +87,10 @@ const PostDetailPage = () => {
 
         if (postId) {
           const postData = response.data.data;
+          const commentData = response.data.data.commentList;
           setPost(postData);
+          setComments(commentData);
+          console.log(commentData);
         }
         console.log(response.data.data.commentList.length);
       } catch (error) {
@@ -165,20 +169,7 @@ const PostDetailPage = () => {
             <LocationInfo address={post.roadName} way={""} />
           </MapContainer>
         )}
-        <CommentContainer>
-          {post.commentList.map((commentData: any, index: number) => (
-            <div className="comment" key={index}>
-              <img src={profileImg} alt="Profile" loading="lazy" />
-              <div className="comment-info">
-                <div className="write-info">
-                  <span>{commentData.nickname}</span>
-                  <div>{getTimeDifference(commentData.createdAt)}</div>
-                </div>
-                <div>{commentData.content}</div>
-              </div>
-            </div>
-          ))}
-        </CommentContainer>
+        <CommentList comments={comments} />
         <WriteCommentWrapper>
           <input
             type="text"
@@ -373,33 +364,6 @@ const MapContainer = styled.div`
   #map {
     margin-top: 12px;
     b
-  }
-`;
-
-const CommentContainer = styled.div`
-  width: 23.75rem;
-  margin-top: 30px;
-  margin-bottom: 70px;
-  .comment {
-    display: flex;
-    align-items: center;
-    font-size: 8px;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  .write-info {
-    display: flex;
-    gap: 5px;
-    line-height: 13px;
-    span {
-      font-family: NotoSansMediumWOFF, sans-serif, Arial;
-      font-weight: 700;
-    }
-  }
-  img {
-    width: 35px;
-    border-radius: 50%;
-    border: 0.5px solid ${({ theme }) => theme.colors.greyUnderLine};
   }
 `;
 
