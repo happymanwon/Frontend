@@ -189,7 +189,7 @@ const NewPostPage = () => {
             <img src={tagImg} />
           </div>
           <div className="tags">
-            <TagifyComponent setTags={setTags} />
+            <TagifyComponent tags={tags} setTags={setTags} />
           </div>
         </TagInput>
       </Header>

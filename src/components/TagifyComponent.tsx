@@ -5,17 +5,19 @@ import "@yaireo/tagify/dist/tagify.css";
 import styled from "styled-components";
 
 interface TagifyComponentProps {
+  tags: string[];
   setTags: (tags: string[]) => void;
 }
-const TagifyComponent: React.FC<TagifyComponentProps> = ({ setTags }) => {
+const TagifyComponent: React.FC<TagifyComponentProps> = ({ tags, setTags }) => {
   const tagifyRef = useRef(null);
   const tagifyDropdownRef = useRef(null);
+  const initialValue = tags;
 
   useEffect(() => {
     if (tagifyRef.current) {
       const tagify = new Tagify(tagifyRef.current, {
+        // value: tags,
         // 옵션 설정
-        // maxTags: 3,
         dropdown: {
           maxItems: Infinity,
           enabled: 0,
@@ -23,6 +25,8 @@ const TagifyComponent: React.FC<TagifyComponentProps> = ({ setTags }) => {
           appendTarget: tagifyDropdownRef.current,
         },
       });
+
+      tagify.addTags(tags.map((tag) => ({ value: tag })));
 
       tagify.on("add", () => {
         setTags(tagify.value.map((item) => item.value));
@@ -34,6 +38,7 @@ const TagifyComponent: React.FC<TagifyComponentProps> = ({ setTags }) => {
 
       tagify.on("input", (e) => {
         console.log(e.detail);
+        console.log("유스", initialValue);
       });
 
       return () => {
@@ -41,12 +46,16 @@ const TagifyComponent: React.FC<TagifyComponentProps> = ({ setTags }) => {
         tagify.destroy();
       };
     }
-  }, [setTags]);
+  }, [tags, setTags]);
 
   return (
     <TagContainer>
       <InputContainer>
-        <input ref={tagifyRef} className="tagify" placeholder="Enter 입력 시 태그 적용" />
+        <input
+          ref={tagifyRef}
+          className="tagify"
+          placeholder="Enter 입력 시 태그 적용"
+        />
       </InputContainer>
       <DropdownContainer ref={tagifyDropdownRef} />
     </TagContainer>
