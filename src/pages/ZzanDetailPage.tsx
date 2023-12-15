@@ -6,7 +6,7 @@ import { ZzanItemType } from "@/types/zzan/zzanItemType";
 import useUserStore from "@/stores/useUserStore";
 
 import LocationInfo from "@/components/LocationInfo";
-
+// import QRCode from 'qrcode.react';
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -75,9 +75,9 @@ const ZzanDetailPage = () => {
     e.currentTarget.src = defaultImg;
   };
 
-  // const closeModal = () => {
-  //   setShowQRModal(false);
-  // };
+  const closeModal = () => {
+    setShowQRModal(false);
+  };
 
   return (
     <LayoutPage>
@@ -139,7 +139,7 @@ const ZzanDetailPage = () => {
         </BuyButtonWrapper>
         {/* {showQRModal && (
           <ModalContent>
-            <img src={qr} alt="QR Code" />
+            <QRCode value={qr} />
             <CloseButton onClick={closeModal}>닫기</CloseButton>
           </ModalContent>
         )} */}
