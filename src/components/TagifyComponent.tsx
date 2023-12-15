@@ -11,7 +11,6 @@ interface TagifyComponentProps {
 const TagifyComponent: React.FC<TagifyComponentProps> = ({ tags, setTags }) => {
   const tagifyRef = useRef(null);
   const tagifyDropdownRef = useRef(null);
-  const initialValue = tags;
 
   useEffect(() => {
     if (tagifyRef.current) {
@@ -38,7 +37,6 @@ const TagifyComponent: React.FC<TagifyComponentProps> = ({ tags, setTags }) => {
 
       tagify.on("input", (e) => {
         console.log(e.detail);
-        console.log("유스", initialValue);
       });
 
       return () => {
