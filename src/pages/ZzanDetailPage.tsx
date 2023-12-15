@@ -75,9 +75,9 @@ const ZzanDetailPage = () => {
     e.currentTarget.src = defaultImg;
   };
 
-  const closeModal = () => {
-    setShowQRModal(false);
-  };
+  // const closeModal = () => {
+  //   setShowQRModal(false);
+  // };
 
   return (
     <LayoutPage>
