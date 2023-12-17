@@ -1,21 +1,31 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import profile_img from "/new-sejong-profile.png";
 import Camera from "@/assets/images/camera.svg?react";
+import useUserStore from "@/stores/useUserStore";
 
 const MypageProfile = () => {
-  const [nickname, setNickname] = useState("세종대왕");
+  const { nickname, setNickname } = useUserStore();
+
   const navigate = useNavigate();
+
+  const handleNicknameChange = (e) => {
+    setNickname(e.target.value); // Update nickname in the store immediately
+  };
+
+  const handleCompletion = () => {
+    // api 개발 후 수정 예정
+    navigate("/mypage");
+  };
 
   return (
     <HeaderContainer>
       <MypageHeaderContainer>
         <FontAwesomeIcon icon={faArrowLeft} onClick={() => history.back()} />
         <H2>프로필 수정</H2>
-        <span onClick={() => navigate("/mypage")}>완료</span>
+        <span onClick={handleCompletion}>완료</span>
       </MypageHeaderContainer>
       <MypageProfileContainer>
         <div style={{ position: "relative", cursor: "pointer" }}>
@@ -27,12 +37,12 @@ const MypageProfile = () => {
           </CameraImg>
         </div>
         <InputTag>
-          <label htmlFor="">닉네임</label>
+          <label htmlFor="nickname">닉네임</label>
           <input
             type="text"
             id="nickname"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
+            value={nickname || ""}
+            onChange={handleNicknameChange}
           />
         </InputTag>
       </MypageProfileContainer>

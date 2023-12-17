@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
+import useUserStore from "@/stores/useUserStore";
+
 const MypageMain = () => {
   const navigate = useNavigate();
+  const { nickname } = useUserStore();
 
   return (
     <MypageContainer>
@@ -13,7 +16,7 @@ const MypageMain = () => {
         <Profile>
           <ProfileImg src={profile_img} />
           <ProfileName>
-            <span style={{ color: "#2AB673" }}>세종대왕님</span> <br />
+            <span style={{ color: "#2AB673" }}>{nickname}님</span> <br />
             <span>환영해요!</span>
           </ProfileName>
         </Profile>
