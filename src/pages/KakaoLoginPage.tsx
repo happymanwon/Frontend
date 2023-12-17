@@ -32,8 +32,8 @@ const KakaoLoginPage = () => {
       const response = await axios.get(`${redirect_uri}?code=${code}`);
       console.log(response.data);
 
-      if (response.data) {
-        updateLoginData(response.data);
+      if (response.data.data) {
+        updateLoginData(response.data.data);
         navigate("/mypage");
       } else {
         console.log("카카오 로그인 실패");
