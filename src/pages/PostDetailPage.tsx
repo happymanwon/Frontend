@@ -16,7 +16,7 @@ import CommentList from "@/components/CommentList";
 
 const PostDetailPage = () => {
   const navigate = useNavigate();
-  const { accessToken } = useUserStore();
+  const { nickname, accessToken } = useUserStore();
 
   const { postId } = useParams<{ postId?: string }>(); // 파라미터가 없을 수 있으므로 postId를 옵셔널로 지정
   const [post, setPost] = useState<PostDataType | null>(null);
@@ -25,7 +25,7 @@ const PostDetailPage = () => {
   const [showModal, setShowModal] = useState(false);
 
   // 작성자와 로그인 사용자를 비교하여 모달 표시
-  // const isAuthor = post?.nickname === loggedInUser;
+  const isAuthor = post?.nickname === nickname;
 
   const handleDeleteClick = async () => {
     const confirmed = window.confirm("정말로 삭제하시겠습니까?");
@@ -112,11 +112,11 @@ const PostDetailPage = () => {
           <FontAwesomeIcon icon={faArrowLeft} />
         </div>
         <h2>단짠단짠</h2>
-        {/* {isAuthor && ( */}
-        <div className="right" onClick={() => setShowModal(!showModal)}>
-          <img src={optionImg} alt="option-button" />
-        </div>
-        {/* )} */}
+        {isAuthor && (
+          <div className="right" onClick={() => setShowModal(!showModal)}>
+            <img src={optionImg} alt="option-button" />
+          </div>
+        )}
         {showModal && (
           // 삭제 또는 수정 모달
           <ModalContainer>

@@ -44,10 +44,15 @@ const EditPostPage = () => {
   const convertURLtoFile = async (url: string) => {
     const response = await fetch(url);
     const data = await response.blob();
-    const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
-    const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+
+    // Extract file extension and filename using RegExp
+    const extMatch = url.match(/\.([^.]+)(\?|$)/);
+    const ext = extMatch ? extMatch[1] : ""; // Extracted file extension
+    const filenameMatch = url.match(/([^/]+)(\?|$)/);
+    const filename = filenameMatch ? filenameMatch[1] : "file"; // Extracted filename
+
     const metadata = { type: `image/${ext}` };
-    return new File([data], filename!, metadata);
+    return new File([data], `${filename}.${ext}`, metadata);
   };
 
   useEffect(() => {
@@ -278,8 +283,8 @@ const EditPostPage = () => {
           <img src={pinImg} alt="지도추가버튼" loading="lazy" />
         </button>
       </BottomButtonWrapper>
-      {mapModal ? <MapModal /> : null}
-      {imageModal ? <ImageModal /> : null}
+      {mapModal || storeAddr ? <MapModal /> : null}
+      {imageModal || showImages.length > 0 ? <ImageModal /> : null}
     </LayoutContainer>
   );
 };
