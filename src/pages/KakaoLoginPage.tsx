@@ -15,8 +15,6 @@ const KakaoLoginPage = () => {
   const { setLoginData } = useUserStore();
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
-  console.log(code);
-  // 코드가 잘 불려오는 지 확인
   useEffect(() => {
     handleLogin(code);
   }, [code]);

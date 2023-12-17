@@ -203,7 +203,7 @@ const EditPostPage = () => {
     try {
       const response = await axios.patch(`/api/boards/${postId}`, formData, {
         headers: {
-          // Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
         },
       });

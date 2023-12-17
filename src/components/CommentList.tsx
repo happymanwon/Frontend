@@ -4,7 +4,11 @@ import { styled } from "styled-components";
 import axios from "axios";
 import profileImg from "/default-profile.png";
 
+import useUserStore from "@/stores/useUserStore";
+
 const CommentList = ({ comments }) => {
+  const { nickname, accessToken } = useUserStore();
+
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [updatedComment, setUpdatedComment] = useState("");
 
@@ -38,12 +42,12 @@ const CommentList = ({ comments }) => {
         `/api/comments/${commentId}`,
         {
           content: updatedContent,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         }
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${accessToken}`,
-        //   },
-        // }
       );
       console.log("댓글이 성공적으로 수정되었습니다.", response.data);
       window.location.reload(); // 댓글 수정 후 페이지 새로고침 또는 다시 로드
@@ -59,9 +63,9 @@ const CommentList = ({ comments }) => {
     if (confirmed) {
       try {
         await axios.delete(`/api/comments/${commentId}`, {
-          //   headers: {
-          //     Authorization: `Bearer ${accessToken}`,
-          //   },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
         alert("댓글이 삭제되었습니다.");
         // 댓글 삭제 후 페이지 새로고침
@@ -99,18 +103,22 @@ const CommentList = ({ comments }) => {
             ) : (
               <ViewMode>
                 <div>{commentData.content}</div>
-                <ButtonWrapper>
-                  <button
-                    onClick={() => handleEditClick(commentData.commentId)}
-                  >
-                    수정
-                  </button>
-                  <button
-                    onClick={() => handleDeleteComment(commentData.commentId)}
-                  >
-                    삭제
-                  </button>
-                </ButtonWrapper>
+                {nickname === commentData.nickname ? (
+                  <ButtonWrapper>
+                    <button
+                      onClick={() => handleEditClick(commentData.commentId)}
+                    >
+                      수정
+                    </button>
+                    <button
+                      onClick={() => handleDeleteComment(commentData.commentId)}
+                    >
+                      삭제
+                    </button>
+                  </ButtonWrapper>
+                ) : (
+                  <></>
+                )}
               </ViewMode>
             )}
           </div>

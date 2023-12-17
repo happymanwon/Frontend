@@ -170,15 +170,17 @@ const PostDetailPage = () => {
           </MapContainer>
         )}
         <CommentList comments={comments} />
-        <WriteCommentWrapper>
-          <input
-            type="text"
-            value={comment}
-            placeholder="댓글달기"
-            onChange={handleCommentChange}
-          />
-          <button onClick={handleCommentSubmit}>게시</button>
-        </WriteCommentWrapper>
+        {accessToken && (
+          <WriteCommentWrapper>
+            <input
+              type="text"
+              value={comment}
+              placeholder="댓글달기"
+              onChange={handleCommentChange}
+            />
+            <button onClick={handleCommentSubmit}>게시</button>
+          </WriteCommentWrapper>
+        )}
       </BodyContainer>
     </LayoutContainer>
   );

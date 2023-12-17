@@ -10,7 +10,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: "http://118.67.134.91:8080",
+        target: "https://www.hmanwonbackend.shop",
         changeOrigin: true,
         secure: false,
       },

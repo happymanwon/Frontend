@@ -17,7 +17,7 @@ const CommunityPage = () => {
   const [showMyPosts, setShowMyPosts] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const { nickname } = useUserStore();
+  const { nickname, accessToken } = useUserStore();
 
   const MoveToTop = () => {
     ref.current?.scrollTo({ top: 0, behavior: "smooth" });
@@ -33,10 +33,17 @@ const CommunityPage = () => {
       const shopList = await axios.get("/api/shops");
 
       // a 리스트의 각 요소의 roadAddress를 roadName으로 매핑
-      const shopListMapped = shopList.data.data.map((item: StoreDataType) => ({ ...item, roadName: item.roadAddress }));
+      const shopListMapped = shopList.data.data.map((item: StoreDataType) => ({
+        ...item,
+        roadName: item.roadAddress,
+      }));
 
       // aMapped와 b 사이의 교집합을 찾음, 기준은 roadName
-      const intersection = _.intersectionBy(shopListMapped, boardList.data.data, "roadName");
+      const intersection = _.intersectionBy(
+        shopListMapped,
+        boardList.data.data,
+        "roadName"
+      );
       boardList.data.data.forEach((item: PostDataType) => {
         const bItem = _.find(intersection, { roadName: item.roadName });
         if (bItem && typeof bItem === "object" && "name" in bItem) {
@@ -44,7 +51,9 @@ const CommunityPage = () => {
         }
       });
 
-      return boardList.data.data.sort((a: PostDataType, b: PostDataType) => b.boardId - a.boardId);
+      return boardList.data.data.sort(
+        (a: PostDataType, b: PostDataType) => b.boardId - a.boardId
+      );
     } catch (error) {
       console.error("Error fetching category data:", error);
     }
@@ -85,13 +94,20 @@ const CommunityPage = () => {
         {showMyPosts
           ? boardDataList
               .filter((post: PostDataType) => post.nickname === nickname)
-              .map((post: PostDataType) => <PostList key={post.boardId} post={post} />)
-          : boardDataList.map((post: PostDataType) => <PostList key={post.boardId} post={post} />)}
+              .map((post: PostDataType) => (
+                <PostList key={post.boardId} post={post} />
+              ))
+          : boardDataList.map((post: PostDataType) => (
+              <PostList key={post.boardId} post={post} />
+            ))}
       </PostContainer>
       <ButtonContainer>
-        <button onClick={handleNewPost}>
-          <img src={newPostImg} alt="새 글 쓰기" loading="lazy" />
-        </button>
+        {accessToken && (
+          <button onClick={handleNewPost}>
+            <img src={newPostImg} alt="새 글 쓰기" loading="lazy" />
+          </button>
+        )}
+
         <button onClick={MoveToTop}>
           <img src={scrollUpImg} alt="상단으로 이동" loading="lazy" />
         </button>

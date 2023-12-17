@@ -19,7 +19,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import TagifyComponent from "@/components/TagifyComponent";
 
+import useUserStore from "@/stores/useUserStore";
+
 const NewPostPage = () => {
+  const { accessToken } = useUserStore();
+
   const [mapModal, setMapModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
   const [isMapAdded, setIsMapAdded] = useState(false);
@@ -163,7 +167,7 @@ const NewPostPage = () => {
     try {
       const response = await axios.post("/api/boards", formData, {
         headers: {
-          // Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data", // 파일 전송 시 필요한 헤더
         },
       });
