@@ -10,6 +10,16 @@ const MypageMain = () => {
   const navigate = useNavigate();
   const { nickname } = useUserStore();
 
+  const handleLogout = () => {
+    useUserStore.getState().setLoginData({
+      accessToken: null,
+      refreshToken: null,
+      memberId: null,
+      nickname: null,
+    });
+    navigate("/login");
+  };
+
   return (
     <MypageContainer>
       <ProfileSection>
@@ -56,6 +66,7 @@ const MypageMain = () => {
           </MoveMenuTitle>
         </MoveMenu> */}
       </MoveSection>
+      <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
     </MypageContainer>
   );
 };
@@ -220,6 +231,20 @@ const MoveMenuTitle = styled.span`
     color: #dadada;
     font-weight: 100;
   }
+`;
+
+const LogoutButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4.875rem;
+  height: 1.375rem;
+  background: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: #888;
+  cursor: pointer;
 `;
 
 export default MypageMain;
