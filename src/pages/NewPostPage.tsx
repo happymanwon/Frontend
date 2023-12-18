@@ -208,7 +208,7 @@ const NewPostPage = () => {
         </PostContainer>
         {isMapAdded && (
           <MapContainer>
-            <LocationInfo address={storeAddr} way={"가는길"} />
+            <LocationInfo address={storeAddr} way={""} />
           </MapContainer>
         )}
         {isImageAdded && (

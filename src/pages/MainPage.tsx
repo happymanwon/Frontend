@@ -38,6 +38,14 @@ const MainContainer = styled.div`
     display: none;
   }
   font-family: NotoSansRegularWOFF, sans-serif, Arial;
+
+  @media (max-width: 375px) {
+    zoom: 0.9;
+  }
+
+  @media (max-width: 320px) {
+    zoom: 0.8;
+  }
 `;
 
 const MainView = styled.div`
