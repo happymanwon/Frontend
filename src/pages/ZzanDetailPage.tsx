@@ -6,7 +6,7 @@ import { ZzanItemType } from "@/types/zzan/zzanItemType";
 import useUserStore from "@/stores/useUserStore";
 
 import LocationInfo from "@/components/LocationInfo";
-// import QRCode from 'qrcode.react';
+import QRCode from "qrcode.react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -19,8 +19,8 @@ const ZzanDetailPage = () => {
   const { zzanId } = useParams<{ zzanId: string }>();
   const [zzanData, setZzanData] = useState<ZzanItemType | null>(null);
   const [isPurchase, setIsPurchase] = useState(false); // 구매하기 버튼 상태값
-  // const [qr, setQr] = useState("");
-  // const [showQRModal, setShowQRModal] = useState(false);
+  const [qr, setQr] = useState("");
+  const [showQRModal, setShowQRModal] = useState(false);
 
   const { purchasedId, addPurchasedId } = usePurchaseStore();
 
@@ -54,12 +54,12 @@ const ZzanDetailPage = () => {
         }
       );
       if (response.status === 201) {
-        // setQr(response.data.data.qrUrl);
+        setQr(response.data.data.qrUrl);
         console.log(response.data.data);
         alert("구매가 완료되었습니다. 구매내역은 마이페이지에서 확인해주세요.");
         setIsPurchase(true);
         addPurchasedId(String(zzanId));
-        // setShowQRModal(true);
+        setShowQRModal(true);
       }
     } catch (error: any) {
       // 에러 처리
@@ -75,9 +75,9 @@ const ZzanDetailPage = () => {
     e.currentTarget.src = defaultImg;
   };
 
-  // const closeModal = () => {
-  //   setShowQRModal(false);
-  // };
+  const closeModal = () => {
+    setShowQRModal(false);
+  };
 
   return (
     <LayoutPage>
@@ -137,37 +137,37 @@ const ZzanDetailPage = () => {
             구매하기
           </button>
         </BuyButtonWrapper>
-        {/* {showQRModal && (
+        {showQRModal && (
           <ModalContent>
             <QRCode value={qr} />
             <CloseButton onClick={closeModal}>닫기</CloseButton>
           </ModalContent>
-        )} */}
+        )}
       </LayoutContainer>
     </LayoutPage>
   );
 };
 // 모달 스타일링
-// const ModalContent = styled.div`
-//   position: absolute;
-//   width: 382px;
-//   height: 242px;
-//   left: calc(50% - 382px / 2 - 0.5px);
-//   top: 40%;
-//   background: #ffffff;
-//   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-//   border-radius: 5px;
-// `;
+const ModalContent = styled.div`
+  position: absolute;
+  width: 382px;
+  height: 242px;
+  left: calc(50% - 382px / 2 - 0.5px);
+  top: 40%;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+`;
 
-// const CloseButton = styled.button`
-//   width: 50%;
-//   font-size: 14px;
-//   color: #ffffff;
-//   background: #888888;
-//   border-radius: 5px;
-//   border: none;
-//   cursor: pointer;
-// `;
+const CloseButton = styled.button`
+  width: 50%;
+  font-size: 14px;
+  color: #ffffff;
+  background: #888888;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+`;
 
 const LayoutPage = styled.div`
   display: block;
