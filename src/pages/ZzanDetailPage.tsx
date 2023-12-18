@@ -141,6 +141,7 @@ const ZzanDetailPage = () => {
           <ModalContent>
             <QRCode value={qr} />
             <CloseButton onClick={closeModal}>닫기</CloseButton>
+            <p>QR코드는 마이페이지에서도 확인할 수 있습니다.</p>
           </ModalContent>
         )}
       </LayoutContainer>
@@ -150,6 +151,10 @@ const ZzanDetailPage = () => {
 // 모달 스타일링
 const ModalContent = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 382px;
   height: 242px;
   left: calc(50% - 382px / 2 - 0.5px);
@@ -157,10 +162,15 @@ const ModalContent = styled.div`
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
+  gap: 20px;
+  p {
+    font-size: 12px;
+    color: ${({ theme }) => theme.colors.grey};
+  }
 `;
 
 const CloseButton = styled.button`
-  width: 50%;
+  width: 30%;
   font-size: 14px;
   color: #ffffff;
   background: #888888;
