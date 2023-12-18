@@ -84,6 +84,7 @@ const TitleWrapper = styled.div`
 const CategoryWrapper = styled.div`
   button {
     cursor: pointer;
+    background-size: contain;
   }
   .category-buttons {
     display: flex;

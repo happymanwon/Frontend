@@ -73,6 +73,7 @@ const CommunityHeaderWrapper = styled.div`
   }
 
   h2 {
+    font-family: NotoSansMediumWOFF;
     text-align: center;
     font-size: 16px;
     font-weight: 700;

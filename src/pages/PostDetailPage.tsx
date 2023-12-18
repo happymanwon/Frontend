@@ -232,12 +232,11 @@ const LayoutContainer = styled.div`
   }
 `;
 
-const Header = styled.div`
+const Header = styled.header`
   width: 100%;
   height: 3.9375rem;
   padding-top: 35px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.greyUnderLine};
-
   .left {
     position: absolute;
     left: 0;

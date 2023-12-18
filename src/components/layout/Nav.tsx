@@ -79,6 +79,13 @@ const Navbar = styled.nav`
       width: calc(100% - 2rem);
     }
   }
+  @media (max-width: 375px) {
+    zoom: 0.9;
+  }
+
+  @media (max-width: 320px) {
+    zoom: 0.8;
+  }
   font-family: NotoSansRegularWOFF, sans-serif, Arial;
 `;
 
