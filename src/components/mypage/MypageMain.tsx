@@ -17,6 +17,7 @@ const MypageMain = () => {
       memberId: null,
       nickname: null,
     });
+    localStorage.removeItem("user-store");
     navigate("/login");
   };
 
@@ -239,6 +240,7 @@ const LogoutButton = styled.button`
   align-items: center;
   width: 4.875rem;
   height: 1.375rem;
+  border: none;
   background: none;
   font-size: 0.75rem;
   font-weight: 500;
