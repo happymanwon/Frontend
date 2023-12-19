@@ -31,8 +31,9 @@ const MypageZzan = () => {
   const [zzanData, setZzanData] = useState<zzanPurchaseType[] | null>(null);
 
   const MoveQR = (isQR: boolean, id: number, name: string) => () => {
+    const encodedShopName = encodeURIComponent(name);
     if (isQR) {
-      navigate(`/qr/${id}/${name}`);
+      navigate(`/qr/${id}/${encodedShopName}`);
     }
   };
 
