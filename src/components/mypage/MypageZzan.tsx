@@ -75,7 +75,11 @@ const MypageZzan = () => {
           </ZzanItemInfo>
           <ZzanItemBtn
             isQR={determineIsQR(item.status)}
-            onClick={MoveQR(item.isQR, item.purchaseId, item.shopName)}
+            onClick={MoveQR(
+              determineIsQR(item.status),
+              item.purchaseId,
+              item.shopName
+            )}
           >
             {determineIsQR(item.status) ? "QR 코드" : "사용완료"}
           </ZzanItemBtn>
