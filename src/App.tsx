@@ -24,7 +24,7 @@ import Background from "@/components/layout/Background";
 import { ThemeProvider } from "styled-components";
 import theme from "@/styles/theme";
 import EditPostPage from "@/pages/EditPostPage";
-import QrPage from "@/pages/QRPage";
+import QRPage from "@/pages/QRPage";
 import QRDisplay from "@/pages/QRDisplay";
 
 import PrivateRoute from "@/PrivateRoute";
@@ -187,7 +187,7 @@ function App() {
                 element={
                   <PrivateRoute>
                     <Layout>
-                      <QrPage />
+                      <QRPage />
                     </Layout>
                   </PrivateRoute>
                 }

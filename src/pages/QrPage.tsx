@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const QrPage = () => {
+const QRPage = () => {
   return (
     <QrContainer>
       <QrTitle>스시히로이</QrTitle>
@@ -72,4 +72,4 @@ const QrInfo = styled.div`
   }
 `;
 
-export default QrPage;
+export default QRPage;
