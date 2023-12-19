@@ -46,8 +46,8 @@ const QrTitle = styled.div`
 `;
 
 const QrImage = styled.div`
-  width: 173px;
-  height: 173px;
+  width: 130px;
+  height: 130px;
   border: 6px solid #2ab673;
   padding: 5px;
   img {
