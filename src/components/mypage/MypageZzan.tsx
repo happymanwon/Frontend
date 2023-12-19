@@ -32,6 +32,7 @@ const MypageZzan = () => {
 
   const MoveQR = (isQR: boolean, id: number, name: string) => () => {
     const encodedShopName = encodeURIComponent(name);
+    console.log(isQR, id, name);
     if (isQR) {
       navigate(`/qr/${id}/${encodedShopName}`);
     }
