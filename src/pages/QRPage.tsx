@@ -50,10 +50,6 @@ const QrImage = styled.div`
   height: 130px;
   border: 6px solid #2ab673;
   padding: 5px;
-  img {
-    width: 100%;
-    height: 100%;
-  }
 `;
 
 const QrInfo = styled.div`

@@ -58,7 +58,7 @@ const MypageZzan = () => {
     };
 
     fetchData();
-  }, []);
+  }, [accessToken]);
 
   return (
     <MyZzanContainer>
@@ -71,7 +71,8 @@ const MypageZzan = () => {
           <ZzanItemInfo>
             <div>{item.usedTime}</div>
             <div>{item.shopName}</div>
-            <div>{item.price}</div>
+            <div>{item.itemName}</div>
+            <div>{item.price.toLocaleString()}원</div>
           </ZzanItemInfo>
           <ZzanItemBtn
             isQR={determineIsQR(item.status)}
@@ -97,6 +98,7 @@ const MyZzanContainer = styled.div`
   width: calc(100% - 2.75rem);
   padding: 0 1.375rem;
   gap: 0.75rem;
+  background: #fff;
 
   span {
     color: #1a1a1a;
@@ -122,7 +124,6 @@ const ZzanItemContainer = styled.div`
   padding: 0.5rem 0.875rem;
   border-radius: 9px;
   border: 1px solid #dadada;
-  background: #fff;
   box-sizing: border-box;
   gap: 0.5rem;
 `;

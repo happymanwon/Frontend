@@ -143,7 +143,9 @@ const ZzanDetailPage = () => {
         </BuyButtonWrapper>
         {showQRModal && (
           <ModalContent>
-            <QRCode value={qr} />
+            <QrImage>
+              <QRCode value={qr} />
+            </QrImage>
             <CloseButton onClick={closeModal}>닫기</CloseButton>
             <p>QR코드는 마이페이지에서도 확인할 수 있습니다.</p>
           </ModalContent>
@@ -177,12 +179,24 @@ const CloseButton = styled.button`
   width: 30%;
   font-size: 14px;
   color: #ffffff;
-  background: #888888;
-  border-radius: 5px;
+  background: #2ab673;
+  border-radius: 2px;
   border: none;
   cursor: pointer;
 `;
 
+const QrImage = styled.div`
+  width: 130px;
+  height: 130px;
+  border: 6px solid #2ab673;
+  padding: 5px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+// 페이지 스타일링
 const LayoutPage = styled.div`
   display: block;
   background-color: ${({ theme }) => theme.colors.greyBackground};
