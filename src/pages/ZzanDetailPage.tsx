@@ -57,7 +57,7 @@ const ZzanDetailPage = () => {
         const responseUrl = response.data.data.qrUrl;
         const parts = responseUrl.split("/");
         const lastNumber = parts.pop();
-        const formattedUrl = `https://happy-manwon.vercel.app/purchase/use?id=${lastNumber}`;
+        const formattedUrl = `https://happy-manwon.vercel.app/purchase/use/${lastNumber}`;
         setQr(formattedUrl);
         console.log(response.data.data);
         alert("구매가 완료되었습니다. 구매내역은 마이페이지에서 확인해주세요.");

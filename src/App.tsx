@@ -23,11 +23,12 @@ import Background from "@/components/layout/Background";
 
 import { ThemeProvider } from "styled-components";
 import theme from "@/styles/theme";
-import EditPostPage from "./pages/EditPostPage";
-import QrPage from "./pages/QrPage";
+import EditPostPage from "@/pages/EditPostPage";
+import QrPage from "@/pages/QRPage";
+import QRDisplay from "@/pages/QRDisplay";
 
-import PrivateRoute from "./PrivateRoute";
-import ZoomProvider from "./ZoomProvider";
+import PrivateRoute from "@/PrivateRoute";
+import ZoomProvider from "@/ZoomProvider";
 
 function App() {
   return (
@@ -100,6 +101,14 @@ function App() {
                 element={
                   <Layout>
                     <ZzanDetailPage />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/purchase/use/:purchaseId"
+                element={
+                  <Layout>
+                    <QRDisplay />
                   </Layout>
                 }
               />
