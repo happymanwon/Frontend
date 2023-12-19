@@ -183,7 +183,7 @@ function App() {
                 }
               />
               <Route
-                path="/qr/:storeId"
+                path="/qr/:purchaseId/:shopName"
                 element={
                   <PrivateRoute>
                     <Layout>

@@ -1,15 +1,21 @@
 import styled from "styled-components";
+import QRCode from "qrcode.react";
+import { useParams } from "react-router-dom";
 
 const QRPage = () => {
+  const { purchaseId } = useParams();
+  const { shopName } = useParams();
+
   return (
     <QrContainer>
-      <QrTitle>스시히로이</QrTitle>
+      <QrTitle>{shopName}</QrTitle>
       <QrImage>
-        <img src="/data/fakeimg/qr.png" alt="qr" />
+        <QRCode
+          value={`https://happy-manwon.vercel.app/purchase/use/${purchaseId}`}
+        />
       </QrImage>
       <QrInfo>
         <h2>가게 사장님께 해당 QR 코드를 보여주세요!</h2>
-        <p>구매 날짜 2023.12.12</p>
       </QrInfo>
     </QrContainer>
   );

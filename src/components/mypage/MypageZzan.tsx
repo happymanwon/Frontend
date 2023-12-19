@@ -1,49 +1,81 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { zzanPurchaseType } from "@/types/zzan/zzanPurchaseType";
+import useUserStore from "@/stores/useUserStore";
 
-const item = [
-  {
-    id: 1,
-    image: "/data/fakeimg/sushi.jpg",
-    payDate: "2023-12-12 결제",
-    payStore: "스시히로이",
-    payPrice: "18,900원",
-    isQR: true,
-  },
-  {
-    id: 2,
-    image: "/data/fakeimg/toast.png",
-    payDate: "2023-12-11 결제",
-    payStore: "토스트",
-    payPrice: "1,000원",
-    isQR: false,
-  },
-];
+// const item = [
+//   {
+//     id: 1,
+//     image: "/data/fakeimg/sushi.jpg",
+//     payDate: "2023-12-12 결제",
+//     payStore: "스시히로이",
+//     payPrice: "18,900원",
+//     isQR: true,
+//   },
+//   {
+//     id: 2,
+//     image: "/data/fakeimg/toast.png",
+//     payDate: "2023-12-11 결제",
+//     payStore: "토스트",
+//     payPrice: "1,000원",
+//     isQR: false,
+//   },
+// ];
 
 const MypageZzan = () => {
   const navigate = useNavigate();
+  const { accessToken } = useUserStore();
 
-  const MoveQR = (id: number, isQR: boolean) => () => {
+  const [zzanData, setZzanData] = useState<zzanPurchaseType[] | null>(null);
+
+  const MoveQR = (isQR: boolean, id: number, name: string) => () => {
     if (isQR) {
-      navigate(`/qr/${id}`);
+      navigate(`/qr/${id}/${name}`);
     }
   };
 
+  const determineIsQR = (status: string) => {
+    return status !== "사용 완료";
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/zzan-items/purchase/list", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setZzanData(response.data.data);
+        console.log(response.data.data);
+      } catch (error) {
+        console.error("Error fetching category data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <MyZzanContainer>
-      <span>2023년 12월</span>
-      {item.map((item, index) => (
+      {/* <span>2023년 12월</span> */}
+      {zzanData?.map((item, index) => (
         <ZzanItemContainer key={index}>
-          <ZzanItemImg>
+          {/* <ZzanItemImg>
             <img src={item.image} alt="" />
-          </ZzanItemImg>
+          </ZzanItemImg> */}
           <ZzanItemInfo>
-            <div>{item.payDate}</div>
-            <div>{item.payStore}</div>
-            <div>{item.payPrice}</div>
+            <div>{item.usedTime}</div>
+            <div>{item.shopName}</div>
+            <div>{item.price}</div>
           </ZzanItemInfo>
-          <ZzanItemBtn isQR={item.isQR} onClick={MoveQR(item.id, item.isQR)}>
-            {item.isQR ? "QR 코드" : "사용완료"}
+          <ZzanItemBtn
+            isQR={determineIsQR(item.status)}
+            onClick={MoveQR(item.isQR, item.purchaseId, item.shopName)}
+          >
+            {determineIsQR(item.status) ? "QR 코드" : "사용완료"}
           </ZzanItemBtn>
         </ZzanItemContainer>
       ))}
@@ -89,17 +121,17 @@ const ZzanItemContainer = styled.div`
   gap: 0.5rem;
 `;
 
-const ZzanItemImg = styled.div`
-  width: 4.75rem;
-  height: 4.75rem;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  & > img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
+// const ZzanItemImg = styled.div`
+//   width: 4.75rem;
+//   height: 4.75rem;
+//   border-radius: 0.5rem;
+//   overflow: hidden;
+//   & > img {
+//     width: 100%;
+//     height: 100%;
+//     object-fit: cover;
+//   }
+// `;
 
 const ZzanItemInfo = styled.div`
   display: flex;
