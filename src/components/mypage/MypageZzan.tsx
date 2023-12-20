@@ -83,13 +83,15 @@ const MypageZzan = () => {
           {/* <ZzanItemImg>
             <img src={item.image} alt="" />
           </ZzanItemImg> */}
-          <ZzanItemInfo>
+          <ZzanItemInfo isUsable={!item.usedTime}>
             {item.usedTime && (
-              <div>사용완료시간 | {handleDate(item.usedTime)}</div>
+              <div className="used-time">
+                사용완료시간 | {handleDate(item.usedTime)}
+              </div>
             )}
-            <div>{item.shopName}</div>
-            <div>{item.itemName}</div>
-            <div>{item.price.toLocaleString()}원</div>
+            <div className="shop-name">{item.shopName}</div>
+            <div className="item-name">{item.itemName}</div>
+            <div className="price">{item.price.toLocaleString()}원</div>
           </ZzanItemInfo>
           <ZzanItemBtn
             isQR={determineIsQR(item.status)}
@@ -143,33 +145,34 @@ const ZzanItemContainer = styled.div`
 //     object-fit: cover;
 //   }
 // `;
+interface ZzanItemUsedTime {
+  isUsable: boolean;
+}
 
-const ZzanItemInfo = styled.div`
+const ZzanItemInfo = styled.div<ZzanItemUsedTime>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
   height: 100%;
   flex: 2;
-  & > div:nth-child(1) {
-    color: var(--Gray_3, #888);
+  .used-time {
+    color: #888;
     font-family: NotoSansRegularWOFF, sans-serif, Arial;
     font-size: 10px;
+    display: ${(props) => (props.isUsable ? "none" : "block")};
   }
-  & > div:nth-child(2) {
-    color: var(--Primary-Black, var(--Primary-Black, #1a1a1a));
+  .shop-name {
     font-family: NotoSansMediumWOFF;
     font-size: 12px;
     font-weight: 700;
   }
-  & > div:nth-child(3) {
-    color: var(--Primary-Black, var(--Primary-Black, #1a1a1a));
+  .item-name {
     font-family: NotoSansMediumWOFF;
     font-size: 12px;
     font-weight: 700;
   }
-  & > div:nth-child(4) {
-    color: var(--Primary-Black, var(--Primary-Black, #1a1a1a));
+  .price {
     font-family: NotoSansRegularWOFF;
     font-size: 12px;
   }
