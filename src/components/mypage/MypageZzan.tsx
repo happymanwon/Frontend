@@ -83,7 +83,7 @@ const MypageZzan = () => {
           {/* <ZzanItemImg>
             <img src={item.image} alt="" />
           </ZzanItemImg> */}
-          <ZzanItemInfo $hideMargin={!item.usedTime}>
+          <ZzanItemInfo>
             {item.usedTime && (
               <div>사용완료시간 | {handleDate(item.usedTime)}</div>
             )}
@@ -144,7 +144,7 @@ const ZzanItemContainer = styled.div`
 //   }
 // `;
 
-const ZzanItemInfo = styled.div<{ $hideMargin: boolean }>`
+const ZzanItemInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -155,7 +155,6 @@ const ZzanItemInfo = styled.div<{ $hideMargin: boolean }>`
     color: var(--Gray_3, #888);
     font-family: NotoSansRegularWOFF, sans-serif, Arial;
     font-size: 10px;
-    display: ${(props) => (props.$hideMargin ? "none" : "block")};
   }
   & > div:nth-child(2) {
     color: var(--Primary-Black, var(--Primary-Black, #1a1a1a));
