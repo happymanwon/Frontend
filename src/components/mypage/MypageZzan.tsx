@@ -41,6 +41,22 @@ const MypageZzan = () => {
   const determineIsQR = (status: string) => {
     return status !== "사용 완료";
   };
+  // 사용시간 포맷 만들기
+  const handleDate = (time: string) => {
+    const dateTime = new Date(time);
+
+    const year = dateTime.getFullYear();
+    const month = dateTime.getMonth() + 1; // getMonth()는 0부터 시작하므로 1을 더합니다.
+    const day = dateTime.getDate();
+    const hours = dateTime.getHours();
+    const minutes = dateTime.getMinutes();
+
+    const formattedDateTime = `${year}년${month}월${day}일 ${hours
+      .toString()
+      .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+
+    return formattedDateTime;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,8 +83,10 @@ const MypageZzan = () => {
           {/* <ZzanItemImg>
             <img src={item.image} alt="" />
           </ZzanItemImg> */}
-          <ZzanItemInfo>
-            <div>{item.usedTime}</div>
+          <ZzanItemInfo $hideMargin={!item.usedTime}>
+            {item.usedTime && (
+              <div>사용완료시간 | {handleDate(item.usedTime)}</div>
+            )}
             <div>{item.shopName}</div>
             <div>{item.itemName}</div>
             <div>{item.price.toLocaleString()}원</div>
@@ -126,7 +144,7 @@ const ZzanItemContainer = styled.div`
 //   }
 // `;
 
-const ZzanItemInfo = styled.div`
+const ZzanItemInfo = styled.div<{ $hideMargin: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -136,26 +154,25 @@ const ZzanItemInfo = styled.div`
   & > div:nth-child(1) {
     color: var(--Gray_3, #888);
     font-family: NotoSansRegularWOFF, sans-serif, Arial;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 18px; /* 150% */
+    font-size: 10px;
+    display: ${(props) => (props.$hideMargin ? "none" : "block")};
   }
   & > div:nth-child(2) {
     color: var(--Primary-Black, var(--Primary-Black, #1a1a1a));
     font-family: NotoSansMediumWOFF;
-    font-size: 14px;
-    font-style: normal;
+    font-size: 12px;
     font-weight: 700;
-    line-height: 21px; /* 150% */
   }
   & > div:nth-child(3) {
     color: var(--Primary-Black, var(--Primary-Black, #1a1a1a));
     font-family: NotoSansMediumWOFF;
-    font-size: 14px;
-    font-style: normal;
+    font-size: 12px;
     font-weight: 700;
-    line-height: 21px; /* 150% */
+  }
+  & > div:nth-child(4) {
+    color: var(--Primary-Black, var(--Primary-Black, #1a1a1a));
+    font-family: NotoSansRegularWOFF;
+    font-size: 12px;
   }
 `;
 
