@@ -152,7 +152,7 @@ interface ZzanItemUsedTime {
 const ZzanItemInfo = styled.div<ZzanItemUsedTime>`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: flex-start;
   height: 100%;
   flex: 2;
@@ -164,11 +164,11 @@ const ZzanItemInfo = styled.div<ZzanItemUsedTime>`
   }
   .shop-name {
     font-family: NotoSansMediumWOFF;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
   }
   .item-name {
-    font-family: NotoSansMediumWOFF;
+    font-family: NotoSansRegularWOFF;
     font-size: 12px;
     font-weight: 700;
   }
