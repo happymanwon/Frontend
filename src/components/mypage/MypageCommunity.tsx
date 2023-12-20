@@ -4,7 +4,6 @@ import styled from "styled-components";
 const MypageCommunity = () => {
   return (
     <CommunityContainer>
-      <span>2023년 12월</span>
       <CommunityPostItem />
     </CommunityContainer>
   );

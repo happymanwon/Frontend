@@ -62,7 +62,6 @@ const MypageZzan = () => {
 
   return (
     <MyZzanContainer>
-      {/* <span>2023년 12월</span> */}
       {zzanData?.map((item, index) => (
         <ZzanItemContainer key={index}>
           {/* <ZzanItemImg>
@@ -99,19 +98,6 @@ const MyZzanContainer = styled.div`
   padding: 0 1.375rem;
   gap: 0.75rem;
   background: #fff;
-
-  span {
-    color: #1a1a1a;
-    text-align: center;
-    font-feature-settings: "clig" off, "liga" off;
-    font-family: NotoSansRegularWOFF, sans-serif, Arial;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px; /* 183.333% */
-    letter-spacing: -0.408px;
-    margin-bottom: -0.375rem;
-  }
 `;
 
 const ZzanItemContainer = styled.div`

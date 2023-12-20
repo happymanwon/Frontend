@@ -1,30 +1,36 @@
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import useUserStore from "@/stores/useUserStore";
+import { PostDataType } from "@/types/community/postDataType";
 import styled from "styled-components";
 import mapPin from "/map-pin.svg";
 
-const items = [
-  {
-    id: 1,
-    tag: ["맛집", "일상"],
-    content:
-      "가보고 싶었던 곳인데! \n블로그 시작하면서 카페에서 찍은 예쁜 사진들로 스타츠하고 싶어요.",
-    images: [
-      "/data/fakeimg/sushi.jpg",
-      "/data/fakeimg/toast.png",
-      "/data/fakeimg/hamburger.jpg",
-      "/data/fakeimg/steak.jpg",
-    ],
-    location: "#파스타앤피자",
-  },
-];
+// const items = [
+//   {
+//     id: 1,
+//     tag: ["맛집", "일상"],
+//     content:
+//       "가보고 싶었던 곳인데! \n블로그 시작하면서 카페에서 찍은 예쁜 사진들로 스타츠하고 싶어요.",
+//     images: [
+//       "/data/fakeimg/sushi.jpg",
+//       "/data/fakeimg/toast.png",
+//       "/data/fakeimg/hamburger.jpg",
+//       "/data/fakeimg/steak.jpg",
+//     ],
+//     location: "#파스타앤피자",
+//   },
+// ];
 
 const CommunityPostItem = () => {
   const [params] = useSearchParams();
+  const { accessToken } = useUserStore();
+
   const pageName = params.get("page") || null;
   const [isClicked, setIsClicked] = useState(false);
+  const [data, setData] = useState<PostDataType[] | null>(null);
 
   const imgListRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -48,12 +54,30 @@ const CommunityPostItem = () => {
     imgListRef.current!.scrollLeft = scrollLeft - walk;
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/api/members/posts`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setData(response.data.data);
+        console.log(response.data.message);
+      } catch (error) {
+        console.error("Error fetching category data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <PostItemContainer>
-      {items.map((item, index) => (
+      {data?.map((item, index) => (
         <div key={index}>
           <TopArea>
-            <div>{item.tag.map((tag: string) => `#${tag} `)}</div>
+            <div>{item.hashtagNames.map((tag: string) => `#${tag} `)}</div>
             <FontAwesomeIcon
               icon={faEllipsisVertical}
               onClick={() => setIsClicked(!isClicked)}
@@ -78,13 +102,13 @@ const CommunityPostItem = () => {
               onTouchEnd={onDragEnd}
               onTouchMove={(e) => onDragMove(e.touches[0].clientX)}
             >
-              {item.images.map((image: string, index: number) => (
+              {item.imageUrls.map((image: string, index: number) => (
                 <img key={index} src={image} alt="" />
               ))}
             </div>
             <div className="location-text">
               <img src={mapPin} alt="pin" />
-              <span>{item.location}</span>
+              <span>{item.storeName}</span>
             </div>
           </MiddleArea>
           {pageName === "community" || (
