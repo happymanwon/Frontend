@@ -6,6 +6,8 @@ import { PostDataType } from "@/types/community/postDataType";
 import styled from "styled-components";
 import mapPin from "/map-pin.svg";
 import { useNavigate } from "react-router-dom";
+import useUserStore from "@/stores/useUserStore";
+import axios from "axios";
 
 // const items = [
 //   {
@@ -28,6 +30,9 @@ const CommunityPostItem = ({ post }: { post: PostDataType }) => {
 
   // const pageName = params.get("page") || null;
   const navigate = useNavigate();
+
+  const { accessToken } = useUserStore();
+
   const [isClicked, setIsClicked] = useState(false);
 
   const imgListRef = useRef<HTMLDivElement>(null);
@@ -37,6 +42,27 @@ const CommunityPostItem = ({ post }: { post: PostDataType }) => {
 
   const handleTagClick = (tagName: string) => {
     navigate(`/search-post/${tagName}`);
+  };
+
+  const handleEditClick = (boardId: number) => {
+    navigate(`/editpost/${boardId}`);
+  };
+
+  const handleDeleteClick = async (boardId: number) => {
+    const confirmed = window.confirm("정말로 삭제하시겠습니까?");
+    if (confirmed) {
+      try {
+        await axios.delete(`/api/boards/${boardId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        alert("게시물이 삭제되었습니다.");
+        navigate("/community");
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
+    }
   };
 
   const startDragging = (clientX: number) => {
@@ -78,8 +104,18 @@ const CommunityPostItem = ({ post }: { post: PostDataType }) => {
         />
         {isClicked && (
           <ButtonList>
-            <button>수정하기</button>
-            <button>삭제하기</button>
+            <button
+              className="edit"
+              onClick={() => handleEditClick(post.boardId)}
+            >
+              수정하기
+            </button>
+            <button
+              className="delete"
+              onClick={() => handleDeleteClick(post.boardId)}
+            >
+              삭제하기
+            </button>
           </ButtonList>
         )}
       </TopArea>
@@ -143,7 +179,9 @@ const TopArea = styled.div`
 
   & > svg {
     position: relative;
-    width: 10px;
+    width: 15px;
+    height: 15px;
+    padding: 5px;
     color: #888;
     margin-right: 0.75rem;
     font-size: 1rem;

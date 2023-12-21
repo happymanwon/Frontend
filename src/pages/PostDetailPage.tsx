@@ -332,10 +332,13 @@ const PostWrapper = styled.div`
   .content {
     margin-top: 7px;
     margin-bottom: 15px;
+    line-height: 17.5px; /* 145.833% */
   }
   .img {
     display: flex;
     gap: 5px;
+    object-fit: cover;
+    flex-shrink: 0; /* 이미지가 줄어들지 않도록 설정 */
   }
   .images {
     border-radius: 8px;

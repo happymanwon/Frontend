@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { useRef, useState } from "react";
 import axios from "axios";
-import * as _ from "lodash";
+// import * as _ from "lodash";
 
 import useUserStore from "@/stores/useUserStore";
 import { PostDataType } from "@/types/community/postDataType";
-import { StoreDataType } from "@/types/map/storeDataType";
+// import { StoreDataType } from "@/types/map/storeDataType";
 import PostList from "@/components/PostList";
 import checkImg from "/check.svg";
 import newPostImg from "/new-post.svg";
@@ -30,26 +30,26 @@ const CommunityPage = () => {
   const fetchData = async () => {
     try {
       const boardList = await axios.get("/api/boards");
-      const shopList = await axios.get("/api/shops");
+      // const shopList = await axios.get("/api/shops");
 
-      // a 리스트의 각 요소의 roadAddress를 roadName으로 매핑
-      const shopListMapped = shopList.data.data.map((item: StoreDataType) => ({
-        ...item,
-        roadName: item.roadAddress,
-      }));
+      // // a 리스트의 각 요소의 roadAddress를 roadName으로 매핑
+      // const shopListMapped = shopList.data.data.map((item: StoreDataType) => ({
+      //   ...item,
+      //   roadName: item.roadAddress,
+      // }));
 
-      // aMapped와 b 사이의 교집합을 찾음, 기준은 roadName
-      const intersection = _.intersectionBy(
-        shopListMapped,
-        boardList.data.data,
-        "roadName"
-      );
-      boardList.data.data.forEach((item: PostDataType) => {
-        const bItem = _.find(intersection, { roadName: item.roadName });
-        if (bItem && typeof bItem === "object" && "name" in bItem) {
-          item.storeName = bItem.name as string;
-        }
-      });
+      // // aMapped와 b 사이의 교집합을 찾음, 기준은 roadName
+      // const intersection = _.intersectionBy(
+      //   shopListMapped,
+      //   boardList.data.data,
+      //   "roadName"
+      // );
+      // boardList.data.data.forEach((item: PostDataType) => {
+      //   const bItem = _.find(intersection, { roadName: item.roadName });
+      //   if (bItem && typeof bItem === "object" && "name" in bItem) {
+      //     item.shopName = bItem.name as string;
+      //   }
+      // });
 
       return boardList.data.data.sort(
         (a: PostDataType, b: PostDataType) => b.boardId - a.boardId

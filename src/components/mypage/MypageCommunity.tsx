@@ -17,7 +17,12 @@ const MypageCommunity = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        setData(response.data.data);
+        const boardList = response.data.data;
+        setData(
+          boardList.data.data.sort(
+            (a: PostDataType, b: PostDataType) => b.boardId - a.boardId
+          )
+        );
         console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching category data:", error);
