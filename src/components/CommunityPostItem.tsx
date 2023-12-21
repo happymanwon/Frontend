@@ -84,7 +84,7 @@ const CommunityPostItem = ({ post }: { post: PostDataType }) => {
         )}
       </TopArea>
       <MiddleArea>
-        <pre>{post.content}</pre>
+        <p>{post.content}</p>
         <div
           className="imgList"
           ref={imgListRef}
@@ -149,6 +149,17 @@ const TopArea = styled.div`
     font-size: 1rem;
     cursor: pointer;
   }
+
+  & > .tag {
+    button {
+      border: none;
+      background: none;
+      color: ${({ theme }) => theme.colors.mainColor};
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0 4px 0 0;
+    }
+  }
 `;
 
 const ButtonList = styled.div`
@@ -188,7 +199,7 @@ const MiddleArea = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  & > pre {
+  & > p {
     margin-bottom: 1rem;
     color: #1a1a1a;
     font-family: NotoSansRegularWOFF, sans-serif, Arial;
