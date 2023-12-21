@@ -57,7 +57,7 @@ const CommunityPostItem = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/api/members/posts", {
+        const response = await axios.get("/api/members/boards", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
