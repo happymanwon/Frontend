@@ -222,7 +222,7 @@ const EditPostPage = () => {
   return (
     <LayoutContainer>
       <Header>
-        <div className="left" onClick={() => navigate("/community")}>
+        <div className="left" onClick={() => navigate(-1)}>
           <FontAwesomeIcon icon={faArrowLeft} />
         </div>
         <div className="new-post-header">
