@@ -58,7 +58,7 @@ const CommunityPostItem = ({ post }: { post: PostDataType }) => {
           },
         });
         alert("게시물이 삭제되었습니다.");
-        navigate("/community");
+        navigate("/mypage");
       } catch (error) {
         console.error("Error deleting post:", error);
       }

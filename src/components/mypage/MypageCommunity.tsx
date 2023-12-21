@@ -19,7 +19,7 @@ const MypageCommunity = () => {
         });
         const boardList = response.data.data;
         setData(
-          boardList.data.data.sort(
+          boardList.sort(
             (a: PostDataType, b: PostDataType) => b.boardId - a.boardId
           )
         );
