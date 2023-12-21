@@ -206,6 +206,7 @@ const Button = styled.button`
   height: 35px;
   left: 0px;
   border: none;
+  cursor: pointer;
   span {
     position: absolute;
     top: 50%;
