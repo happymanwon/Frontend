@@ -109,13 +109,19 @@ const CommunityPostItem = ({ post }: { post: PostDataType }) => {
           <ButtonList>
             <button
               className="edit"
-              onClick={() => handleEditClick(post.boardId)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditClick(post.boardId);
+              }}
             >
               수정하기
             </button>
             <button
               className="delete"
-              onClick={() => handleDeleteClick(post.boardId)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteClick(post.boardId);
+              }}
             >
               삭제하기
             </button>
