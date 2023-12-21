@@ -2,7 +2,7 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+// import { useSearchParams } from "react-router-dom";
 import useUserStore from "@/stores/useUserStore";
 import { PostDataType } from "@/types/community/postDataType";
 import styled from "styled-components";
@@ -25,10 +25,10 @@ import mapPin from "/map-pin.svg";
 // ];
 
 const CommunityPostItem = () => {
-  const [params] = useSearchParams();
+  // const [params] = useSearchParams();
   const { accessToken } = useUserStore();
 
-  const pageName = params.get("page") || null;
+  // const pageName = params.get("page") || null;
   const [isClicked, setIsClicked] = useState(false);
   const [data, setData] = useState<PostDataType[] | null>(null);
 
@@ -111,12 +111,12 @@ const CommunityPostItem = () => {
               <span>{item.storeName}</span>
             </div>
           </MiddleArea>
-          {pageName === "community" || (
+          {/* {pageName === "community" || (
             <BottomArea>
               <div>2021.10.10</div>
               <div>댓글 3개</div>
             </BottomArea>
-          )}
+          )} */}
         </div>
       ))}
     </PostItemContainer>
@@ -133,6 +133,7 @@ const PostItemContainer = styled.div`
   border-radius: 12px;
   background-color: #fff;
   box-sizing: border-box;
+  cursor: pointer;
 `;
 
 const TopArea = styled.div`
@@ -243,27 +244,27 @@ const MiddleArea = styled.div`
   }
 `;
 
-const BottomArea = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  & > div:nth-child(1) {
-    color: var(--Gray_3, #888);
-    font-family: NotoSansRegularWOFF, sans-serif, Arial;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 18px; /* 150% */
-  }
-  & > div:nth-child(2) {
-    color: var(--Primary-Black, var(--Primary-Black, #1a1a1a));
-    font-family: NotoSansMediumWOFF;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 21px; /* 150% */
-  }
-`;
+// const BottomArea = styled.div`
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   justify-content: space-between;
+//   & > div:nth-child(1) {
+//     color: var(--Gray_3, #888);
+//     font-family: NotoSansRegularWOFF, sans-serif, Arial;
+//     font-size: 12px;
+//     font-style: normal;
+//     font-weight: 400;
+//     line-height: 18px; /* 150% */
+//   }
+//   & > div:nth-child(2) {
+//     color: var(--Primary-Black, var(--Primary-Black, #1a1a1a));
+//     font-family: NotoSansMediumWOFF;
+//     font-size: 14px;
+//     font-style: normal;
+//     font-weight: 700;
+//     line-height: 21px; /* 150% */
+//   }
+// `;
 
 export default CommunityPostItem;
