@@ -207,6 +207,7 @@ const MiddleArea = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: 17.5px; /* 145.833% */
+    padding-right: 30px;
   }
   & > .imgList {
     display: flex;
