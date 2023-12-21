@@ -133,15 +133,22 @@ const PostList = ({ post }: { post: PostDataType }) => {
           </div>
           <div className="location-text">
             <img src="/map-pin.svg" alt="pin" />
-            <span>{post.storeName}</span>
+            <span>{post.shopName}</span>
           </div>
         </MiddleArea>
         <BottomArea>
           <div>
-            <img src={profileImg} alt="이미지" className="profile" loading="lazy" />
+            <img
+              src={profileImg}
+              alt="이미지"
+              className="profile"
+              loading="lazy"
+            />
             <span className="writer">{post.nickname}</span>
             <span>·</span>
-            <span className="write-time">{getTimeDifference(post.createAt)}</span>
+            <span className="write-time">
+              {getTimeDifference(post.createAt)}
+            </span>
           </div>
           <div>
             <img src={commentImg} alt="이미지" loading="lazy" />
@@ -158,7 +165,10 @@ const PostList = ({ post }: { post: PostDataType }) => {
           }}
         >
           <ReportModalWrapper onClick={(e) => e.stopPropagation()}>
-            <ReportModal onCancel={() => setReportModal(false)} onReport={handleReportClick} />
+            <ReportModal
+              onCancel={() => setReportModal(false)}
+              onReport={handleReportClick}
+            />
           </ReportModalWrapper>
         </DarkBackground>
       )}

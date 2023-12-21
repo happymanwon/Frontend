@@ -102,7 +102,7 @@ const CommunityPostItem = ({ post }: { post: PostDataType }) => {
         </div>
         <div className="location-text">
           <img src={mapPin} alt="pin" />
-          <span>{post.storeName}</span>
+          <span>{post.shopName}</span>
         </div>
       </MiddleArea>
       {/* {pageName === "community" || (
