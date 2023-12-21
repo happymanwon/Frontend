@@ -100,7 +100,10 @@ const CommunityPostItem = ({ post }: { post: PostDataType }) => {
         </div>
         <FontAwesomeIcon
           icon={faEllipsisVertical}
-          onClick={() => setIsClicked(!isClicked)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsClicked(!isClicked);
+          }}
         />
         {isClicked && (
           <ButtonList>
@@ -212,7 +215,7 @@ const ButtonList = styled.div`
   border: 0.5px solid #dadada;
   background: #fff;
   box-shadow: 0px -2px 6px 0px rgba(0, 0, 0, 0.1);
-  z-index: 99;
+  z-index: 1;
 
   & > button {
     width: 100%;

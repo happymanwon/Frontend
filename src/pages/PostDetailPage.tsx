@@ -247,6 +247,7 @@ const Header = styled.header`
     position: absolute;
     right: 0;
     margin-right: 15px;
+    cursor: pointer;
   }
 
   h2 {
