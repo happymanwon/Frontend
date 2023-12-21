@@ -1,12 +1,11 @@
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 // import { useSearchParams } from "react-router-dom";
-import useUserStore from "@/stores/useUserStore";
 import { PostDataType } from "@/types/community/postDataType";
 import styled from "styled-components";
 import mapPin from "/map-pin.svg";
+import { useNavigate } from "react-router-dom";
 
 // const items = [
 //   {
@@ -24,18 +23,21 @@ import mapPin from "/map-pin.svg";
 //   },
 // ];
 
-const CommunityPostItem = () => {
+const CommunityPostItem = ({ post }: { post: PostDataType }) => {
   // const [params] = useSearchParams();
-  const { accessToken } = useUserStore();
 
   // const pageName = params.get("page") || null;
+  const navigate = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
-  const [data, setData] = useState<PostDataType[] | null>(null);
 
   const imgListRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+
+  const handleTagClick = (tagName: string) => {
+    navigate(`/search-post/${tagName}`);
+  };
 
   const startDragging = (clientX: number) => {
     setIsDragging(true);
@@ -54,71 +56,61 @@ const CommunityPostItem = () => {
     imgListRef.current!.scrollLeft = scrollLeft - walk;
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/api/members/boards", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setData(response.data.data);
-        console.log(response.data.message);
-      } catch (error) {
-        console.error("Error fetching category data:", error);
-      }
-    };
-
-    fetchData();
-  }, [accessToken]);
-
   return (
-    <PostItemContainer>
-      {data?.map((item, index) => (
-        <div key={index}>
-          <TopArea>
-            <div>{item.hashtagNames.map((tag: string) => `#${tag} `)}</div>
-            <FontAwesomeIcon
-              icon={faEllipsisVertical}
-              onClick={() => setIsClicked(!isClicked)}
-            />
-            {isClicked && (
-              <ButtonList>
-                <button>수정하기</button>
-                <button>삭제하기</button>
-              </ButtonList>
-            )}
-          </TopArea>
-          <MiddleArea>
-            <pre>{item.content}</pre>
-            <div
-              className="imgList"
-              ref={imgListRef}
-              onMouseDown={(e) => startDragging(e.clientX)}
-              onMouseLeave={onDragEnd}
-              onMouseUp={onDragEnd}
-              onMouseMove={(e) => onDragMove(e.clientX)}
-              onTouchStart={(e) => startDragging(e.touches[0].clientX)}
-              onTouchEnd={onDragEnd}
-              onTouchMove={(e) => onDragMove(e.touches[0].clientX)}
+    <PostItemContainer onClick={() => navigate(`/post/${post.boardId}`)}>
+      <TopArea>
+        <div className="tag">
+          {post.hashtagNames.map((tag: string, id: number) => (
+            <button
+              key={id}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleTagClick(tag);
+              }}
             >
-              {item.imageUrls.map((image: string, index: number) => (
-                <img key={index} src={image} alt="" />
-              ))}
-            </div>
-            <div className="location-text">
-              <img src={mapPin} alt="pin" />
-              <span>{item.storeName}</span>
-            </div>
-          </MiddleArea>
-          {/* {pageName === "community" || (
+              #{tag}
+            </button>
+          ))}
+        </div>
+        <FontAwesomeIcon
+          icon={faEllipsisVertical}
+          onClick={() => setIsClicked(!isClicked)}
+        />
+        {isClicked && (
+          <ButtonList>
+            <button>수정하기</button>
+            <button>삭제하기</button>
+          </ButtonList>
+        )}
+      </TopArea>
+      <MiddleArea>
+        <pre>{post.content}</pre>
+        <div
+          className="imgList"
+          ref={imgListRef}
+          onMouseDown={(e) => startDragging(e.clientX)}
+          onMouseLeave={onDragEnd}
+          onMouseUp={onDragEnd}
+          onMouseMove={(e) => onDragMove(e.clientX)}
+          onTouchStart={(e) => startDragging(e.touches[0].clientX)}
+          onTouchEnd={onDragEnd}
+          onTouchMove={(e) => onDragMove(e.touches[0].clientX)}
+        >
+          {post.imageUrls.map((image: string, index: number) => (
+            <img key={index} src={image} alt="" />
+          ))}
+        </div>
+        <div className="location-text">
+          <img src={mapPin} alt="pin" />
+          <span>{post.storeName}</span>
+        </div>
+      </MiddleArea>
+      {/* {pageName === "community" || (
             <BottomArea>
               <div>2021.10.10</div>
               <div>댓글 3개</div>
             </BottomArea>
           )} */}
-        </div>
-      ))}
     </PostItemContainer>
   );
 };
