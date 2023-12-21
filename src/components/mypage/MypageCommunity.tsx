@@ -37,10 +37,13 @@ const MypageCommunity = () => {
 };
 
 const CommunityContainer = styled.div`
-  width: calc(100% - 1.5rem);
+  width: 100%;
   height: calc(100vh - 6.125rem - 4.5rem);
   display: flex;
   flex-direction: column;
+  padding: 0 12px;
+  gap: 12px;
+  box-sizing: border-box;
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
