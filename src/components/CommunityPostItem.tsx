@@ -1,6 +1,6 @@
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 // import { useSearchParams } from "react-router-dom";
 import { PostDataType } from "@/types/community/postDataType";
 import styled from "styled-components";
