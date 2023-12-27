@@ -68,12 +68,12 @@ const EditPostPage = () => {
         setTags(response.data.data.hashtagNames);
         setStoreAddr(response.data.data.roadName);
         setStoreName(response.data.data.shopName);
-        setShowImages(response.data.data.imageUrls);
         const imageUrls = response.data.data.imageUrls || [];
         const filePromises = imageUrls.map((url) => convertURLtoFile(url));
         const imageFiles = await Promise.all(filePromises);
 
         setImageFiles((prevFiles) => [...prevFiles, ...imageFiles]);
+        setShowImages(imageFiles);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
