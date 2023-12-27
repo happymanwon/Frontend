@@ -67,10 +67,13 @@ const EditPostPage = () => {
         setContent(response.data.data.content);
         setTags(response.data.data.hashtagNames);
         if (response.data.data.shopName) {
-          setIsImageAdded(true);
+          setIsMapAdded(true);
         }
         setStoreAddr(response.data.data.roadName);
         setStoreName(response.data.data.shopName);
+        if (response.data.data.imageUrls) {
+          setIsImageAdded(true);
+        }
         const imageUrls = response.data.data.imageUrls || [];
         const filePromises = imageUrls.map((url) => convertURLtoFile(url));
         const imageFiles = await Promise.all(filePromises);
