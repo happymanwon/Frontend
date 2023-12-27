@@ -66,6 +66,9 @@ const EditPostPage = () => {
 
         setContent(response.data.data.content);
         setTags(response.data.data.hashtagNames);
+        if (response.data.data.shopName) {
+          setIsImageAdded(true);
+        }
         setStoreAddr(response.data.data.roadName);
         setStoreName(response.data.data.shopName);
         const imageUrls = response.data.data.imageUrls || [];
@@ -84,7 +87,7 @@ const EditPostPage = () => {
 
   // 지도 모달창 부분
   function MapModal() {
-    const [searchName, setSearchName] = useState("");
+    const [searchName, setSearchName] = useState(storeName);
 
     const handleSearch = async () => {
       try {
